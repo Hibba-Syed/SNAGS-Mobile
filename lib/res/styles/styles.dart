@@ -12,6 +12,11 @@ class AppTextStyles {
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle style16DarkGrey600 = TextStyle(
+    color: AppColors.darGrey,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w600,
+  );
   static const TextStyle style20Primary600 = TextStyle(
     color: AppColors.primary,
     fontSize: 20.0,
@@ -90,6 +95,11 @@ class AppTextStyles {
   static const TextStyle style10White400 = TextStyle(
     color: AppColors.white,
     fontSize: 10.0,
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle style12LightGrey400 = TextStyle(
+    color: AppColors.lightGrey,
+    fontSize: 12.0,
     fontWeight: FontWeight.w400,
   );
   static const TextStyle style22Grey600 = TextStyle(

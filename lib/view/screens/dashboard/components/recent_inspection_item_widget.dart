@@ -80,9 +80,11 @@ class RecentInspectionItemWidget extends StatelessWidget {
                     ),
                   ),
                   UIHelper.horizontalSpace(4.0),
-                  Text(
-                    communityName,
-                    style: AppTextStyles.style14Grey400,
+                  Flexible(
+                    child: Text(
+                      communityName,
+                      style: AppTextStyles.style14Grey400,
+                    ),
                   ),
                 ],
               ),

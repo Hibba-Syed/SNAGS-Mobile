@@ -13,27 +13,30 @@ class AddButtonWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.all(
-          Radius.circular(8),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.add,
-            color: AppColors.white,
-            size: 22,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+        decoration: const BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
           ),
-          Text(
-            title,
-            style: AppTextStyles.style18White400,
-          )
-        ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.add,
+              color: AppColors.white,
+              size: 22,
+            ),
+            Text(
+              title,
+              style: AppTextStyles.style18White400,
+            )
+          ],
+        ),
       ),
     );
   }

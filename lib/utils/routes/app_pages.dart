@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/Login/login_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/community_detail/community_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
@@ -12,6 +13,7 @@ import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/screens/auth/forgot_password.dart';
 import 'package:iskaan_inspections_mobile/view/screens/auth/login_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/main_dashboard_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
@@ -87,6 +89,13 @@ class AppPages {
         page: const NotificationsScreen(),
         bloc: BlocProvider(
           create: (context) => NotificationsCubit(),
+        ),
+      ),
+      PageEntity(
+        route: AppRoutes.communityDetail,
+        page: const CommunityDetailScreen(),
+        bloc: BlocProvider(
+          create: (context) => CommunityDetailCubit(),
         ),
       ),
     ];

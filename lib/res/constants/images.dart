@@ -12,6 +12,7 @@ class AppImages {
   static const String icLock = "${baseSvgPath}ic_lock.svg";
   static const String icDashboard = "${baseSvgPath}ic_dashboard.svg";
   static const String icCommunities = "${baseSvgPath}ic_communities.svg";
+  static const String icCommunityOwner = "${baseSvgPath}ic_community_owner.svg";
   static const String icInspection = "${baseSvgPath}ic_inspection.svg";
   static const String icSnags = "${baseSvgPath}ic_snags.svg";
   static const String icProfile = "${baseSvgPath}ic_profile.svg";

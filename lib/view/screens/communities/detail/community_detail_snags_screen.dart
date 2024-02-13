@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/screens/inspection/components/inspection_widget.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
-class InspectionScreen extends StatelessWidget {
-  const InspectionScreen({super.key});
+class CommunityDetailSnagsScreen extends StatelessWidget {
+  const CommunityDetailSnagsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       body: Column(
         children: [
           Padding(
@@ -26,24 +26,25 @@ class InspectionScreen extends StatelessWidget {
               padding:
               const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
-                return const InspectionWidget(
+                return  SnagWidget(
+                  imageUrl: '',
                   reference: 'INS001-24-00003',
+                  risk: 'High Risk',
                   status: 'In Progress',
-                  communityName: 'Al Attar Business Tower',
-                  communityOwnerName: 'HOAM - Highrise Owners Association Management',
-                  userName: 'Muhammad Talha Al Mehri',
-                  date: 'May 08, 2023',
+                  title: 'Door Glass Broken',
+                  description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
+                  onTap: (){},
                 );
               },
               separatorBuilder: (context, index) {
-                return UIHelper.verticalSpace(10.0);
+                return UIHelper.verticalSpace(14.0);
               },
             ),
           ),
         ],
       ),
       floatingActionButton: AddButtonWithTitle(
-        title: 'Add Inspection',
+        title: 'Add Snag',
         onTap: () {},
       ),
     );

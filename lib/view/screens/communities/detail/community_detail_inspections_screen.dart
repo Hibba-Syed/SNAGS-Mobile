@@ -3,8 +3,9 @@ import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/components/inspection_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
-class InspectionScreen extends StatelessWidget {
-  const InspectionScreen({super.key});
+
+class CommunityDetailInspectionsScreen extends StatelessWidget {
+  const CommunityDetailInspectionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class InspectionScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: const AlwaysScrollableScrollPhysics(),
               padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
                 return const InspectionWidget(
                   reference: 'INS001-24-00003',

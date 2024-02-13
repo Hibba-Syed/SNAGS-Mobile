@@ -14,6 +14,7 @@ class StatusWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.circle,color: color,size: 10,),
           UIHelper.horizontalSpace(3.0),

@@ -5,23 +5,22 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
 
-class RecentSnagsItemWidget extends StatelessWidget {
+class InspectionWidget extends StatelessWidget {
   final String reference;
   final String status;
-  final String risk;
   final String communityName;
+  final String communityOwnerName;
   final String userName;
   final String date;
   final VoidCallback? onTap;
-  const RecentSnagsItemWidget({
+  const InspectionWidget({
     super.key,
     required this.reference,
     required this.status,
-    required this.risk,
     required this.communityName,
+    required this.communityOwnerName,
     required this.userName,
     required this.date,
     this.onTap,
@@ -61,18 +60,9 @@ class RecentSnagsItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    const RiskWidget(
-                      color: AppColors.green,
-                      risk: 'Low Risk'
-                    ),
-                    UIHelper.horizontalSpace(5.0),
-                    StatusWidget(
-                      status: status,
-                      color: AppColors.red,
-                    ),
-                  ],
+                StatusWidget(
+                  status: status,
+                  color: AppColors.yellow,
                 ),
               ],
             ),
@@ -92,9 +82,38 @@ class RecentSnagsItemWidget extends StatelessWidget {
                     ),
                   ),
                   UIHelper.horizontalSpace(4.0),
-                  Text(
-                    communityName,
-                    style: AppTextStyles.style14Grey400,
+                  Flexible(
+                    child: Text(
+                      communityName,
+                      style: AppTextStyles.style14Grey400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            UIHelper.verticalSpace(10.0),
+            Container(
+              padding: const EdgeInsets.all(6.0),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border.all(color: AppColors.border),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    AppImages.icCommunityOwner,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  UIHelper.horizontalSpace(4.0),
+                  Flexible(
+                    child: Text(
+                      communityOwnerName,
+                      style: AppTextStyles.style14Grey400,
+                    ),
                   ),
                 ],
               ),
@@ -138,3 +157,4 @@ class RecentSnagsItemWidget extends StatelessWidget {
     );
   }
 }
+
