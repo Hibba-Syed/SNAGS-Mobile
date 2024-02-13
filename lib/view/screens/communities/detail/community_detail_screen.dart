@@ -4,8 +4,8 @@ import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_inspections_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_snags_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_statistics_screen.dart';
-import 'package:iskaan_inspections_mobile/view/screens/communities/detail/components/community_detail_tab_item.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/tab_bar/tab_bar_item.dart';
 
 class CommunityDetailScreen extends StatefulWidget {
   const CommunityDetailScreen({super.key});
@@ -52,15 +52,15 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                   });
                 },
                 tabs: [
-                  CommunityDetailTabItem(
+                  TabBarItem(
                     title: 'Statistics',
                     isSelected: _selectedIndex == 0,
                   ),
-                  CommunityDetailTabItem(
+                  TabBarItem(
                     title: 'Inspections',
                     isSelected: _selectedIndex == 1,
                   ),
-                  CommunityDetailTabItem(
+                  TabBarItem(
                     title: 'Snags',
                     isSelected: _selectedIndex == 2,
                   ),

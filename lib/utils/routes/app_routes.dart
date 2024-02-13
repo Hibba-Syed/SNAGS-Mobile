@@ -9,4 +9,5 @@ class AppRoutes {
   static const String mainDashboard = '/main_dashboard';
   static const String notifications = "/notifications";
   static const String communityDetail = "/community_detail";
+  static const String inspectionDetail = "/inspection_detail";
 }

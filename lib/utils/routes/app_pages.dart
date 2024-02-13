@@ -15,6 +15,7 @@ import 'package:iskaan_inspections_mobile/view/screens/auth/forgot_password.dart
 import 'package:iskaan_inspections_mobile/view/screens/auth/login_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/main_dashboard_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
@@ -97,6 +98,13 @@ class AppPages {
         bloc: BlocProvider(
           create: (context) => CommunityDetailCubit(),
         ),
+      ),
+      PageEntity(
+        route: AppRoutes.inspectionDetail,
+        page: const InspectionDetailScreen(),
+        // bloc: BlocProvider(
+        //   create: (context) => CommunityDetailCubit(),
+        // ),
       ),
     ];
   }

@@ -14,7 +14,7 @@ class InspectionWidget extends StatelessWidget {
   final String communityOwnerName;
   final String userName;
   final String date;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
   const InspectionWidget({
     super.key,
     required this.reference,
@@ -23,7 +23,7 @@ class InspectionWidget extends StatelessWidget {
     required this.communityOwnerName,
     required this.userName,
     required this.date,
-    this.onTap,
+    required this.onTap,
   });
 
   @override

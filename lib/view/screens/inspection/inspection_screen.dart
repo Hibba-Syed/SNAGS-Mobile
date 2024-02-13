@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/components/inspection_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
@@ -26,13 +27,16 @@ class InspectionScreen extends StatelessWidget {
               padding:
               const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
-                return const InspectionWidget(
+                return  InspectionWidget(
                   reference: 'INS001-24-00003',
                   status: 'In Progress',
                   communityName: 'Al Attar Business Tower',
                   communityOwnerName: 'HOAM - Highrise Owners Association Management',
                   userName: 'Muhammad Talha Al Mehri',
                   date: 'May 08, 2023',
+                  onTap: (){
+                    Navigator.pushNamed(context, AppRoutes.inspectionDetail);
+                  },
                 );
               },
               separatorBuilder: (context, index) {
