@@ -14,32 +14,35 @@ class RowTitleWithViewMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: AppTextStyles.style20Grey600,
-        ),
-        InkWell(
-          onTap: onViewMorePressed,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.remove_red_eye_outlined,
-                color: AppColors.primary,
-                size: 20,
-              ),
-              UIHelper.horizontalSpace(4.0),
-              const Text(
-                'View More',
-                style: AppTextStyles.style16Primary400,
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical:10.0),
+      child:Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: AppTextStyles.style20Grey600,
           ),
-        ),
-      ],
+          InkWell(
+            onTap: onViewMorePressed,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.remove_red_eye_outlined,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
+                UIHelper.horizontalSpace(4.0),
+                const Text(
+                  'View More',
+                  style: AppTextStyles.style16Primary400,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

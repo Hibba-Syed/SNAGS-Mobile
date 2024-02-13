@@ -167,10 +167,7 @@ class MainDashboardScreen extends StatelessWidget {
               ],
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
-            child: _getScreen(state),
-          ),
+          body: _getScreen(state),
         );
       },
     );
@@ -192,7 +189,7 @@ class MainDashboardScreen extends StatelessWidget {
   }
   Widget _getScreen(MainDashboardState state) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  DashboardScreen();
+      return  const DashboardScreen();
     } else if (state.selectedIndex == AppConstants.communitiesIndex) {
       return const CommunitiesScreen();
     } else if (state.selectedIndex == AppConstants.inspectionIndex) {

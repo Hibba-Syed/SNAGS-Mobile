@@ -7,12 +7,12 @@ import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/increasing_percentage_widget.dart';
-class PendingInspectionsContainer extends StatelessWidget {
-   PendingInspectionsContainer({super.key});
+class TotalCommunitiesContainer extends StatelessWidget {
+  TotalCommunitiesContainer({super.key});
 
   final List<Color> _pendingInspectionsGradientColors = [
-    AppColors.green,
-    AppColors.lightGreen,
+    AppColors.blue,
+    AppColors.lightBlue,
   ];
 
   @override
@@ -37,11 +37,11 @@ class PendingInspectionsContainer extends StatelessWidget {
                 height: 20.0,
                 padding: const EdgeInsets.all(2.0),
                 decoration: const BoxDecoration(
-                  color: AppColors.orange,
+                  color: AppColors.blue,
                   shape: BoxShape.circle,
                 ),
                 child: SvgPicture.asset(
-                  AppImages.icInspection,
+                  AppImages.icCommunities,
                   colorFilter: const ColorFilter.mode(
                     AppColors.white,
                     BlendMode.srcIn,
@@ -50,7 +50,7 @@ class PendingInspectionsContainer extends StatelessWidget {
               ),
               UIHelper.horizontalSpace(5.0),
               const Text(
-                'Pending Inspections',
+                'Total Communities',
                 style: AppTextStyles.style14LightGrey500,
               ),
             ],
@@ -63,12 +63,12 @@ class PendingInspectionsContainer extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    '250',
+                    '529',
                     style: AppTextStyles.style22Grey600,
                   ),
                   UIHelper.verticalSpace(5.0),
                   const IncreasingPercentageWidget(
-                    value: '1.7%',
+                    value: '1.2%',
                   ),
 
                 ],
@@ -86,58 +86,58 @@ class PendingInspectionsContainer extends StatelessWidget {
       ),
     );
   }
-   LineChartData _pendingInspectionsChartData() {
-     return LineChartData(
-       gridData: FlGridData(
-         show: false,
-         getDrawingVerticalLine: (value) {
-           return const FlLine(
-             color: AppColors.green,
-             strokeWidth: 1,
-           );
-         },
-       ),
-       titlesData: const FlTitlesData(
-         show: false,
-       ),
-       borderData: FlBorderData(
-         show: false,
-         border: Border.all(color: const Color(0xff37434d)),
-       ),
-       minX: 0,
-       maxX: 12,
-       minY: 0,
-       maxY: 6,
-       lineBarsData: [
-         LineChartBarData(
-           spots: const [
-             FlSpot(0, 3),
-             FlSpot(2.6, 2),
-             FlSpot(4.9, 5),
-             FlSpot(6.8, 3.1),
-             FlSpot(8, 4),
-             FlSpot(9.5, 3),
-             FlSpot(11, 4),
-           ],
-           isCurved: true,
-           gradient: LinearGradient(
-             colors: _pendingInspectionsGradientColors,
-           ),
-           barWidth: 5,
-           isStrokeCapRound: true,
-           dotData: const FlDotData(
-             show: false,
-           ),
-           belowBarData: BarAreaData(
-             show: true,
-             gradient: LinearGradient(
-               colors: _pendingInspectionsGradientColors
-                   .map((color) => color.withOpacity(0.3))
-                   .toList(),
-             ),
-           ),
-         ),
-       ],
-     );
-   }
+  LineChartData _pendingInspectionsChartData() {
+    return LineChartData(
+      gridData: FlGridData(
+        show: false,
+        getDrawingVerticalLine: (value) {
+          return const FlLine(
+            color: AppColors.green,
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: const FlTitlesData(
+        show: false,
+      ),
+      borderData: FlBorderData(
+        show: false,
+        border: Border.all(color: const Color(0xff37434d)),
+      ),
+      minX: 0,
+      maxX: 12,
+      minY: 0,
+      maxY: 6,
+      lineBarsData: [
+        LineChartBarData(
+          spots: const [
+            FlSpot(0, 3),
+            FlSpot(2.6, 2),
+            FlSpot(4.9, 5),
+            FlSpot(6.8, 3.1),
+            FlSpot(8, 4),
+            FlSpot(9.5, 3),
+            FlSpot(11, 4),
+          ],
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: _pendingInspectionsGradientColors,
+          ),
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: const FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: _pendingInspectionsGradientColors
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
