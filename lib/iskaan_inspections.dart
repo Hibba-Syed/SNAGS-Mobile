@@ -27,6 +27,7 @@ class _IskaanInspectionsState extends State<IskaanInspections> {
         child: MaterialApp(
           title: 'Iskaan Inspections',
           theme: ThemeData(
+            scaffoldBackgroundColor: AppColors.background,
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppColors.primary,
               background: AppColors.background,
@@ -37,7 +38,6 @@ class _IskaanInspectionsState extends State<IskaanInspections> {
             iconTheme: const IconThemeData(
               color: AppColors.primary,
             ),
-            scaffoldBackgroundColor: AppColors.white,
           ),
           onGenerateRoute: AppPages.generateRouteSettings,
           home: LoginScreen(),

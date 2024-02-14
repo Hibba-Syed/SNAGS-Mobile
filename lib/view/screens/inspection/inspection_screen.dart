@@ -13,12 +13,11 @@ class InspectionScreen extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
             child: SearchTextField(
               onFilterPressed: () {},
             ),
           ),
-          UIHelper.verticalSpace(16.0),
           Expanded(
             child: ListView.separated(
               itemCount: 10,

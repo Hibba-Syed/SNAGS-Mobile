@@ -24,9 +24,7 @@ class TotalCommunitiesContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          AppStyles.cardBoxShadow,
-        ],
+
       ),
       child: Column(
         children: [

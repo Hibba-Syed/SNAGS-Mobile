@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
@@ -33,7 +34,9 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
                   status: 'In Progress',
                   title: 'Door Glass Broken',
                   description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.pushNamed(context, AppRoutes.snagDetail);
+                  },
                 );
               },
               separatorBuilder: (context, index) {

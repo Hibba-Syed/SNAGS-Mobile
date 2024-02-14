@@ -33,9 +33,6 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  AppStyles.cardBoxShadow,
-                ],
               ),
               child: TabBar(
                 isScrollable: true,

@@ -10,4 +10,5 @@ class AppRoutes {
   static const String notifications = "/notifications";
   static const String communityDetail = "/community_detail";
   static const String inspectionDetail = "/inspection_detail";
+  static const String snagDetail = "/snag_detail";
 }

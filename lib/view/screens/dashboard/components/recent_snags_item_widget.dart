@@ -5,6 +5,7 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
 
@@ -36,9 +37,6 @@ class RecentSnagsItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(5.0),
-          boxShadow: [
-            AppStyles.cardBoxShadow,
-          ],
         ),
         child: Column(
           children: [
@@ -116,20 +114,7 @@ class RecentSnagsItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.date_range_outlined,
-                      color: AppColors.primary,
-                      size: 18.0,
-                    ),
-                    UIHelper.horizontalSpace(3.0),
-                    Text(
-                      date,
-                      style: AppTextStyles.style14LightGrey400,
-                    ),
-                  ],
-                ),
+                DateTextWidget(date: date,),
               ],
             ),
           ],

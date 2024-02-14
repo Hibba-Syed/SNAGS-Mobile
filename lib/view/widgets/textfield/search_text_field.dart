@@ -31,9 +31,7 @@ class SearchTextField extends StatelessWidget {
             decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  AppStyles.cardBoxShadow,
-                ]),
+                ),
             child: TextFormField(
               initialValue: initialValue,
               controller: controller,
@@ -69,9 +67,7 @@ class SearchTextField extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  AppStyles.cardBoxShadow,
-                ],
+
               ),
               child: const Icon(
                 Icons.filter_alt_outlined,

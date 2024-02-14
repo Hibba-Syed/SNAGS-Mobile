@@ -36,12 +36,7 @@ class SnagWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 3,
-            ),
-          ],
+
         ),
         child: Row(
           children: [
@@ -63,7 +58,7 @@ class SnagWidget extends StatelessWidget {
               },
             ),
             Expanded(
-              child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,19 +77,28 @@ class SnagWidget extends StatelessWidget {
                       ],
                     ),
                     UIHelper.verticalSpace(6.0),
-                    Text(
-                      reference,
-                      style: AppTextStyles.style16DarkGrey600,
-                    ),
-                    UIHelper.verticalSpace(5.0),
-                    Text(
-                      title,
-                      style: AppTextStyles.style14LightGrey500,
-                    ),
-                    UIHelper.verticalSpace(3.0),
-                    Text(
-                      description,
-                      style: AppTextStyles.style12LightGrey400,
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              reference,
+                              style: AppTextStyles.style16DarkGrey600,
+                            ),
+                            UIHelper.verticalSpace(5.0),
+                            Text(
+                              title,
+                              style: AppTextStyles.style14LightGrey500,
+                            ),
+                            UIHelper.verticalSpace(3.0),
+                            Text(
+                              description,
+                              style: AppTextStyles.style12LightGrey400,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),

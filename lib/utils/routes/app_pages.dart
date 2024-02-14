@@ -17,6 +17,7 @@ import 'package:iskaan_inspections_mobile/view/screens/communities/detail/commun
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/main_dashboard_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
 class AppPages {
@@ -104,6 +105,13 @@ class AppPages {
         page: const InspectionDetailScreen(),
         // bloc: BlocProvider(
         //   create: (context) => CommunityDetailCubit(),
+        // ),
+      ),
+      PageEntity(
+        route: AppRoutes.snagDetail,
+        page: const SnagDetailScreen(),
+        // bloc: BlocProvider(
+        //   create: (context) => SnagDetailCubit(),
         // ),
       ),
     ];

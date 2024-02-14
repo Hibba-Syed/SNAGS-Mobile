@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/action_required_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/high_risk_snags_container.dart';
@@ -52,10 +56,11 @@ class DashboardScreen extends StatelessWidget {
                         style: AppTextStyles.style15LightGrey500,
                       ),
                       Flexible(
-                          child: Text(
-                        'Fatima Hameed Raza',
-                        style: AppTextStyles.style20Grey600,
-                      )),
+                        child: Text(
+                          'Fatima Hameed Raza',
+                          style: AppTextStyles.style20Grey600,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -77,9 +82,9 @@ class DashboardScreen extends StatelessWidget {
             ),
             _actionRequiredView(),
             UIHelper.verticalSpace(10.0),
-            _recentInspectionsView(),
+            _recentInspectionsView(context),
             UIHelper.verticalSpace(10.0),
-            _recentSnagsView(),
+            _recentSnagsView(context),
           ],
         ),
       ),
@@ -101,9 +106,7 @@ class DashboardScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              AppStyles.cardBoxShadow,
-            ],
+
           ),
           child: ListView.separated(
             itemCount: 3,
@@ -126,12 +129,14 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  _recentInspectionsView() {
+  _recentInspectionsView(BuildContext context) {
     return Column(
       children: [
         RowTitleWithViewMore(
           text: 'Recent Inspections',
-          onViewMorePressed: () {},
+          onViewMorePressed: () {
+            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.inspectionIndex);
+          },
         ),
         ListView.separated(
           itemCount: 3,
@@ -144,7 +149,9 @@ class DashboardScreen extends StatelessWidget {
               communityName: 'Al Attar Business Tower',
               userName: 'Muhammad Talha Al Mehri',
               date: 'May 08, 2023',
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.inspectionDetail);
+              },
             );
           },
           separatorBuilder: (context, index) {
@@ -155,12 +162,15 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  _recentSnagsView() {
+  _recentSnagsView(BuildContext context) {
     return Column(
       children: [
         RowTitleWithViewMore(
           text: 'Recent Snags',
-          onViewMorePressed: () {},
+          onViewMorePressed: () {
+            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.snagsIndex);
+
+          },
         ),
         ListView.separated(
           itemCount: 3,
@@ -174,7 +184,9 @@ class DashboardScreen extends StatelessWidget {
               communityName: 'Al Attar Business Tower',
               userName: 'Muhammad Talha Al Mehri',
               date: 'May 08, 2023',
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.snagDetail);
+              },
             );
           },
           separatorBuilder: (context, index) {

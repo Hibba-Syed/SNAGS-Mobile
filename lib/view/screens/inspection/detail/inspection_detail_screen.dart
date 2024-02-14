@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
-import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_inspections_screen.dart';
-import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_snags_screen.dart';
-import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_statistics_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_details_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_logs_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_snags_screen.dart';
@@ -36,9 +33,7 @@ class _InspectionDetailScreenState extends State<InspectionDetailScreen> {
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  AppStyles.cardBoxShadow,
-                ],
+
               ),
               child: TabBar(
                 isScrollable: true,

@@ -21,12 +21,6 @@ class HighRiskSnagsContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            blurRadius: 5.0,
-          ),
-        ],
       ),
       child: Column(
         children: [
