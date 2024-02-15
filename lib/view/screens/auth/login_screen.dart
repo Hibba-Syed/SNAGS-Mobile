@@ -126,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                           }
                           return CustomButton(
                             text: "Login",
-                            onPressed: () {
+                            onPressed: () async{
                               Navigator.pushNamed(context, AppRoutes.mainDashboard);
                               if (state.loadingState == LoadingState.loading) {
                                 return;
