@@ -13,10 +13,14 @@ import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/screens/auth/forgot_password.dart';
 import 'package:iskaan_inspections_mobile/view/screens/auth/login_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/auth/update_password_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/detail/community_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/main_dashboard_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/add_inspection_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/profile/edit_profile_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
@@ -108,12 +112,29 @@ class AppPages {
         // ),
       ),
       PageEntity(
+        route: AppRoutes.addInspection,
+        page: const AddInspectionScreen(),
+      ),
+      PageEntity(
         route: AppRoutes.snagDetail,
         page: const SnagDetailScreen(),
         // bloc: BlocProvider(
         //   create: (context) => SnagDetailCubit(),
         // ),
       ),
+      PageEntity(
+        route: AppRoutes.addSnag,
+        page:   AddSnagScreen(),
+      ),
+      PageEntity(
+        route: AppRoutes.editProfile,
+        page:  EditProfileScreen(),
+      ),
+      PageEntity(
+        route: AppRoutes.updatePassword,
+        page:   UpdatePasswordScreen(),
+      ),
+
     ];
   }
 

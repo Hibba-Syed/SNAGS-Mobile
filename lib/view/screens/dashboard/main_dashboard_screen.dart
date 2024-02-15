@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
@@ -73,101 +74,107 @@ class MainDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MainDashboardCubit, MainDashboardState>(
       builder: (context, state) {
-        return Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBarWidget(
-            leading: IconButton(
-              onPressed: () {
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              icon: const Icon(
-                Icons.menu,
-                color: AppColors.lightGrey,
+        return GestureDetector(
+          onTap: (){
+            context.read<DashboardCubit>().onChangeIsFloatingButtonExpanded(false);
+          },
+          child: Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBarWidget(
+              leading: IconButton(
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                  context.read<DashboardCubit>().onChangeIsFloatingButtonExpanded(false);
+                },
+                icon: const Icon(
+                  Icons.menu,
+                  color: AppColors.lightGrey,
+                ),
               ),
+              title: _getTitle(state),
             ),
-            title: _getTitle(state),
-          ),
-          drawer: Drawer(
-            backgroundColor: AppColors.white,
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(
-                        AppImages.drawerHeaderBackground,
+            drawer: Drawer(
+              backgroundColor: AppColors.white,
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage(
+                          AppImages.drawerHeaderBackground,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppImages.appLogo,
-                        width: 200,
-                        height: 80,
-                      ),
-                      UIHelper.verticalSpace(10.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(6.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppImages.appLogo,
+                          width: 200,
+                          height: 80,
                         ),
-                        child: const Text(
-                          'INSPECTIONS',
-                          style: AppTextStyles.style10White400,
+                        UIHelper.verticalSpace(10.0),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: const Text(
+                            'INSPECTIONS',
+                            style: AppTextStyles.style10White400,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 16.0,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 16.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListView.builder(
+                          itemCount: (_drawerItems.length),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            DrawerItemModel item = _drawerItems[index];
+                            if (index == AppConstants.menuIndex ||
+                                index == AppConstants.generalIndex) {
+                              return Text(
+                                item.title,
+                                style: AppTextStyles.style14LightGrey400,
+                              );
+                            }
+                            return DrawerListTile(
+                                title: item.title,
+                                iconPath: item.iconPath,
+                                onTap: () {
+                                  if (item.index == AppConstants.logoutIndex) {
+                                    return;
+                                  }
+                                  context
+                                      .read<MainDashboardCubit>()
+                                      .onChangeSelectedIndex(item.index);
+                                  Navigator.of(context).pop();
+                                },
+                                isSelected: item.index == state.selectedIndex);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.builder(
-                        itemCount: (_drawerItems.length),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          DrawerItemModel item = _drawerItems[index];
-                          if (index == AppConstants.menuIndex ||
-                              index == AppConstants.generalIndex) {
-                            return Text(
-                              item.title,
-                              style: AppTextStyles.style14LightGrey400,
-                            );
-                          }
-                          return DrawerListTile(
-                              title: item.title,
-                              iconPath: item.iconPath,
-                              onTap: () {
-                                if (item.index == AppConstants.logoutIndex) {
-                                  return;
-                                }
-                                context
-                                    .read<MainDashboardCubit>()
-                                    .onChangeSelectedIndex(item.index);
-                                Navigator.of(context).pop();
-                              },
-                              isSelected: item.index == state.selectedIndex);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
+            body: _getScreen(state),
           ),
-          body: _getScreen(state),
         );
       },
     );

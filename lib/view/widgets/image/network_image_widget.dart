@@ -30,18 +30,21 @@ class NetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (placeHolder == null) {
-      _placeHolder = SizedBox(
+
+      _placeHolder = Container(
         width: width,
         height: height,
-        child: const Icon(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          shape: shape,
+        ),
+        child: placeHolder ?? const Icon(
           Icons.image,
-          color: AppColors.grey,
+          color: AppColors.lightGrey,
         ),
       );
-    } else {
-      _placeHolder = placeHolder!;
-    }
+
     return !ValidationUtil.isValid(url)?
          _placeHolder
         : CachedNetworkImage(

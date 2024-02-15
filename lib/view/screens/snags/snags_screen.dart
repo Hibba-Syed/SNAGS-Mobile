@@ -4,12 +4,13 @@ import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
+
 class SnagsScreen extends StatelessWidget {
   const SnagsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Column(
         children: [
           Padding(
@@ -25,16 +26,17 @@ class SnagsScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: const AlwaysScrollableScrollPhysics(),
               padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
-                return  SnagWidget(
+                return SnagWidget(
                   imageUrl: '',
                   reference: 'INS001-24-00003',
                   risk: 'High Risk',
                   status: 'In Progress',
                   title: 'Door Glass Broken',
-                  description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
-                  onTap: (){
+                  description:
+                      'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
+                  onTap: () {
                     Navigator.pushNamed(context, AppRoutes.snagDetail);
                   },
                 );
@@ -48,9 +50,10 @@ class SnagsScreen extends StatelessWidget {
       ),
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Snag',
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.addSnag);
+        },
       ),
     );
   }
 }
-

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -63,6 +65,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, AppRoutes.notifications);
+                      context.read<DashboardCubit>().onChangeIsFloatingButtonExpanded(false);
                     },
                     icon: Icon(
                       Icons.notifications_none_outlined,

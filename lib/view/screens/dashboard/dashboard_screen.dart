@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
-import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
+import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
@@ -14,6 +16,7 @@ import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/rece
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_snags_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/total_communities_container.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.dart';
 
@@ -88,8 +91,66 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: AddButton(
-        onTap: () {},
+      floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
+        builder: (context, state) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (state.isFloatingButtonExpanded)
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomButton(
+                        icon: SvgPicture.asset(
+                          AppImages.icInspection,
+                          colorFilter: const ColorFilter.mode(
+                              AppColors.white, BlendMode.srcIn),
+                        ),
+                        buttonColor: AppColors.green,
+                        text: 'Add Inspection',
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.addInspection);
+                          context
+                              .read<DashboardCubit>()
+                              .onChangeIsFloatingButtonExpanded(false);
+                        },
+                      ),
+                      UIHelper.verticalSpace(10.0),
+                      CustomButton(
+                        icon: SvgPicture.asset(AppImages.icSnags,
+                            colorFilter: const ColorFilter.mode(
+                                AppColors.white, BlendMode.srcIn)),
+                        text: 'Add Snags',
+                        buttonColor: AppColors.purple,
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.addSnag);
+                          context
+                              .read<DashboardCubit>()
+                              .onChangeIsFloatingButtonExpanded(false);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              if (state.isFloatingButtonExpanded)
+                UIHelper.horizontalSpace(10.0),
+              Flexible(
+                child: AddButton(
+                  iconData:
+                      state.isFloatingButtonExpanded ? Icons.remove : null,
+                  onTap: () {
+                    context
+                        .read<DashboardCubit>()
+                        .onChangeIsFloatingButtonExpanded(
+                            !state.isFloatingButtonExpanded);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -106,7 +167,6 @@ class DashboardScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10.0),
-
           ),
           child: ListView.separated(
             itemCount: 3,
@@ -135,7 +195,9 @@ class DashboardScreen extends StatelessWidget {
         RowTitleWithViewMore(
           text: 'Recent Inspections',
           onViewMorePressed: () {
-            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.inspectionIndex);
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.inspectionIndex);
           },
         ),
         ListView.separated(
@@ -168,8 +230,9 @@ class DashboardScreen extends StatelessWidget {
         RowTitleWithViewMore(
           text: 'Recent Snags',
           onViewMorePressed: () {
-            context.read<MainDashboardCubit>().onChangeSelectedIndex(AppConstants.snagsIndex);
-
+            context
+                .read<MainDashboardCubit>()
+                .onChangeSelectedIndex(AppConstants.snagsIndex);
           },
         ),
         ListView.separated(

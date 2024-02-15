@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
+import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class PasswordTextField extends StatefulWidget {
@@ -55,7 +56,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label?.isNotEmpty ?? false) Text(widget.label!),
+        if (widget.label?.isNotEmpty ?? false) Text(widget.label!,style: AppTextStyles.style16LightGrey400,),
         if (widget.label?.isNotEmpty ?? false) UIHelper.verticalSpace(8.0),
         TextFormField(
           initialValue: widget.initialValue,

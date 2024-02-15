@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
+import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class TextFieldWidget extends StatelessWidget {
@@ -55,7 +56,7 @@ class TextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label?.isNotEmpty ?? false) Text(label!),
+        if (label?.isNotEmpty ?? false) Text(label!,style: AppTextStyles.style16LightGrey400,),
         if (label?.isNotEmpty ?? false) UIHelper.verticalSpace(8.0),
         TextFormField(
           initialValue: initialValue,
@@ -76,8 +77,9 @@ class TextFieldWidget extends StatelessWidget {
           expands: expands,
           decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 4.0),
             hintText: hint,
+            hintStyle: AppTextStyles.style12LightGrey400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon:prefix,
             suffixIcon: suffix,

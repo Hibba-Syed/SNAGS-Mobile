@@ -58,7 +58,7 @@ class CustomButton extends StatelessWidget {
             Flexible(
               child: Text(
                 text,
-                style: AppTextStyles.style16White500,
+                style: invert?AppTextStyles.style16Primary500:AppTextStyles.style16White500,
                 textAlign: textAlign,
                 maxLines: maxLines,
               ),

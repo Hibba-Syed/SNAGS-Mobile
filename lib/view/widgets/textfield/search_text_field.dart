@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
-import 'package:iskaan_inspections_mobile/res/styles/app_styles.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 

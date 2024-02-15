@@ -1,8 +1,15 @@
 part of 'dashboard_cubit.dart';
 
 class DashboardState {
-  const DashboardState();
-  DashboardState copyWith() {
-    return const DashboardState();
+  final bool isFloatingButtonExpanded;
+  const DashboardState({
+    this.isFloatingButtonExpanded = false,
+  });
+  DashboardState copyWith({
+    bool? isFloatingButtonExpanded,
+  }) {
+    return DashboardState(
+        isFloatingButtonExpanded:
+            isFloatingButtonExpanded ?? this.isFloatingButtonExpanded);
   }
 }

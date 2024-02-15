@@ -48,7 +48,9 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
       ),
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Snag',
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.addSnag);
+        },
       ),
     );
   }

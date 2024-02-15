@@ -4,4 +4,8 @@ part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit() : super(const DashboardState());
+
+  onChangeIsFloatingButtonExpanded(bool? value) {
+    emit(state.copyWith(isFloatingButtonExpanded: value));
+  }
 }

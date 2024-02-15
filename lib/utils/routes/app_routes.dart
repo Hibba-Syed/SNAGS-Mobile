@@ -10,5 +10,9 @@ class AppRoutes {
   static const String notifications = "/notifications";
   static const String communityDetail = "/community_detail";
   static const String inspectionDetail = "/inspection_detail";
+  static const String addInspection = "/add_inspection";
   static const String snagDetail = "/snag_detail";
+  static const String addSnag = "/add_snag";
+  static const String editProfile = "/edit_profile";
+  static const String updatePassword = "/update_password";
 }

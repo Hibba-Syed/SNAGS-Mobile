@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_detail_bottom_buttons.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_detail_logs_item_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 
 class InspectionDetailLogsScreen extends StatelessWidget {
   const InspectionDetailLogsScreen({super.key});
