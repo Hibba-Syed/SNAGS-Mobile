@@ -78,6 +78,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
             hintText: widget.hint,
+            hintStyle: AppTextStyles.style12LightGrey400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 10.0),

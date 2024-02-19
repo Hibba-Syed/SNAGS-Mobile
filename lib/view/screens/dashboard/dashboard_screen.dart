@@ -108,7 +108,7 @@ class DashboardScreen extends StatelessWidget {
                           colorFilter: const ColorFilter.mode(
                               AppColors.white, BlendMode.srcIn),
                         ),
-                        buttonColor: AppColors.green,
+                        buttonColor: AppColors.cGreen,
                         text: 'Add Inspection',
                         onPressed: () {
                           Navigator.pushNamed(context, AppRoutes.addInspection);
@@ -123,7 +123,7 @@ class DashboardScreen extends StatelessWidget {
                             colorFilter: const ColorFilter.mode(
                                 AppColors.white, BlendMode.srcIn)),
                         text: 'Add Snags',
-                        buttonColor: AppColors.purple,
+                        buttonColor: AppColors.mayaBlue,
                         onPressed: () {
                           Navigator.pushNamed(context, AppRoutes.addSnag);
                           context

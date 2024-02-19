@@ -4,6 +4,7 @@ class AppColors{
   static const Color primary = Color(0xFF721C51);
   static const Color background = Color(0xFFF2F2F2);
   static const Color green = Color(0xFF24A959);
+  static const Color cGreen = Color(0xFF7CD8A1);
   static const Color lightGreen = Color(0xFFE0FFED);
   static const Color red = Color(0xFFFB5454);
   static const Color lightRed = Color(0xFFFFD8D8);
@@ -15,6 +16,7 @@ class AppColors{
   static const Color lightCyan = Color(0XFFD1FAFD);
   static const Color blue = Color(0xFF5A9EEE);
   static const Color lightBlue = Color(0xFFF2F8FF);
+  static const Color mayaBlue = Color(0xFF5A9EEE);
   static const Color purple = Color(0xFF5A58EB);
   static const Color yellow = Color(0xFFE9BC19);
   static const Color lightYellow = Color(0xFFFCF5DC);
