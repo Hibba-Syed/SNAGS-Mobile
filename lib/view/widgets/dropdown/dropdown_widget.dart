@@ -5,7 +5,7 @@ import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class DropdownWidget<T> extends StatelessWidget {
-  final String label;
+  final String? label;
   final String? hint;
   final T? selectedItem;
   final List<T> items;
@@ -14,9 +14,12 @@ class DropdownWidget<T> extends StatelessWidget {
   final void Function(T?)? onChanged;
   final bool enabled;
   final String? Function(T?)? validator;
+  final Icon? icon;
+  final InputBorder? border;
+
   const DropdownWidget({
     super.key,
-    required this.label,
+     this.label,
     this.hint,
     required this.selectedItem,
     required this.items,
@@ -25,6 +28,8 @@ class DropdownWidget<T> extends StatelessWidget {
     required this.onChanged,
     this.enabled = true,
     this.validator,
+    this.icon,
+    this.border,
   });
 
   @override
@@ -32,10 +37,15 @@ class DropdownWidget<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,style: AppTextStyles.style16LightGrey400,),
+        if(label?.isNotEmpty??false)
+        Text(label!,style: AppTextStyles.style16LightGrey400,),
+        if(label?.isNotEmpty??false)
         UIHelper.verticalSpace(8.0),
         DropdownSearch<T>(
           enabled: enabled,
+          dropdownButtonProps: icon!=null? DropdownButtonProps(
+            icon: icon!,
+          ):const DropdownButtonProps(),
           dropdownDecoratorProps:  DropDownDecoratorProps(
             textAlign: TextAlign.left,
             textAlignVertical: TextAlignVertical.center,
@@ -43,11 +53,12 @@ class DropdownWidget<T> extends StatelessWidget {
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 15.0, vertical: 4.0),
               hintText: hint,
+              hintStyle: AppTextStyles.style12LightGrey400,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               alignLabelWithHint: false,
               fillColor: AppColors.white,
               filled: true,
-              // border: InputBorder.none,
+              border: border,
             ),
           ),
           selectedItem: selectedItem,

@@ -97,6 +97,11 @@ class AppTextStyles {
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
   );
+  static const TextStyle style12Green600 = TextStyle(
+    color: AppColors.green,
+    fontSize: 12.0,
+    fontWeight: FontWeight.w600,
+  );
   static const TextStyle style12Cyan400 = TextStyle(
     color: AppColors.cyan,
     fontSize: 12.0,

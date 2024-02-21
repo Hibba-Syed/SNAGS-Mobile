@@ -49,7 +49,9 @@ class CommunityDetailInspectionsScreen extends StatelessWidget {
       ),
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Inspection',
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.addInspection);
+        },
       ),
     );
   }

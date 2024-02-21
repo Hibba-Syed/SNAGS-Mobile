@@ -25,11 +25,11 @@ class _NIButtonState extends State<NIButton> {
       },
       child: Container(
         margin: const EdgeInsets.only(left: 8.0),
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         decoration: BoxDecoration(
-            color: _isClicked ? AppColors.red : AppColors.white,
-            borderRadius: BorderRadius.circular(2.0),
-            border: Border.all(color: AppColors.red)),
+          color: _isClicked ? AppColors.red : AppColors.lightRed,
+          borderRadius: BorderRadius.circular(5.0),
+        ),
         child: Text(
           'NI',
           style: TextStyle(

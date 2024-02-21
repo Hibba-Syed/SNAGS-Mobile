@@ -26,6 +26,12 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final Color? fillColor;
+  final InputBorder? focusedBorder;
+  final InputBorder? enabledBorder;
+  final InputBorder? errorBorder;
+  final InputBorder? focusedErrorBorder;
+  final EdgeInsetsGeometry? contentPadding;
+
   const TextFieldWidget({
     super.key,
     this.initialValue,
@@ -49,6 +55,11 @@ class TextFieldWidget extends StatelessWidget {
     this.prefix,
     this.suffix,
     this.fillColor,
+    this.enabledBorder,
+    this.focusedBorder,
+    this.errorBorder,
+    this.focusedErrorBorder,
+    this.contentPadding,
   });
 
   @override
@@ -56,7 +67,11 @@ class TextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label?.isNotEmpty ?? false) Text(label!,style: AppTextStyles.style16LightGrey400,),
+        if (label?.isNotEmpty ?? false)
+          Text(
+            label!,
+            style: AppTextStyles.style16LightGrey400,
+          ),
         if (label?.isNotEmpty ?? false) UIHelper.verticalSpace(8.0),
         TextFormField(
           initialValue: initialValue,
@@ -76,16 +91,21 @@ class TextFieldWidget extends StatelessWidget {
           maxLength: maxLength,
           expands: expands,
           decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 4.0),
+            isDense: true,
+            contentPadding:contentPadding??
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
             hintText: hint,
             hintStyle: AppTextStyles.style12LightGrey400,
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            prefixIcon:prefix,
+            prefixIcon: prefix,
             suffixIcon: suffix,
             alignLabelWithHint: false,
             fillColor: fillColor ?? AppColors.white,
             filled: true,
+            focusedBorder: focusedBorder,
+            enabledBorder: enabledBorder,
+            errorBorder: errorBorder,
+            focusedErrorBorder: focusedErrorBorder,
           ),
         )
       ],

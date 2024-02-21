@@ -13,8 +13,8 @@ import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/acti
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/high_risk_snags_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/pending_inspections_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_inspection_item_widget.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_snags_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/total_communities_container.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
@@ -240,13 +240,13 @@ class DashboardScreen extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return RecentSnagsItemWidget(
+            return SnagWidget(
               reference: 'INS001-24-00003',
               status: 'In-Progress',
               risk: 'Low Risk',
-              communityName: 'Al Attar Business Tower',
-              userName: 'Muhammad Talha Al Mehri',
-              date: 'May 08, 2023',
+              title: 'Door Glass Broken',
+              imageUrl: '',
+              description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.snagDetail);
               },
