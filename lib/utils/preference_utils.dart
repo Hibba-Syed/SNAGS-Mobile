@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:iskaan_inspections_mobile/res/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -120,15 +121,15 @@ class PreferenceUtil {
   //   putString(Strings.keyUser, jsonEncode(user?.toJson()));
   // }
 
-  // String? get token {
-  //   return getString(Strings.keyToken);
-  // }
-  //
-  // set token(String? token) {
-  //   if (token != null) {
-  //     putString(Strings.keyToken, token);
-  //   }
-  // }
+  String? get token {
+    return getString(Strings.keyToken);
+  }
+
+  set token(String? token) {
+    if (token != null) {
+      putString(Strings.keyToken, token);
+    }
+  }
 
 }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 
 class ZeroRatingButton extends StatelessWidget {
@@ -19,7 +18,7 @@ class ZeroRatingButton extends StatelessWidget {
           color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(5.0),
         ),
-        child: Text(
+        child: const Text(
           'Zero',
           style: AppTextStyles.style12Grey400,
         ),

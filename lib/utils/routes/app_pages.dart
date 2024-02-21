@@ -9,6 +9,7 @@ import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cub
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/send_otp/send_otp_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/screens/auth/forgot_password.dart';
@@ -118,9 +119,9 @@ class AppPages {
       PageEntity(
         route: AppRoutes.snagDetail,
         page: const SnagDetailScreen(),
-        // bloc: BlocProvider(
-        //   create: (context) => SnagDetailCubit(),
-        // ),
+        bloc: BlocProvider(
+          create: (context) => SnagDetailCubit(),
+        ),
       ),
       PageEntity(
         route: AppRoutes.addSnag,
