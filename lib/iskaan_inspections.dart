@@ -4,7 +4,7 @@ import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/utils/location/location_util.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_pages.dart';
-import 'package:iskaan_inspections_mobile/view/screens/auth/login_screen.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 
 class IskaanInspections extends StatefulWidget {
   const IskaanInspections({super.key});
@@ -14,7 +14,6 @@ class IskaanInspections extends StatefulWidget {
 }
 
 class _IskaanInspectionsState extends State<IskaanInspections> {
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,7 @@ class _IskaanInspectionsState extends State<IskaanInspections> {
             .onChangeIsFloatingButtonExpanded(false);
       },
       child: MultiBlocProvider(
-        providers: [...AppPages.allBlocProviders(context)],
+        providers: [...AppPages.getAllBlocProviders(context)],
         child: MaterialApp(
           title: 'Iskaan Inspections',
           theme: ThemeData(
@@ -51,7 +50,7 @@ class _IskaanInspectionsState extends State<IskaanInspections> {
             ),
           ),
           onGenerateRoute: AppPages.generateRouteSettings,
-          home: LoginScreen(),
+          initialRoute: AppRoutes.splash,
         ),
       ),
     );

@@ -2,12 +2,11 @@
 
 
 
+import 'package:iskaan_inspections_mobile/model/profile/profile_response_model.dart';
 import 'package:iskaan_inspections_mobile/utils/preference_utils.dart';
 
 class Globals {
-  // UserModel? user = spUtil.user;
+  ProfileRecord? profileRecord = spUtil.profileRecord;
   String? token = spUtil.token;
-
-  // bool isBiometricEnabled = spUtil.isBiometricEnabled ?? false;
 
 }

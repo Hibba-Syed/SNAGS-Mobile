@@ -193,8 +193,6 @@ class NetworkApiServices implements BaseApiServices {
         throw UnauthorisedException(body['message']);
       case 404:
         throw NotFoundException(body['message'], 'Requested info not found!');
-      case 202:
-        throw QuantityNotFoundException(body['message'], '202,');
       default:
         throw FetchDataException(body['message']);
     }

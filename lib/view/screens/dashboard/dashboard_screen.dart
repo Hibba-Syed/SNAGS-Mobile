@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
@@ -17,6 +18,7 @@ import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/tota
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.dart';
 
@@ -30,44 +32,51 @@ class DashboardScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                NetworkImageWidget(
-                  url: '',
-                  width: 46,
-                  height: 46,
-                  shape: BoxShape.circle,
-                  placeHolder: Container(
-                    width: 46.0,
-                    height: 46.0,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade200, shape: BoxShape.circle),
-                    child: const Icon(
-                      Icons.person,
-                      color: AppColors.grey,
-                    ),
-                  ),
-                ),
-                UIHelper.horizontalSpace(10.0),
-                const Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome,',
-                        style: AppTextStyles.style15LightGrey500,
-                      ),
-                      Flexible(
-                        child: Text(
-                          'Fatima Hameed Raza',
-                          style: AppTextStyles.style20Grey600,
+            BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                if(state.isLoading==true){
+                  return const CustomLoader();
+                }
+                return Row(
+                  children: [
+                    NetworkImageWidget(
+                      url: state.profileRecord?.profilePicture,
+                      width: 46,
+                      height: 46,
+                      shape: BoxShape.circle,
+                      placeHolder: Container(
+                        width: 46.0,
+                        height: 46.0,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200, shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.person,
+                          color: AppColors.grey,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                    UIHelper.horizontalSpace(10.0),
+                     Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Welcome,',
+                            style: AppTextStyles.style15LightGrey500,
+                          ),
+                          Flexible(
+                            child: Text(
+                              state.profileRecord?.fullName??'--',
+                              style: AppTextStyles.style20Grey600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
             UIHelper.verticalSpace(16.0),
             SizedBox(
@@ -246,7 +255,8 @@ class DashboardScreen extends StatelessWidget {
               risk: 'Low Risk',
               title: 'Door Glass Broken',
               imageUrl: '',
-              description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
+              description:
+                  'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.snagDetail);
               },

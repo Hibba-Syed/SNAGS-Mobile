@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iskaan_inspections_mobile/bloc/Login/login_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/auth/auth_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/community_detail/community_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
@@ -26,122 +26,118 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
 class AppPages {
-  static List<PageEntity> routes() {
-    return [
-      PageEntity(
-        route: AppRoutes.splash,
-        page: const SplashScreen(),
-        // bloc: BlocProvider(
-        //   create: (context) => AppThemeCubit(),
-        // ),
-      ),
-      // PageEntity(
-      //   route: AppRoutes.authorization,
-      //   page: const AuthenticationPage(),
-      //   bloc: BlocProvider(
-      //     create: (context) => AuthenticationCubit(),
-      //   ),
+  static List<PageEntity> routes = [
+    PageEntity(
+      route: AppRoutes.splash,
+      page: const SplashScreen(),
+      // bloc: BlocProvider(
+      //   create: (context) => AppThemeCubit(),
       // ),
-      PageEntity(
-        route: AppRoutes.login,
-        page: LoginScreen(),
-        bloc: BlocProvider(
-          create: (context) => LoginCubit(),
-        ),
+    ),
+    // PageEntity(
+    //   route: AppRoutes.authorization,
+    //   page: const AuthenticationPage(),
+    //   bloc: BlocProvider(
+    //     create: (context) => AuthenticationCubit(),
+    //   ),
+    // ),
+    PageEntity(
+      route: AppRoutes.login,
+      page: LoginScreen(),
+      bloc: BlocProvider(
+        create: (context) => AuthCubit(),
       ),
-      // PageEntity(
-      //   route: AppRoutes.otpVerification,
-      //   page: const OtpVerificationScreen(),
-      //   bloc: BlocProvider(
-      //     create: (context) => VerifyOtpCubit(),
-      //   ),
+    ),
+    // PageEntity(
+    //   route: AppRoutes.otpVerification,
+    //   page: const OtpVerificationScreen(),
+    //   bloc: BlocProvider(
+    //     create: (context) => VerifyOtpCubit(),
+    //   ),
+    // ),
+    PageEntity(
+      route: AppRoutes.forgotPassword,
+      page: ForgotPasswordPage(),
+      bloc: BlocProvider(
+        create: (context) => SendOtpCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.mainDashboard,
+      page: MainDashboardScreen(),
+      bloc: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => MainDashboardCubit(),
+          ),
+          BlocProvider(
+            create: (context) => DashboardCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CommunitiesCubit(),
+          ),
+          BlocProvider(
+            create: (context) => InspectionCubit(),
+          ),
+          BlocProvider(
+            create: (context) => SnagsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ProfileCubit(),
+          ),
+        ],
+        child: const SizedBox.shrink(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.notifications,
+      page: const NotificationsScreen(),
+      bloc: BlocProvider(
+        create: (context) => NotificationsCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.communityDetail,
+      page: const CommunityDetailScreen(),
+      bloc: BlocProvider(
+        create: (context) => CommunityDetailCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.inspectionDetail,
+      page: const InspectionDetailScreen(),
+      // bloc: BlocProvider(
+      //   create: (context) => CommunityDetailCubit(),
       // ),
-      PageEntity(
-        route: AppRoutes.forgotPassword,
-        page: ForgotPasswordPage(),
-        bloc: BlocProvider(
-          create: (context) => SendOtpCubit(),
-        ),
+    ),
+    PageEntity(
+      route: AppRoutes.addInspection,
+      page: const AddInspectionScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.snagDetail,
+      page: const SnagDetailScreen(),
+      bloc: BlocProvider(
+        create: (context) => SnagDetailCubit(),
       ),
-      PageEntity(
-        route: AppRoutes.mainDashboard,
-        page:  MainDashboardScreen(),
-        bloc: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => MainDashboardCubit(),
-            ),
-            BlocProvider(
-              create: (context) => DashboardCubit(),
-            ),
-            BlocProvider(
-              create: (context) => CommunitiesCubit(),
-            ),
-            BlocProvider(
-              create: (context) => InspectionCubit(),
-            ),
-            BlocProvider(
-              create: (context) => SnagsCubit(),
-            ),
-            BlocProvider(
-              create: (context) => ProfileCubit(),
-            ),
+    ),
+    PageEntity(
+      route: AppRoutes.addSnag,
+      page: AddSnagScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.editProfile,
+      page: EditProfileScreen(),
+    ),
+    PageEntity(
+      route: AppRoutes.updatePassword,
+      page: UpdatePasswordScreen(),
+    ),
+  ];
 
-          ],
-          child: const SizedBox.shrink(),
-        ),
-      ),
-      PageEntity(
-        route: AppRoutes.notifications,
-        page: const NotificationsScreen(),
-        bloc: BlocProvider(
-          create: (context) => NotificationsCubit(),
-        ),
-      ),
-      PageEntity(
-        route: AppRoutes.communityDetail,
-        page: const CommunityDetailScreen(),
-        bloc: BlocProvider(
-          create: (context) => CommunityDetailCubit(),
-        ),
-      ),
-      PageEntity(
-        route: AppRoutes.inspectionDetail,
-        page: const InspectionDetailScreen(),
-        // bloc: BlocProvider(
-        //   create: (context) => CommunityDetailCubit(),
-        // ),
-      ),
-      PageEntity(
-        route: AppRoutes.addInspection,
-        page: const AddInspectionScreen(),
-      ),
-      PageEntity(
-        route: AppRoutes.snagDetail,
-        page: const SnagDetailScreen(),
-        bloc: BlocProvider(
-          create: (context) => SnagDetailCubit(),
-        ),
-      ),
-      PageEntity(
-        route: AppRoutes.addSnag,
-        page:   AddSnagScreen(),
-      ),
-      PageEntity(
-        route: AppRoutes.editProfile,
-        page:  EditProfileScreen(),
-      ),
-      PageEntity(
-        route: AppRoutes.updatePassword,
-        page:   UpdatePasswordScreen(),
-      ),
-
-    ];
-  }
-
-  static List<dynamic> allBlocProviders(BuildContext context) {
+  static List<dynamic> getAllBlocProviders(BuildContext context) {
     List<dynamic> blocProviders = [];
-    for (var element in routes()) {
+    for (var element in routes) {
       if (element.bloc != null) {
         blocProviders.add(element.bloc);
       }
@@ -151,7 +147,7 @@ class AppPages {
 
   static MaterialPageRoute generateRouteSettings(RouteSettings settings) {
     if (settings.name != null) {
-      var result = routes().where((element) => element.route == settings.name);
+      var result = routes.where((element) => element.route == settings.name);
       if (result.isNotEmpty) {
         return MaterialPageRoute(
             builder: (context) => result.first.page, settings: settings);

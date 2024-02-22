@@ -5,7 +5,9 @@ import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cub
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
+import 'package:iskaan_inspections_mobile/res/constants/strings.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/preference_utils.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/communities_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/drawer_item_model.dart';
@@ -16,9 +18,13 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/snags_screen.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/drawer/drawer_list_tile.dart';
 
+import '../../../utils/routes/app_routes.dart';
+
 class MainDashboardScreen extends StatelessWidget {
   MainDashboardScreen({super.key});
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final List<DrawerItemModel> _drawerItems = [
     DrawerItemModel(
       index: AppConstants.menuIndex,
@@ -66,7 +72,7 @@ class MainDashboardScreen extends StatelessWidget {
       index: AppConstants.logoutIndex,
       title: 'Logout',
       iconPath: AppImages.icLogout,
-      onTap: () {},
+      onTap: () async {},
     ),
   ];
 
@@ -75,8 +81,10 @@ class MainDashboardScreen extends StatelessWidget {
     return BlocBuilder<MainDashboardCubit, MainDashboardState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: (){
-            context.read<DashboardCubit>().onChangeIsFloatingButtonExpanded(false);
+          onTap: () {
+            context
+                .read<DashboardCubit>()
+                .onChangeIsFloatingButtonExpanded(false);
           },
           child: Scaffold(
             key: _scaffoldKey,
@@ -84,7 +92,9 @@ class MainDashboardScreen extends StatelessWidget {
               leading: IconButton(
                 onPressed: () {
                   _scaffoldKey.currentState?.openDrawer();
-                  context.read<DashboardCubit>().onChangeIsFloatingButtonExpanded(false);
+                  context
+                      .read<DashboardCubit>()
+                      .onChangeIsFloatingButtonExpanded(false);
                 },
                 icon: const Icon(
                   Icons.menu,
@@ -157,6 +167,10 @@ class MainDashboardScreen extends StatelessWidget {
                                 iconPath: item.iconPath,
                                 onTap: () {
                                   if (item.index == AppConstants.logoutIndex) {
+                                    spUtil.remove(Strings.keyToken);
+                                    spUtil.remove(Strings.keyProfile);
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        AppRoutes.login, (route) => false);
                                     return;
                                   }
                                   context
@@ -194,9 +208,10 @@ class MainDashboardScreen extends StatelessWidget {
     }
     return '';
   }
+
   Widget _getScreen(MainDashboardState state) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const DashboardScreen();
+      return const DashboardScreen();
     } else if (state.selectedIndex == AppConstants.communitiesIndex) {
       return const CommunitiesScreen();
     } else if (state.selectedIndex == AppConstants.inspectionIndex) {

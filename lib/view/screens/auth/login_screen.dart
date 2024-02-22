@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iskaan_inspections_mobile/bloc/Login/login_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/auth/auth_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
-import 'package:iskaan_inspections_mobile/res/enums.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/utils/validation_util.dart';
@@ -16,6 +15,8 @@ import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widg
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class LoginScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: BlocBuilder<LoginCubit, LoginState>(
+          child: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               return Form(
                 key: _formKey,
@@ -74,6 +75,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       UIHelper.verticalSpace(20.0),
                       TextFieldWidget(
+                        controller: _emailController,
                         label: 'Email',
                         hint: 'Enter your email',
                         validator: (value) {
@@ -92,6 +94,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       UIHelper.verticalSpace(10.0),
                       PasswordTextField(
+                        controller: _passwordController,
                         label: 'Password',
                         hint: 'Enter your password',
                         validator: (value) {
@@ -116,9 +119,9 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       UIHelper.verticalSpace(10.0),
-                      Builder(
-                        builder: (context) {
-                          if (state.loadingState == LoadingState.loading) {
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          if (state.isLoading == true) {
                             return const SizedBox(
                               height: 50,
                               child: CustomLoader(),
@@ -126,13 +129,11 @@ class LoginScreen extends StatelessWidget {
                           }
                           return CustomButton(
                             text: "Login",
-                            onPressed: () async{
-                              Navigator.pushNamed(context, AppRoutes.mainDashboard);
-                              if (state.loadingState == LoadingState.loading) {
-                                return;
-                              }
+                            onPressed: () async {
                               if (_formKey.currentState?.validate() ?? false) {
-                                // loginCubit.loginUser(context);
+                                context.read<AuthCubit>().login(context,
+                                    email: _emailController.text,
+                                    password: _passwordController.text);
                               }
                             },
                           );

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:iskaan_inspections_mobile/model/profile/profile_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -109,17 +111,17 @@ class PreferenceUtil {
     return _spf!.clear();
   }
 
-  // UserModel? get user {
-  //   var userJson = getString(Strings.keyUser);
-  //   if (userJson != null) {
-  //     return UserModel.fromJson(jsonDecode(userJson));
-  //   }
-  //   return null;
-  // }
-  //
-  // set user(UserModel? user) {
-  //   putString(Strings.keyUser, jsonEncode(user?.toJson()));
-  // }
+  ProfileRecord? get profileRecord {
+    var profileJson = getString(Strings.keyProfile);
+    if (profileJson != null) {
+      return ProfileRecord.fromJson(jsonDecode(profileJson));
+    }
+    return null;
+  }
+
+  set profileRecord(ProfileRecord? profileRecord) {
+    putString(Strings.keyProfile, jsonEncode(profileRecord?.toJson()));
+  }
 
   String? get token {
     return getString(Strings.keyToken);
