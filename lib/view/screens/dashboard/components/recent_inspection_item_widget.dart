@@ -3,16 +3,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 
 class RecentInspectionItemWidget extends StatelessWidget {
   final String reference;
   final String status;
   final String communityName;
   final String userName;
-  final String date;
+  final String? date;
   final VoidCallback? onTap;
   const RecentInspectionItemWidget({
     super.key,
@@ -55,9 +56,8 @@ class RecentInspectionItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                StatusWidget(
+                InspectionStatusWidget(
                   status: status,
-                  color: AppColors.yellow,
                 ),
               ],
             ),
@@ -103,7 +103,7 @@ class RecentInspectionItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                DateTextWidget(date: date,),
+                DateTextWidget(date: DateTimeUtil.getFormattedDate(date),),
               ],
             ),
           ],

@@ -3,7 +3,7 @@ import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 
 class InspectionDetailLogsItemWidget extends StatelessWidget {
   final String text;
@@ -52,7 +52,7 @@ class InspectionDetailLogsItemWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StatusWidget(status: status, color: AppColors.blue),
+              InspectionStatusWidget(status: status,),
               DateTextWidget(
                 date: date,
               ),

@@ -3,7 +3,7 @@ import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 
 class SnagWidget extends StatelessWidget {
   final String? imageUrl;
@@ -68,11 +68,9 @@ class SnagWidget extends StatelessWidget {
                       children: [
                         RiskWidget(
                           risk: risk,
-                          color: AppColors.red,
                         ),
-                        StatusWidget(
+                        SnagStatusWidget(
                           status: status,
-                          color: AppColors.yellow,
                         ),
                       ],
                     ),

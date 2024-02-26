@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
-import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
@@ -19,6 +20,7 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_wid
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.dart';
 
@@ -28,16 +30,17 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-        child: Column(
-          children: [
-            BlocBuilder<ProfileCubit, ProfileState>(
-              builder: (context, state) {
-                if(state.isLoading==true){
-                  return const CustomLoader();
-                }
-                return Row(
+      body: BlocBuilder<DashboardCubit, DashboardState>(
+        builder: (context, state) {
+          if (state.isLoading == true) {
+            return const CustomLoader();
+          }
+          return SingleChildScrollView(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            child: Column(
+              children: [
+                Row(
                   children: [
                     NetworkImageWidget(
                       url: state.profileRecord?.profilePicture,
@@ -48,7 +51,8 @@ class DashboardScreen extends StatelessWidget {
                         width: 46.0,
                         height: 46.0,
                         decoration: BoxDecoration(
-                            color: Colors.grey.shade200, shape: BoxShape.circle),
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle),
                         child: const Icon(
                           Icons.person,
                           color: AppColors.grey,
@@ -56,7 +60,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     UIHelper.horizontalSpace(10.0),
-                     Expanded(
+                    Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +71,7 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           Flexible(
                             child: Text(
-                              state.profileRecord?.fullName??'--',
+                              state.profileRecord?.fullName ?? '--',
                               style: AppTextStyles.style20Grey600,
                             ),
                           ),
@@ -75,30 +79,28 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              },
+                ),
+                UIHelper.verticalSpace(16.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.all(10.0),
+                    children: [
+                      PendingInspectionsContainer(),
+                      HighRiskSnagsContainer(),
+                      TotalCommunitiesContainer(),
+                    ],
+                  ),
+                ),
+                _recentInspectionsView(context,state),
+                UIHelper.verticalSpace(10.0),
+                _recentSnagsView(context,state),
+              ],
             ),
-            UIHelper.verticalSpace(16.0),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 120,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.all(10.0),
-                children: [
-                  PendingInspectionsContainer(),
-                  HighRiskSnagsContainer(),
-                  TotalCommunitiesContainer(),
-                ],
-              ),
-            ),
-            _actionRequiredView(),
-            UIHelper.verticalSpace(10.0),
-            _recentInspectionsView(context),
-            UIHelper.verticalSpace(10.0),
-            _recentSnagsView(context),
-          ],
-        ),
+          );
+        },
       ),
       floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
@@ -198,7 +200,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  _recentInspectionsView(BuildContext context) {
+  _recentInspectionsView(BuildContext context, DashboardState state) {
     return Column(
       children: [
         RowTitleWithViewMore(
@@ -206,34 +208,39 @@ class DashboardScreen extends StatelessWidget {
           onViewMorePressed: () {
             context
                 .read<MainDashboardCubit>()
-                .onChangeSelectedIndex(AppConstants.inspectionIndex);
+                .onChangeSelectedIndex(context,AppConstants.inspectionIndex);
           },
         ),
-        ListView.separated(
-          itemCount: 3,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return RecentInspectionItemWidget(
-              reference: 'INS001-24-00003',
-              status: 'In-Progress',
-              communityName: 'Al Attar Business Tower',
-              userName: 'Muhammad Talha Al Mehri',
-              date: 'May 08, 2023',
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.inspectionDetail);
-              },
-            );
-          },
-          separatorBuilder: (context, index) {
-            return UIHelper.verticalSpace(8.0);
-          },
-        ),
+        state.recentInspections?.isNotEmpty ?? false
+            ? ListView.separated(
+                itemCount: state.recentInspections?.length ?? 0,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  InspectionModel item = state.recentInspections![index];
+                  return RecentInspectionItemWidget(
+                    reference: item.reference??'--',
+                    status: item.status??'--',
+                    communityName: item.association?.name??'--',
+                    userName: item.inspector?.fullName??'--',
+                    date: item.updatedAt??item.createdAt,
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.inspectionDetail);
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return UIHelper.verticalSpace(8.0);
+                },
+              )
+            : const EmptyWidget(
+                text: 'No Inspections found',
+              ),
       ],
     );
   }
 
-  _recentSnagsView(BuildContext context) {
+  _recentSnagsView(BuildContext context,DashboardState state) {
     return Column(
       children: [
         RowTitleWithViewMore(
@@ -241,22 +248,23 @@ class DashboardScreen extends StatelessWidget {
           onViewMorePressed: () {
             context
                 .read<MainDashboardCubit>()
-                .onChangeSelectedIndex(AppConstants.snagsIndex);
+                .onChangeSelectedIndex(context,AppConstants.snagsIndex);
           },
         ),
+        state.recentSnags?.isNotEmpty??false?
         ListView.separated(
-          itemCount: 3,
+          itemCount: state.recentSnags?.length??0,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
+            SnagModel item = state.recentSnags![index];
             return SnagWidget(
-              reference: 'INS001-24-00003',
-              status: 'In-Progress',
-              risk: 'Low Risk',
-              title: 'Door Glass Broken',
+              reference: item.reference??'--',
+              status: item.status??'--',
+              risk: item.risk??'--',
+              title: item.title??'--',
               imageUrl: '',
-              description:
-                  'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
+              description:item.description??'--',
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.snagDetail);
               },
@@ -265,7 +273,7 @@ class DashboardScreen extends StatelessWidget {
           separatorBuilder: (context, index) {
             return UIHelper.verticalSpace(8.0);
           },
-        ),
+        ):const EmptyWidget(text: 'No Snags found',),
       ],
     );
   }

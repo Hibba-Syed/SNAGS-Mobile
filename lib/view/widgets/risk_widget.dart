@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class RiskWidget extends StatelessWidget {
   final String risk;
-  final Color color;
   const RiskWidget({
     super.key,
     required this.risk,
-    required this.color,
   });
 
   @override
@@ -17,7 +16,7 @@ class RiskWidget extends StatelessWidget {
       children: [
         Icon(
           Icons.circle,
-          color: color,
+          color: getColor(risk),
           size: 10,
         ),
         UIHelper.horizontalSpace(3.0),
@@ -26,10 +25,25 @@ class RiskWidget extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: color,
+            color: getColor(risk),
           ),
         ),
       ],
     );
+  }
+  Color getColor(String risk) {
+    if (risk == AppConstants.snagNoRisk.title) {
+      return AppConstants.snagNew.color;
+    }
+    if (risk == AppConstants.snagLowRisk.title) {
+      return AppConstants.snagLowRisk.color;
+    }
+    if (risk == AppConstants.snagMediumRisk.title) {
+      return AppConstants.snagMediumRisk.color;
+    }
+    if (risk == AppConstants.snagHighRisk.title) {
+      return AppConstants.snagHighRisk.color;
+    }
+    return Colors.white;
   }
 }

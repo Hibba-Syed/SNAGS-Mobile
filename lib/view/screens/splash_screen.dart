@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -20,7 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(4.seconds, () {
       if (ValidationUtil.isValid(Globals().token)) {
-        context.read<ProfileCubit>().getProfile();
+        // context.read<ProfileCubit>().getProfile();
+        context.read<DashboardCubit>().fetchData();
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.mainDashboard, (route) => false);
       } else {

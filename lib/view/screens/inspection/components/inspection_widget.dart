@@ -3,24 +3,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 
 class InspectionWidget extends StatelessWidget {
   final String reference;
   final String status;
   final String communityName;
-  final String communityOwnerName;
+  final String companyName;
   final String userName;
-  final String date;
+  final String? date;
   final VoidCallback onTap;
   const InspectionWidget({
     super.key,
     required this.reference,
     required this.status,
     required this.communityName,
-    required this.communityOwnerName,
+    required this.companyName,
     required this.userName,
     required this.date,
     required this.onTap,
@@ -58,9 +59,8 @@ class InspectionWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                StatusWidget(
+                InspectionStatusWidget(
                   status: status,
-                  color: AppColors.yellow,
                 ),
               ],
             ),
@@ -109,7 +109,7 @@ class InspectionWidget extends StatelessWidget {
                   UIHelper.horizontalSpace(4.0),
                   Flexible(
                     child: Text(
-                      communityOwnerName,
+                      companyName,
                       style: AppTextStyles.style14Grey400,
                     ),
                   ),
@@ -134,7 +134,7 @@ class InspectionWidget extends StatelessWidget {
                   ],
                 ),
                 DateTextWidget(
-                  date: date,
+                  date: DateTimeUtil.getFormattedDate(date),
                 ),
               ],
             ),

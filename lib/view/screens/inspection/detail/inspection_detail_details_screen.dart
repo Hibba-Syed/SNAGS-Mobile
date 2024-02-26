@@ -24,7 +24,7 @@ class InspectionDetailDetailsScreen extends StatelessWidget {
                   reference: 'INS001-24-00003',
                   status: 'In Progress',
                   communityName: 'Al Attar Business Tower',
-                  communityOwnerName:
+                  companyName:
                       'HOAM - Highrise Owners Association Management',
                   userName: 'Muhammad Talha Al Mehri',
                   date: 'May 08, 2023',

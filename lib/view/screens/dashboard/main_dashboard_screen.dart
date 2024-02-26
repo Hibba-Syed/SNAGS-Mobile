@@ -175,7 +175,7 @@ class MainDashboardScreen extends StatelessWidget {
                                   }
                                   context
                                       .read<MainDashboardCubit>()
-                                      .onChangeSelectedIndex(item.index);
+                                      .onChangeSelectedIndex(context,item.index);
                                   Navigator.of(context).pop();
                                 },
                                 isSelected: item.index == state.selectedIndex);

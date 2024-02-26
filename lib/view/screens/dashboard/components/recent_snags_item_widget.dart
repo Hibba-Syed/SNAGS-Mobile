@@ -6,7 +6,7 @@ import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 
 class RecentSnagsItemWidget extends StatelessWidget {
   final String reference;
@@ -61,13 +61,11 @@ class RecentSnagsItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     const RiskWidget(
-                      color: AppColors.green,
                       risk: 'Low Risk'
                     ),
                     UIHelper.horizontalSpace(5.0),
-                    StatusWidget(
+                    SnagStatusWidget(
                       status: status,
-                      color: AppColors.red,
                     ),
                   ],
                 ),

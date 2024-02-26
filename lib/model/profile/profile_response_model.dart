@@ -1,3 +1,7 @@
+import 'package:iskaan_inspections_mobile/model/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/company_model.dart';
+import 'package:iskaan_inspections_mobile/model/role_model.dart';
+
 class ProfileResponseModel {
   ProfileResponseModel({
       this.status, 
@@ -74,7 +78,7 @@ class ProfileRecord {
     if (json['roles'] != null) {
       roles = [];
       json['roles'].forEach((v) {
-        roles?.add(Roles.fromJson(v));
+        roles?.add(RoleModel.fromJson(v));
       });
     }
   }
@@ -88,7 +92,7 @@ class ProfileRecord {
   List<Association>? associations;
   List<Company>? companies;
   List<String>? permissions;
-  List<Roles>? roles;
+  List<RoleModel>? roles;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -114,107 +118,6 @@ class ProfileRecord {
 
 }
 
-class Roles {
-  Roles({
-      this.title, 
-      this.description, 
-      this.company, 
-      this.permissions,});
 
-  Roles.fromJson(dynamic json) {
-    title = json['title'];
-    description = json['description'];
-    company = json['company'] != null ? Company.fromJson(json['company']) : null;
-    if (json['permissions'] != null) {
-      permissions = [];
-      json['permissions'].forEach((v) {
-        permissions?.add(Permissions.fromJson(v));
-      });
-    }
-  }
-  String? title;
-  dynamic description;
-  Company? company;
-  List<Permissions>? permissions;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['title'] = title;
-    map['description'] = description;
-    if (company != null) {
-      map['company'] = company?.toJson();
-    }
-    if (permissions != null) {
-      map['permissions'] = permissions?.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
 
-}
-
-class Permissions {
-  Permissions({
-      this.title, 
-      this.description,});
-
-  Permissions.fromJson(dynamic json) {
-    title = json['title'];
-    description = json['description'];
-  }
-  String? title;
-  String? description;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['title'] = title;
-    map['description'] = description;
-    return map;
-  }
-
-}
-
-class Company {
-  Company({
-      this.id, 
-      this.name,});
-
-  Company.fromJson(dynamic json) {
-    id = json['id'];
-    name = json['name'];
-  }
-  int? id;
-  String? name;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
-    return map;
-  }
-
-}
-
-class Association {
-  Association({
-      this.id, 
-      this.name, 
-      this.companyId,});
-
-  Association.fromJson(dynamic json) {
-    id = json['id'];
-    name = json['name'];
-    companyId = json['company_id'];
-  }
-  int? id;
-  String? name;
-  int? companyId;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['id'] = id;
-    map['name'] = name;
-    map['company_id'] = companyId;
-    return map;
-  }
-
-}

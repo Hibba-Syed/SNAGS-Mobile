@@ -12,7 +12,7 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_ima
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
 class SnagDetailScreen extends StatelessWidget {
@@ -36,9 +36,8 @@ class SnagDetailScreen extends StatelessWidget {
                     style: AppTextStyles.style16Grey600,
                   ),
                   UIHelper.horizontalSpace(8.0),
-                  const StatusWidget(
+                  const SnagStatusWidget(
                     status: 'Completed',
-                    color: AppColors.green,
                   ),
                 ],
               ),
@@ -172,9 +171,10 @@ class SnagDetailScreen extends StatelessWidget {
                   ),
                   const SnagDetailItemWidget(
                     title: 'Risk',
-                    widget: RiskWidget(
-                      risk: 'High Risk',
-                      color: AppColors.red,
+                    widget: Flexible(
+                      child: RiskWidget(
+                        risk: 'High Risk',
+                      ),
                     ),
                   ),
                   const SnagDetailItemWidget(
@@ -213,8 +213,11 @@ class SnagDetailScreen extends StatelessWidget {
                   ),
                   SnagDetailItemWidget(
                     title: 'Status',
-                    widget: StatusWidget(
-                        status: 'In Progress', color: AppColors.yellow),
+                    widget: Flexible(
+                      child: SnagStatusWidget(
+                        status: 'In Progress',
+                      ),
+                    ),
                   ),
                   SnagDetailItemWidget(
                     title: 'Status',
@@ -242,8 +245,7 @@ class SnagDetailScreen extends StatelessWidget {
                       return Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.lightGrey)
-                        ),
+                            border: Border.all(color: AppColors.lightGrey)),
                         child: Row(
                           children: [
                             NetworkImageWidget(
@@ -251,21 +253,35 @@ class SnagDetailScreen extends StatelessWidget {
                               height: 40.0,
                               url: '',
                               shape: BoxShape.circle,
-                              placeHolder: const Icon(Icons.person,color: AppColors.grey,),
+                              placeHolder: const Icon(
+                                Icons.person,
+                                color: AppColors.grey,
+                              ),
                             ),
                             UIHelper.horizontalSpace(10.0),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Shuber Mirza',style: AppTextStyles.style14Grey600,),
+                                  const Text(
+                                    'Shuber Mirza',
+                                    style: AppTextStyles.style14Grey600,
+                                  ),
                                   UIHelper.verticalSpace(5.0),
-                                  const Text('test comment',style: AppTextStyles.style10LightGrey400,),
-                                  const Align(alignment: Alignment.bottomRight,child: Text('2/21/24, 5:10 PM',style: AppTextStyles.style12LightGrey400,),)
+                                  const Text(
+                                    'test comment',
+                                    style: AppTextStyles.style10LightGrey400,
+                                  ),
+                                  const Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      '2/21/24, 5:10 PM',
+                                      style: AppTextStyles.style12LightGrey400,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       );
@@ -284,12 +300,15 @@ class SnagDetailScreen extends StatelessWidget {
                       ),
                       UIHelper.horizontalSpace(10.0),
                       InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Container(
                           width: 40.0,
                           height: 50.0,
                           color: AppColors.primary,
-                          child: const Icon(Icons.send,color: AppColors.white,),
+                          child: const Icon(
+                            Icons.send,
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -297,7 +316,7 @@ class SnagDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-             SnagDetailContainer(
+            SnagDetailContainer(
               header: const Text(
                 'Logs',
                 style: AppTextStyles.style16Grey600,
@@ -310,8 +329,7 @@ class SnagDetailScreen extends StatelessWidget {
                   return Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.lightGrey)
-                    ),
+                        border: Border.all(color: AppColors.lightGrey)),
                     child: Row(
                       children: [
                         NetworkImageWidget(
@@ -319,27 +337,35 @@ class SnagDetailScreen extends StatelessWidget {
                           height: 40.0,
                           url: '',
                           shape: BoxShape.circle,
-                          placeHolder: const Icon(Icons.person,color: AppColors.grey,),
+                          placeHolder: const Icon(
+                            Icons.person,
+                            color: AppColors.grey,
+                          ),
                         ),
                         UIHelper.horizontalSpace(10.0),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RichText(text: const TextSpan(
-                                text: 'Snag created by ',
-                                style: AppTextStyles.style12LightGrey400,
-                                children: [
-                                  TextSpan(text: 'Shuber Mirza',style: AppTextStyles.style14Primary600),
-                                ]
-
-                              ),),
+                              RichText(
+                                text: const TextSpan(
+                                    text: 'Snag created by ',
+                                    style: AppTextStyles.style12LightGrey400,
+                                    children: [
+                                      TextSpan(
+                                          text: 'Shuber Mirza',
+                                          style:
+                                              AppTextStyles.style14Primary600),
+                                    ]),
+                              ),
                               UIHelper.verticalSpace(5.0),
-                              const Text('2/21/24, 5:10 PM',style: AppTextStyles.style12LightGrey400,)
+                              const Text(
+                                '2/21/24, 5:10 PM',
+                                style: AppTextStyles.style12LightGrey400,
+                              )
                             ],
                           ),
                         ),
-
                       ],
                     ),
                   );

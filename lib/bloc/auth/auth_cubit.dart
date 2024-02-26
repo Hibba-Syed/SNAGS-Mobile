@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/repo/auth/atuh_repo_impl.dart';
 import 'package:iskaan_inspections_mobile/repo/auth/auth_repo.dart';
 import 'package:iskaan_inspections_mobile/utils/preference_utils.dart';
@@ -38,7 +38,8 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(isLoading: false));
         if (loginResponse != null) {
           spUtil.token = loginResponse.accessToken;
-          context.read<ProfileCubit>().getProfile();
+          // context.read<ProfileCubit>().getProfile();
+          context.read<DashboardCubit>().fetchData();
           Navigator.of(context).pushNamedAndRemoveUntil(
               AppRoutes.mainDashboard, (route) => false);
         } else {
