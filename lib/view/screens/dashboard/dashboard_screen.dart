@@ -10,7 +10,6 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/action_required_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/high_risk_snags_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/pending_inspections_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_inspection_item_widget.dart';
@@ -22,8 +21,12 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.dart';
 
+import '../../widgets/dropdown/dropdown_widget.dart';
+import 'components/action_required_item_widget.dart';
+import 'components/inspactions_container.dart';
+
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             BlocBuilder<ProfileCubit, ProfileState>(
               builder: (context, state) {
-                if(state.isLoading==true){
+                if (state.isLoading == true) {
                   return const CustomLoader();
                 }
                 return Row(
@@ -48,7 +51,8 @@ class DashboardScreen extends StatelessWidget {
                         width: 46.0,
                         height: 46.0,
                         decoration: BoxDecoration(
-                            color: Colors.grey.shade200, shape: BoxShape.circle),
+                            color: Colors.grey.shade200,
+                            shape: BoxShape.circle),
                         child: const Icon(
                           Icons.person,
                           color: AppColors.grey,
@@ -56,7 +60,7 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     UIHelper.horizontalSpace(10.0),
-                     Expanded(
+                    Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +71,7 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           Flexible(
                             child: Text(
-                              state.profileRecord?.fullName??'--',
+                              state.profileRecord?.fullName ?? '--',
                               style: AppTextStyles.style20Grey600,
                             ),
                           ),
@@ -164,6 +168,12 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
+  final List<StatusModel> status = [
+    StatusModel(title: ' 2', description: 'In-Progress'),
+    StatusModel(title: ' 3', description: 'Submitted'),
+    StatusModel(title: ' 4', description: 'Completed'),
+    StatusModel(title: ' 5', description: 'Submitted'),
+  ];
   _actionRequiredView() {
     return Column(
       children: [
@@ -177,21 +187,88 @@ class DashboardScreen extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: ListView.separated(
-            itemCount: 3,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ActionRequiredItemWidget(
-                count: 5,
-                isInspection: true,
-                status: 'Ready for Submission',
-                onTap: () {},
-              );
-            },
-            separatorBuilder: (context, index) {
-              return UIHelper.verticalSpace(5.0);
-            },
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "12",
+                        style: AppTextStyles.style24Grey600,
+                      ),
+                      Text(
+                        "Inspections",
+                        style: AppTextStyles.style15Grey400,
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 50,
+                    width: 130,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownWidget(
+                      hint: "6 Months",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            width: 0.0, color: Colors.transparent),
+                      ),
+                      fillColor: AppColors.darkGrey.withOpacity(0.1),
+                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                      selectedItem: null,
+                      items: [],
+                      onChanged: (value) {},
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                color: AppColors.darkGrey.withOpacity(0.1),
+              ),
+              GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                itemCount: 4,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 0,
+                  crossAxisSpacing: 0,
+                  childAspectRatio: 1.6,
+                ),
+                itemBuilder: (context, index) {
+                  final result = status[index];
+                  return InspectionsContainer(
+                    status: result.description,
+                    date: result.title,
+                  );
+                },
+              ),
+              //  ListView.separated(
+              //    itemCount:3,
+              //    shrinkWrap: true,
+              //    physics: const NeverScrollableScrollPhysics(),
+              //    itemBuilder: (context, index) {
+              //
+              //      return ActionRequiredItemWidget(
+              //        count: 5,
+              //        isInspection: true,
+              //        status: 'Ready for Submission',
+              //        onTap: () {},
+              //      );
+              //    },
+              //    separatorBuilder: (context, index) {
+              //      return UIHelper.verticalSpace(5.0);
+              //    },
+              //  ),
+            ],
           ),
         ),
       ],
