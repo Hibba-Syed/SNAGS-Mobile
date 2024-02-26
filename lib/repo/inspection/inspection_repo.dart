@@ -1,3 +1,4 @@
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_response_model.dart';
 
@@ -13,4 +14,6 @@ abstract class InspectionRepo {
     String? fromDate,
     String? toDate,
   });
+
+  Future<InspectionDetailsResponseModel?> getInspectionDetails({required int id});
 }

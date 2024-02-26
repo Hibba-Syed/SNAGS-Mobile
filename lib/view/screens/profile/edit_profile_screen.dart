@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
+import 'package:iskaan_inspections_mobile/res/globals.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
@@ -34,7 +35,9 @@ class EditProfileScreen extends StatelessWidget {
                 ),
                 UIHelper.verticalSpace(10.0),
                 TextFieldWidget(
+                  initialValue: Globals().profileRecord?.firstName,
                   label: 'First Name *',
+                  hint: 'Enter first name',
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'required';
@@ -44,7 +47,9 @@ class EditProfileScreen extends StatelessWidget {
                 ),
                 UIHelper.verticalSpace(10.0),
                 TextFieldWidget(
+                  initialValue: Globals().profileRecord?.lastName,
                   label: 'Last Name *',
+                  hint: 'Enter last name',
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'required';
@@ -55,7 +60,11 @@ class EditProfileScreen extends StatelessWidget {
                 UIHelper.verticalSpace(20.0),
                 CustomButton(
                   text: 'Submit',
-                  onPressed: () {},
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()){
+
+                    }
+                  },
                 ),
               ],
             ),

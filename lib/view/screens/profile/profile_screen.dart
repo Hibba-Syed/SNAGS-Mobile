@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/model/role_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
+import 'package:iskaan_inspections_mobile/res/globals.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
@@ -24,26 +26,38 @@ class ProfileScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0)),
             child: Column(
               children: [
-                 Align(
+                Align(
                   alignment: Alignment.topRight,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.green.withOpacity(0.13),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: const Text(
-                      'Inspector',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.green,
-                      ),
+                  child: SizedBox(
+                    height: 26,
+                    child: ListView.builder(
+                      itemCount: Globals().profileRecord?.roles?.length??0,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        RoleModel? item = Globals().profileRecord?.roles?[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.green.withOpacity(0.13),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child:  Text(
+                            item?.title??'--',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.green,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
                 NetworkImageWidget(
-                  url: '',
+                  url: Globals().profileRecord?.profilePicture,
                   width: 64,
                   height: 64,
                   shape: BoxShape.circle,
@@ -54,13 +68,13 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 UIHelper.verticalSpace(10.0),
-                const Text(
-                  'Fatima Hameed Raza',
+                Text(
+                  Globals().profileRecord?.fullName ?? '--',
                   style: AppTextStyles.style16DarkGrey600,
                 ),
                 UIHelper.verticalSpace(5.0),
-                const Text(
-                  'fatima.hameed@example.com',
+                Text(
+                  Globals().profileRecord?.email ?? '--',
                   style: AppTextStyles.style14LightGrey400,
                 ),
               ],
@@ -79,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                 ProfileRowButton(
                   title: 'Edit Profile',
                   iconData: Icons.person,
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, AppRoutes.editProfile);
                   },
                 ),
@@ -90,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                 ProfileRowButton(
                   title: 'Update Password',
                   iconData: Icons.lock,
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, AppRoutes.updatePassword);
                   },
                 ),

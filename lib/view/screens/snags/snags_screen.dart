@@ -10,8 +10,25 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
 
-class SnagsScreen extends StatelessWidget {
+class SnagsScreen extends StatefulWidget {
   const SnagsScreen({super.key});
+
+  @override
+  State<SnagsScreen> createState() => _SnagsScreenState();
+}
+
+class _SnagsScreenState extends State<SnagsScreen> {
+  final ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        context.read<SnagsCubit>().getMoreSnags();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,37 +49,44 @@ class SnagsScreen extends StatelessWidget {
               UIHelper.verticalSpace(16.0),
               Expanded(
                 child: state.snags?.isNotEmpty ?? false
-                    ? ListView.separated(
-                        itemCount: state.snags?.length ?? 0,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        itemBuilder: (context, index) {
-                          SnagModel item = state.snags![index];
-                          return SnagWidget(
-                            imageUrl: item.images?.isNotEmpty ?? false
-                                ? item.images?.first.path
-                                : '',
-                            reference: item.reference ?? '--',
-                            risk: item.risk ?? '--',
-                            status: item.status ?? '--',
-                            title: item.title ?? '--',
-                            description: item.description ?? '--',
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.snagDetail);
-                            },
-                          );
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          await context.read<SnagsCubit>().getSnags();
                         },
-                        separatorBuilder: (context, index) {
-                          return UIHelper.verticalSpace(14.0);
-                        },
+                        child: ListView.separated(
+                          itemCount: state.snags?.length ?? 0,
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 10.0),
+                          itemBuilder: (context, index) {
+                            SnagModel item = state.snags![index];
+                            return SnagWidget(
+                              imageUrl: item.images?.isNotEmpty ?? false
+                                  ? item.images?.first.path
+                                  : '',
+                              reference: item.reference ?? '--',
+                              risk: item.risk ?? '--',
+                              status: item.status ?? '--',
+                              title: item.title ?? '--',
+                              description: item.description ?? '--',
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.snagDetail);
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return UIHelper.verticalSpace(14.0);
+                          },
+                        ),
                       )
                     : const EmptyWidget(
                         text: 'No Snags found',
                       ),
               ),
+              if (state.loadMore) const CustomLoader(),
             ],
           );
         },

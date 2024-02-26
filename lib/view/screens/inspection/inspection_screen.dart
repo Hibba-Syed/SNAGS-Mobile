@@ -10,15 +10,32 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
 
-class InspectionScreen extends StatelessWidget {
+class InspectionScreen extends StatefulWidget {
   const InspectionScreen({super.key});
+
+  @override
+  State<InspectionScreen> createState() => _InspectionScreenState();
+}
+
+class _InspectionScreenState extends State<InspectionScreen> {
+  final ScrollController _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        context.read<InspectionCubit>().getMoreInspection();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<InspectionCubit, InspectionState>(
         builder: (context, state) {
-          if(state.isLoading==true){
+          if (state.isLoading == true) {
             return const CustomLoader();
           }
           return Column(
@@ -32,33 +49,42 @@ class InspectionScreen extends StatelessWidget {
               ),
               Expanded(
                 child: state.inspections?.isNotEmpty ?? false
-                    ? ListView.separated(
-                        itemCount: state.inspections?.length ?? 0,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        itemBuilder: (context, index) {
-                          InspectionModel item = state.inspections![index];
-                          return InspectionWidget(
-                            reference: item.reference ?? '--',
-                            status: item.status ?? '--',
-                            communityName: item.association?.name ?? '--',
-                            companyName: item.company?.name ?? '',
-                            userName: item.inspector?.fullName ?? '--',
-                            date: item.updatedAt ?? item.createdAt,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.inspectionDetail);
-                            },
-                          );
+                    ? RefreshIndicator(
+                        onRefresh: () async {
+                          await context
+                              .read<InspectionCubit>()
+                              .getInspections();
                         },
-                        separatorBuilder: (context, index) {
-                          return UIHelper.verticalSpace(10.0);
-                        },
+                        child: ListView.separated(
+                          itemCount: state.inspections?.length ?? 0,
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 10.0),
+                          itemBuilder: (context, index) {
+                            InspectionModel item = state.inspections![index];
+                            return InspectionWidget(
+                              reference: item.reference ?? '--',
+                              status: item.status ?? '--',
+                              communityName: item.association?.name ?? '--',
+                              companyName: item.company?.name ?? '',
+                              userName: item.inspector?.fullName ?? '--',
+                              date: item.updatedAt ?? item.createdAt,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.inspectionDetail);
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return UIHelper.verticalSpace(10.0);
+                          },
+                        ),
                       )
                     : const EmptyWidget(text: 'No Inspections found'),
               ),
+              if (state.loadMore) const CustomLoader(),
             ],
           );
         },

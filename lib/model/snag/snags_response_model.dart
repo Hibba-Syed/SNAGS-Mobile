@@ -1,4 +1,4 @@
-import 'package:iskaan_inspections_mobile/model/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';

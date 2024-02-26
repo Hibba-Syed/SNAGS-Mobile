@@ -12,8 +12,12 @@ class SnagsCubit extends Cubit<SnagsState> {
   final SnagRepo _snagRepo = SnagRepoImpl();
 
   Future<void> getSnags() async {
-    emit(state.copyWith(isLoading: true));
-    SnagsResponseModel? response = await _snagRepo.getSnags().onError(
+    emit(state.copyWith(isLoading: true, page: 1));
+    SnagsResponseModel? response = await _snagRepo
+        .getSnags(
+      page: state.page,
+    )
+        .onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
@@ -25,6 +29,38 @@ class SnagsCubit extends Cubit<SnagsState> {
     emit(state.copyWith(isLoading: false));
     if (response != null) {
       emit(state.copyWith(snags: response.record));
+    } else {
+      Fluttertoast.showToast(msg: 'Something went wrong while fetching snags');
+    }
+  }
+
+  Future<void> getMoreSnags() async {
+    int page = state.page + 1;
+    emit(state.copyWith(loadMore: true, isLoading: false, page: page));
+    SnagsResponseModel? response = await _snagRepo
+        .getSnags(
+      page: state.page,
+    )
+        .onError(
+      (error, stackTrace) {
+        emit(state.copyWith(loadMore: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(loadMore: false));
+    if (response != null) {
+      if (response.record?.isNotEmpty ?? false) {
+        List<SnagModel> snags = state.snags ?? [];
+        snags.addAll(response.record as Iterable<SnagModel>);
+        emit(state.copyWith(snags: snags));
+      } else {
+        Fluttertoast.showToast(msg: 'No more snags');
+        page = state.page - 1;
+        emit(state.copyWith(page: page));
+      }
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching snags');
     }

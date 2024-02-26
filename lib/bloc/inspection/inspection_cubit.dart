@@ -31,4 +31,36 @@ class InspectionCubit extends Cubit<InspectionState> {
           msg: 'Something went wrong while fetching inspections');
     }
   }
+
+  Future<void> getMoreInspection() async {
+    int page = state.page + 1;
+    emit(state.copyWith(loadMore: true,isLoading: false, page: page));
+    InspectionsResponseModel? response = await _inspectionRepo
+        .getInspections(
+      page: state.page,
+    )
+        .onError(
+          (error, stackTrace) {
+        emit(state.copyWith(loadMore: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(loadMore: false));
+    if (response != null) {
+      if (response.record?.isNotEmpty ?? false) {
+        List<InspectionModel> inspections = state.inspections ?? [];
+        inspections.addAll(response.record as Iterable<InspectionModel>);
+        emit(state.copyWith(inspections: inspections));
+      } else {
+        Fluttertoast.showToast(msg: 'No more inspections');
+        page = state.page - 1;
+        emit(state.copyWith(page: page));
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'Something went wrong while fetching inspections');
+    }
+  }
 }

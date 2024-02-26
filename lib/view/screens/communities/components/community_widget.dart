@@ -7,12 +7,12 @@ import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class CommunityWidget extends StatelessWidget {
   final String communityName;
-  final String communityOwnerName;
+  final String companyName;
   final VoidCallback onTap;
   const CommunityWidget({
     super.key,
     required this.communityName,
-    required this.communityOwnerName,
+    required this.companyName,
     required this.onTap,
   });
 
@@ -73,7 +73,7 @@ class CommunityWidget extends StatelessWidget {
                   UIHelper.horizontalSpace(4.0),
                   Flexible(
                     child: Text(
-                      communityOwnerName,
+                      companyName,
                       style: AppTextStyles.style14Grey400,
                     ),
                   ),

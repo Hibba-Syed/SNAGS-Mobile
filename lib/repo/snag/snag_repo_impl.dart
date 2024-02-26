@@ -1,5 +1,6 @@
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
@@ -34,6 +35,17 @@ class SnagRepoImpl implements SnagRepo {
           '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIds ?? ''}&company_ids=${companyIds ?? ''}&status=${statuses ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SnagDetailsResponseModel?> getSnagDetails({required int id}) async {
+    try {
+      String url = '${ApiUrl.snags}/$id';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return SnagDetailsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

@@ -1,9 +1,10 @@
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 
-class InspectionsResponseModel {
-  InspectionsResponseModel({
+class SnagDetailsResponseModel {
+  SnagDetailsResponseModel({
       this.status, 
       this.record, 
       this.code, 
@@ -11,23 +12,18 @@ class InspectionsResponseModel {
       this.requestStatus, 
       this.message,});
 
-  InspectionsResponseModel.fromJson(dynamic json) {
+  SnagDetailsResponseModel.fromJson(dynamic json) {
     status = json['status'];
-    if (json['record'] != null) {
-      record = [];
-      json['record'].forEach((v) {
-        record?.add(InspectionModel.fromJson(v));
-      });
-    }
+    record = json['record'] != null ? SnagDetails.fromJson(json['record']) : null;
     code = json['code'];
-    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
+    meta = json['meta'];
     requestStatus = json['request_status'];
     message = json['message'];
   }
   String? status;
-  List<InspectionModel>? record;
+  SnagDetails? record;
   int? code;
-  Meta? meta;
+  dynamic meta;
   bool? requestStatus;
   String? message;
 
@@ -35,12 +31,10 @@ class InspectionsResponseModel {
     final map = <String, dynamic>{};
     map['status'] = status;
     if (record != null) {
-      map['record'] = record?.map((v) => v.toJson()).toList();
+      map['record'] = record?.toJson();
     }
     map['code'] = code;
-    if (meta != null) {
-      map['meta'] = meta?.toJson();
-    }
+    map['meta'] = meta;
     map['request_status'] = requestStatus;
     map['message'] = message;
     return map;
@@ -48,95 +42,94 @@ class InspectionsResponseModel {
 
 }
 
-class Meta {
-  Meta({
-      this.page, 
-      this.lastPage, 
-      this.from, 
-      this.to, 
-      this.limit, 
-      this.total, 
-      this.hasMorePages, 
-      this.isFirstPage,});
-
-  Meta.fromJson(dynamic json) {
-    page = json['page'];
-    lastPage = json['last_page'];
-    from = json['from'];
-    to = json['to'];
-    limit = json['limit'];
-    total = json['total'];
-    hasMorePages = json['has_more_pages'];
-    isFirstPage = json['is_first_page'];
-  }
-  int? page;
-  int? lastPage;
-  int? from;
-  int? to;
-  dynamic limit;
-  int? total;
-  bool? hasMorePages;
-  bool? isFirstPage;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['page'] = page;
-    map['last_page'] = lastPage;
-    map['from'] = from;
-    map['to'] = to;
-    map['limit'] = limit;
-    map['total'] = total;
-    map['has_more_pages'] = hasMorePages;
-    map['is_first_page'] = isFirstPage;
-    return map;
-  }
-
-}
-
-class InspectionModel {
-  InspectionModel({
+class SnagDetails {
+  SnagDetails({
       this.id, 
       this.companyId, 
       this.associationId, 
       this.inspectorId, 
       this.reference, 
-      this.score, 
       this.status, 
+      this.risk, 
+      this.title, 
+      this.description, 
+      this.closeNote, 
+      this.location, 
       this.createdAt, 
       this.updatedAt, 
-      this.deletedAt, 
+      this.inspection, 
       this.company, 
       this.association, 
-      this.inspector,});
+      this.inspector, 
+      this.images, 
+      this.closingImages, 
+      this.comments, 
+      this.logs,});
 
-  InspectionModel.fromJson(dynamic json) {
+  SnagDetails.fromJson(dynamic json) {
     id = json['id'];
     companyId = json['company_id'];
     associationId = json['association_id'];
     inspectorId = json['inspector_id'];
     reference = json['reference'];
-    score = json['score'];
     status = json['status'];
+    risk = json['risk'];
+    title = json['title'];
+    description = json['description'];
+    closeNote = json['close_note'];
+    location = json['location'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
+    inspection = json['inspection'];
     company = json['company'] != null ? Company.fromJson(json['company']) : null;
     association = json['association'] != null ? Association.fromJson(json['association']) : null;
     inspector = json['inspector'] != null ? Inspector.fromJson(json['inspector']) : null;
+    if (json['images'] != null) {
+      images = [];
+      json['images'].forEach((v) {
+        images?.add(ImageModel.fromJson(v));
+      });
+    }
+    if (json['closing_images'] != null) {
+      closingImages = [];
+      json['closing_images'].forEach((v) {
+        closingImages?.add(ImageModel.fromJson(v));
+      });
+    }
+    if (json['comments'] != null) {
+      comments = [];
+      json['comments'].forEach((v) {
+        // comments?.add(Dynamic.fromJson(v));
+      });
+    }
+    if (json['logs'] != null) {
+      logs = [];
+      json['logs'].forEach((v) {
+        // logs?.add(Dynamic.fromJson(v));
+      });
+    }
   }
   int? id;
   int? companyId;
   int? associationId;
   int? inspectorId;
   String? reference;
-  dynamic score;
   String? status;
+  String? risk;
+  String? title;
+  dynamic description;
+  dynamic closeNote;
+  String? location;
   String? createdAt;
   String? updatedAt;
-  dynamic deletedAt;
+  dynamic inspection;
   Company? company;
   Association? association;
   Inspector? inspector;
+  List<ImageModel>? images;
+  List<ImageModel>? closingImages;
+  List<dynamic>? comments;
+  List<dynamic>? logs;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -145,11 +138,15 @@ class InspectionModel {
     map['association_id'] = associationId;
     map['inspector_id'] = inspectorId;
     map['reference'] = reference;
-    map['score'] = score;
     map['status'] = status;
+    map['risk'] = risk;
+    map['title'] = title;
+    map['description'] = description;
+    map['close_note'] = closeNote;
+    map['location'] = location;
     map['created_at'] = createdAt;
     map['updated_at'] = updatedAt;
-    map['deleted_at'] = deletedAt;
+    map['inspection'] = inspection;
     if (company != null) {
       map['company'] = company?.toJson();
     }
@@ -159,10 +156,19 @@ class InspectionModel {
     if (inspector != null) {
       map['inspector'] = inspector?.toJson();
     }
+    if (images != null) {
+      map['images'] = images?.map((v) => v.toJson()).toList();
+    }
+    if (closingImages != null) {
+      map['closing_images'] = closingImages?.map((v) => v.toJson()).toList();
+    }
+    if (comments != null) {
+      map['comments'] = comments?.map((v) => v.toJson()).toList();
+    }
+    if (logs != null) {
+      map['logs'] = logs?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 
 }
-
-
-

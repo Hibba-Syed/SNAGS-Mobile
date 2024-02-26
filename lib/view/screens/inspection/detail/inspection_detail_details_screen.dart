@@ -27,7 +27,7 @@ class InspectionDetailDetailsScreen extends StatelessWidget {
                   companyName:
                       'HOAM - Highrise Owners Association Management',
                   userName: 'Muhammad Talha Al Mehri',
-                  date: 'May 08, 2023',
+                  date: '2024-01-05T06:06:52.000000Z',
                   onTap: () {},
                 ),
                 UIHelper.verticalSpace(12.0),

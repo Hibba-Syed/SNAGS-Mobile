@@ -6,6 +6,7 @@ class ApiUrl {
   static const String inspectionsStatistics = '$baseUrl/snags/statistics/inspection';
   static const String snags = '$baseUrl/snags/snags';
   static const String snagsStatistics = '$baseUrl/snags/statistics/snag';
+  static const String associations = '$baseUrl/snags/associations';
 
 
 }
