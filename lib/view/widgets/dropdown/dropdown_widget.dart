@@ -16,6 +16,7 @@ class DropdownWidget<T> extends StatelessWidget {
   final String? Function(T?)? validator;
   final Icon? icon;
   final InputBorder? border;
+  final Color? fillColor;
 
   const DropdownWidget({
     super.key,
@@ -30,6 +31,7 @@ class DropdownWidget<T> extends StatelessWidget {
     this.validator,
     this.icon,
     this.border,
+    this.fillColor,
   });
 
   @override
@@ -56,9 +58,13 @@ class DropdownWidget<T> extends StatelessWidget {
               hintStyle: AppTextStyles.style12LightGrey400,
               floatingLabelBehavior: FloatingLabelBehavior.never,
               alignLabelWithHint: false,
-              fillColor: AppColors.white,
+              fillColor:fillColor ?? AppColors.white,
               filled: true,
-              border: border,
+              // border: border ?? InputBorder.none,
+              disabledBorder: border?? InputBorder.none,
+              enabledBorder: border??InputBorder.none,
+              focusedBorder: border??InputBorder.none
+
             ),
           ),
           selectedItem: selectedItem,
