@@ -81,7 +81,7 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Future<void> getRecentInspections() async {
     InspectionsResponseModel? response =
-        await _inspectionRepo.getInspections().onError(
+        await _inspectionRepo.getInspections(limit: 2).onError(
       (error, stackTrace) {
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -98,7 +98,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<void> getRecentSnags() async {
-    SnagsResponseModel? response = await _snagRepo.getSnags().onError(
+    SnagsResponseModel? response = await _snagRepo.getSnags(limit: 2).onError(
       (error, stackTrace) {
         Fluttertoast.showToast(
           msg: error.toString(),

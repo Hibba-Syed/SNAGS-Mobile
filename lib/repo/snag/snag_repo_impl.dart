@@ -8,11 +8,11 @@ import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
 class SnagRepoImpl implements SnagRepo {
   final BaseApiServices _apiService = NetworkApiServices();
   @override
-  Future<SnagsStatisticsResponseModel?> getSnagsStatistics({String? filter}) async {
+  Future<SnagsStatisticsResponseModel?> getSnagsStatistics(
+      {int? months}) async {
     try {
-      String url = '${ApiUrl.snagsStatistics}?xyz=filter';
-      dynamic response =
-          await _apiService.getAuthGetApiResponse(url);
+      String url = '${ApiUrl.snagsStatistics}?months=${months ?? ''}';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsStatisticsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -20,11 +20,19 @@ class SnagRepoImpl implements SnagRepo {
   }
 
   @override
-  Future<SnagsResponseModel?> getSnags({String? filter}) async {
+  Future<SnagsResponseModel?> getSnags({
+    int? page,
+    int? limit,
+    List<int>? associationIds,
+    List<int>? companyIds,
+    List<String>? statuses,
+    String? fromDate,
+    String? toDate,
+  }) async {
     try {
-      String url = '${ApiUrl.snags}?xyz=filter';
-      dynamic response =
-      await _apiService.getAuthGetApiResponse(url);
+      String url =
+          '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIds ?? ''}&company_ids=${companyIds ?? ''}&status=${statuses ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;

@@ -75,7 +75,7 @@ class Meta {
   int? lastPage;
   int? from;
   int? to;
-  int? limit;
+  dynamic limit;
   int? total;
   bool? hasMorePages;
   bool? isFirstPage;

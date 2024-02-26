@@ -8,11 +8,11 @@ import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
 class InspectionRepoImpl implements InspectionRepo {
   final BaseApiServices _apiService = NetworkApiServices();
   @override
-  Future<InspectionsStatisticsResponseModel?> getInspectionsStatistics({String? filter}) async {
+  Future<InspectionsStatisticsResponseModel?> getInspectionsStatistics(
+      {int? months}) async {
     try {
-      String url = '${ApiUrl.inspectionsStatistics}?xyz=filter';
-      dynamic response =
-          await _apiService.getAuthGetApiResponse(url);
+      String url = '${ApiUrl.inspectionsStatistics}?months=${months ?? ''}';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
       return InspectionsStatisticsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -20,11 +20,19 @@ class InspectionRepoImpl implements InspectionRepo {
   }
 
   @override
-  Future<InspectionsResponseModel?> getInspections({String? filter}) async {
+  Future<InspectionsResponseModel?> getInspections({
+    int? page,
+    int? limit,
+    List<int>? associationIds,
+    List<int>? companyIds,
+    List<String>? statuses,
+    String? fromDate,
+    String? toDate,
+  }) async {
     try {
-      String url = '${ApiUrl.inspections}?xyz=filter';
-      dynamic response =
-      await _apiService.getAuthGetApiResponse(url);
+      String url =
+          '${ApiUrl.inspections}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIds ?? ''}&company_ids=${companyIds ?? ''}&status=${statuses ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
       return InspectionsResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
