@@ -27,16 +27,15 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
               padding:
               const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
-                return  SnagWidget(
+                return  const SnagWidget(
+                  id: 47,
                   imageUrl: '',
                   reference: 'INS001-24-00003',
                   risk: 'High Risk',
                   status: 'In Progress',
                   title: 'Door Glass Broken',
                   description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
-                  onTap: (){
-                    Navigator.pushNamed(context, AppRoutes.snagDetail);
-                  },
+
                 );
               },
               separatorBuilder: (context, index) {

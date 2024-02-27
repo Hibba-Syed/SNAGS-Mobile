@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/notification_widget.dart';
 
 class NotificationsScreen extends StatelessWidget {

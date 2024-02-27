@@ -1,5 +1,6 @@
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 
@@ -80,7 +81,7 @@ class SnagDetails {
     location = json['location'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    inspection = json['inspection'];
+    inspection = json['inspection'] != null ? InspectionModel.fromJson(json['inspection']) : null;
     company = json['company'] != null ? Company.fromJson(json['company']) : null;
     association = json['association'] != null ? Association.fromJson(json['association']) : null;
     inspector = json['inspector'] != null ? Inspector.fromJson(json['inspector']) : null;
@@ -99,13 +100,13 @@ class SnagDetails {
     if (json['comments'] != null) {
       comments = [];
       json['comments'].forEach((v) {
-        // comments?.add(Dynamic.fromJson(v));
+        comments?.add(Comment.fromJson(v));
       });
     }
     if (json['logs'] != null) {
       logs = [];
       json['logs'].forEach((v) {
-        // logs?.add(Dynamic.fromJson(v));
+        logs?.add(LogModel.fromJson(v));
       });
     }
   }
@@ -117,19 +118,19 @@ class SnagDetails {
   String? status;
   String? risk;
   String? title;
-  dynamic description;
+  String? description;
   dynamic closeNote;
   String? location;
   String? createdAt;
   String? updatedAt;
-  dynamic inspection;
+  InspectionModel? inspection;
   Company? company;
   Association? association;
   Inspector? inspector;
   List<ImageModel>? images;
   List<ImageModel>? closingImages;
-  List<dynamic>? comments;
-  List<dynamic>? logs;
+  List<Comment>? comments;
+  List<LogModel>? logs;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -146,7 +147,9 @@ class SnagDetails {
     map['location'] = location;
     map['created_at'] = createdAt;
     map['updated_at'] = updatedAt;
-    map['inspection'] = inspection;
+    if (inspection != null) {
+      map['inspection'] = inspection?.toJson();
+    }
     if (company != null) {
       map['company'] = company?.toJson();
     }
@@ -168,6 +171,150 @@ class SnagDetails {
     if (logs != null) {
       map['logs'] = logs?.map((v) => v.toJson()).toList();
     }
+    return map;
+  }
+
+}
+
+class LogModel {
+  LogModel({
+      this.id, 
+      this.companyId, 
+      this.associationId, 
+      this.description, 
+      this.status, 
+      this.detailText, 
+      this.detailHtml, 
+      this.createdAt, 
+      this.logger,});
+
+  LogModel.fromJson(dynamic json) {
+    id = json['id'];
+    companyId = json['company_id'];
+    associationId = json['association_id'];
+    description = json['description'];
+    status = json['status'];
+    detailText = json['detail_text'];
+    detailHtml = json['detail_html'];
+    createdAt = json['created_at'];
+    logger = json['logger'] != null ? Logger.fromJson(json['logger']) : null;
+  }
+  int? id;
+  int? companyId;
+  int? associationId;
+  String? description;
+  String? status;
+  dynamic detailText;
+  String? detailHtml;
+  String? createdAt;
+  Logger? logger;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['company_id'] = companyId;
+    map['association_id'] = associationId;
+    map['description'] = description;
+    map['status'] = status;
+    map['detail_text'] = detailText;
+    map['detail_html'] = detailHtml;
+    map['created_at'] = createdAt;
+    if (logger != null) {
+      map['logger'] = logger?.toJson();
+    }
+    return map;
+  }
+
+}
+
+class Logger {
+  Logger({
+      this.id, 
+      this.name, 
+      this.type, 
+      this.profilePicture,});
+
+  Logger.fromJson(dynamic json) {
+    id = json['id'];
+    name = json['name'];
+    type = json['type'];
+    profilePicture = json['profile_picture'];
+  }
+  int? id;
+  String? name;
+  String? type;
+  String? profilePicture;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['type'] = type;
+    map['profile_picture'] = profilePicture;
+    return map;
+  }
+
+}
+
+class Comment {
+  Comment({
+      this.id, 
+      this.comment, 
+      this.commenter, 
+      this.createdAt, 
+      this.updatedAt,});
+
+  Comment.fromJson(dynamic json) {
+    id = json['id'];
+    comment = json['comment'];
+    commenter = json['commenter'] != null ? Commenter.fromJson(json['commenter']) : null;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+  int? id;
+  String? comment;
+  Commenter? commenter;
+  String? createdAt;
+  String? updatedAt;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['comment'] = comment;
+    if (commenter != null) {
+      map['commenter'] = commenter?.toJson();
+    }
+    map['created_at'] = createdAt;
+    map['updated_at'] = updatedAt;
+    return map;
+  }
+
+}
+
+class Commenter {
+  Commenter({
+      this.id, 
+      this.name, 
+      this.type, 
+      this.profilePicture,});
+
+  Commenter.fromJson(dynamic json) {
+    id = json['id'];
+    name = json['name'];
+    type = json['type'];
+    profilePicture = json['profile_picture'];
+  }
+  int? id;
+  String? name;
+  String? type;
+  String? profilePicture;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['type'] = type;
+    map['profile_picture'] = profilePicture;
     return map;
   }
 

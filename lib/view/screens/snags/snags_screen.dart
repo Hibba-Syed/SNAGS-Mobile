@@ -63,6 +63,7 @@ class _SnagsScreenState extends State<SnagsScreen> {
                           itemBuilder: (context, index) {
                             SnagModel item = state.snags![index];
                             return SnagWidget(
+                              id: item.id,
                               imageUrl: item.images?.isNotEmpty ?? false
                                   ? item.images?.first.path
                                   : '',
@@ -71,10 +72,7 @@ class _SnagsScreenState extends State<SnagsScreen> {
                               status: item.status ?? '--',
                               title: item.title ?? '--',
                               description: item.description ?? '--',
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.snagDetail);
-                              },
+
                             );
                           },
                           separatorBuilder: (context, index) {

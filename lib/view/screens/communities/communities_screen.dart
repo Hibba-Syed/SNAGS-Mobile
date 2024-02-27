@@ -60,7 +60,6 @@ class _CommunitiesScreenState extends State<CommunitiesScreen> {
                             communityName: item.name ?? '--',
                             companyName: item.company?.name ?? '--',
                             onTap: () {
-                              print(item.id);
                               Navigator.pushNamed(
                                   context, AppRoutes.communityDetail);
                             },

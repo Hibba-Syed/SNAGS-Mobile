@@ -430,15 +430,13 @@ class DashboardScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   SnagModel item = state.recentSnags![index];
                   return SnagWidget(
+                    id: item.id,
                     reference: item.reference ?? '--',
                     status: item.status ?? '--',
                     risk: item.risk ?? '--',
                     title: item.title ?? '--',
                     imageUrl: '',
                     description: item.description ?? '--',
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.snagDetail);
-                    },
                   );
                 },
                 separatorBuilder: (context, index) {
