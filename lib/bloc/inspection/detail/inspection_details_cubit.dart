@@ -11,6 +11,10 @@ class InspectionDetailsCubit extends Cubit<InspectionDetailsState> {
 
   final InspectionRepo _inspectionRepo = InspectionRepoImpl();
 
+  onChangeReference(String? reference){
+    emit(state.copyWith(reference: reference));
+  }
+
   Future<void> getInspectionDetails({required int id}) async {
     emit(state.copyWith(isLoading: true));
     InspectionDetailsResponseModel? response =

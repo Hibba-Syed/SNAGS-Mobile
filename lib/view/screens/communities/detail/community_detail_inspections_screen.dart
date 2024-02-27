@@ -29,15 +29,13 @@ class CommunityDetailInspectionsScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               itemBuilder: (context, index) {
                 return InspectionWidget(
+                  id: null,
                   reference: 'INS001-24-00003',
                   status: 'In Progress',
                   communityName: 'Al Attar Business Tower',
                   companyName: 'HOAM - Highrise Owners Association Management',
                   userName: 'Muhammad Talha Al Mehri',
                   date: '2024-01-05T06:06:52.000000Z',
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.inspectionDetail);
-                  },
                 );
               },
               separatorBuilder: (context, index) {

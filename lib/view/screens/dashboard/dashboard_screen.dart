@@ -390,14 +390,13 @@ class DashboardScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   InspectionModel item = state.recentInspections![index];
                   return RecentInspectionItemWidget(
+                    id: item.id,
                     reference: item.reference ?? '--',
                     status: item.status ?? '--',
                     communityName: item.association?.name ?? '--',
                     userName: item.inspector?.fullName ?? '--',
                     date: item.updatedAt ?? item.createdAt,
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.inspectionDetail);
-                    },
+
                   );
                 },
                 separatorBuilder: (context, index) {

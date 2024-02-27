@@ -4,6 +4,7 @@ import 'package:iskaan_inspections_mobile/bloc/auth/auth_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/community_detail/community_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
@@ -106,9 +107,9 @@ class AppPages {
     PageEntity(
       route: AppRoutes.inspectionDetail,
       page: const InspectionDetailScreen(),
-      // bloc: BlocProvider(
-      //   create: (context) => CommunityDetailCubit(),
-      // ),
+      bloc: BlocProvider(
+        create: (context) => InspectionDetailsCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.addInspection,

@@ -6,12 +6,12 @@ import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart
 class InspectionDetailBottomButtons extends StatelessWidget {
   final VoidCallback onSubmitPressed;
   final VoidCallback onEditPressed;
-  final VoidCallback onDeletePressed;
+  final VoidCallback onArchivePressed;
   const InspectionDetailBottomButtons({
     super.key,
     required this.onSubmitPressed,
     required this.onEditPressed,
-    required this.onDeletePressed,
+    required this.onArchivePressed,
   });
 
   @override
@@ -52,10 +52,10 @@ class InspectionDetailBottomButtons extends StatelessWidget {
                     Icons.delete_outline,
                     color: AppColors.white,
                   ),
-                  text: 'Delete',
+                  text: 'Archive',
                   textColor: AppColors.white,
                   buttonColor: AppColors.red,
-                  onPressed: onDeletePressed,
+                  onPressed: onArchivePressed,
                 ),
               ),
             ],

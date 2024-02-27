@@ -43,7 +43,7 @@ class InspectionDetailLogsItemWidget extends StatelessWidget {
                 text: text,
                 style: AppTextStyles.style14Grey400,
                 children: [
-                  TextSpan(text: by, style: AppTextStyles.style14Primary600),
+                  TextSpan(text: ' $by', style: AppTextStyles.style14Primary600),
                 ],
               ),
             ),

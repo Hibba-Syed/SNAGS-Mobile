@@ -65,16 +65,13 @@ class _InspectionScreenState extends State<InspectionScreen> {
                           itemBuilder: (context, index) {
                             InspectionModel item = state.inspections![index];
                             return InspectionWidget(
+                              id: item.id,
                               reference: item.reference ?? '--',
                               status: item.status ?? '--',
                               communityName: item.association?.name ?? '--',
                               companyName: item.company?.name ?? '',
                               userName: item.inspector?.fullName ?? '--',
                               date: item.updatedAt ?? item.createdAt,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.inspectionDetail);
-                              },
                             );
                           },
                           separatorBuilder: (context, index) {
