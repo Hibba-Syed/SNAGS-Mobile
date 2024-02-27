@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo_impl.dart';
@@ -10,6 +11,12 @@ class InspectionCubit extends Cubit<InspectionState> {
   InspectionCubit() : super(const InspectionState());
 
   final InspectionRepo _inspectionRepo = InspectionRepoImpl();
+  onChangeSelectedCommunities( List<Association>? communities){
+    emit(state.copyWith(selectedCommunities: communities));
+  }
+  onChangeSelectedStatuses( List<String>? status){
+    emit(state.copyWith(selectedCStatuses: status));
+  }
 
   Future<void> getInspections() async {
     emit(state.copyWith(isLoading: true));

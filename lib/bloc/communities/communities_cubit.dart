@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
@@ -30,6 +31,26 @@ class CommunitiesCubit extends Cubit<CommunitiesState> {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching communities');
     }
+  }
+
+  Future<void> getCommunitiesFilter(BuildContext context) async {
+    emit(state.copyWith(isLoading: true));
+    await _associationRepo.getAssociations().then((response) {
+      if (response != null) {
+        emit(state.copyWith(communities: response.record, isLoading: false));
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Something went wrong while fetching communities',
+        );
+        emit(state.copyWith(isLoading: false));
+      }
+    }).catchError((error, stackTrace) {
+      // Handle errors
+      emit(state.copyWith(isLoading: false));
+      Fluttertoast.showToast(
+        msg: error.toString(),
+      );
+    });
   }
 
   Future<void> getMoreCommunities() async {

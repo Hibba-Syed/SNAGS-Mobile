@@ -14,6 +14,13 @@ class AppConstants {
   static const int logoutIndex = 7;
 
   /// inspection statuses
+  static const List<String> inspectionStatuses = [
+    "In-Progress",
+    "Ready For Submission",
+    "Submitted",
+    "Rejected",
+    "Approved",
+  ];
   static StatusModel inspectionInProgress = StatusModel(
     title: "In-Progress",
     color: const Color(0xFFe9bc18),
@@ -36,6 +43,12 @@ class AppConstants {
   );
 
   /// snags statuses
+  static const List<String> snagsStatuses = [
+    "New",
+    "In-Progress",
+    "Completed",
+    "Cancelled",
+  ];
   static StatusModel snagNew = StatusModel(
     title: "New",
     color: const Color(0xFF179faa),
