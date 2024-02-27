@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 
 import '../../../../bloc/communities/communities_cubit.dart';
 import '../../../../bloc/inspection/inspection_cubit.dart';
@@ -104,17 +105,19 @@ class _InspectionFilterBottomSheetState
                     bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                   ),
                 ),
-                child: MultiSelectedDropdownWidget(
+                child: MultiSelectedDropdownWidget<String>(
                   hint: "Select Status",
                   icon: const Icon(Icons.keyboard_arrow_down_outlined),
                   selectedItems: context
                       .watch<InspectionCubit>()
                       .state
                       .selectedCStatuses,
-                  items:
-                  context.watch<InspectionCubit>().state.selectedCStatuses ??
-                      [],
-                  onChanged: (List<dynamic> selectedItems) {},
+                  items:AppConstants.inspectionStatuses,
+                  onChanged: (value) {
+                    context
+                        .read<InspectionCubit>()
+                        .onChangeSelectedStatuses(value);
+                  },
                 ),
               ),
               UIHelper.verticalSpace(10),

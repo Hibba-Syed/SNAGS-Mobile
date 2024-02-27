@@ -102,12 +102,19 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                     bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                   ),
                 ),
-                child: MultiSelectedDropdownWidget(
+                child: MultiSelectedDropdownWidget<String>(
                   hint: "Select Status",
                   icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                  selectedItems: AppConstants.snagsStatuses,
-                  items: const ["1", "2", "3"],
-                  onChanged: (List<dynamic> selectedItems) {},
+                  selectedItems: context
+                      .watch<InspectionCubit>()
+                      .state
+                      .selectedCStatuses,
+                  items:AppConstants.snagsStatuses,
+                  onChanged: (value) {
+                    context
+                        .read<InspectionCubit>()
+                        .onChangeSelectedStatuses(value);
+                  },
                 ),
               ),
               UIHelper.verticalSpace(10),
