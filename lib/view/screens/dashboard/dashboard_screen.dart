@@ -11,8 +11,8 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/high_risk_snags_container.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/pending_inspections_container.dart';
+import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/active_snags_container.dart';
+import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/active_inspections_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_inspection_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/total_communities_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
@@ -92,9 +92,8 @@ class DashboardScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.all(10.0),
                     children: [
-                      PendingInspectionsContainer(),
-                      HighRiskSnagsContainer(),
-                      TotalCommunitiesContainer(),
+                      ActiveInspectionsContainer(),
+                      ActiveSnagsContainer(),
                     ],
                   ),
                 ),

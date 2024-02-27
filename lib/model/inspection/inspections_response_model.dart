@@ -129,7 +129,7 @@ class InspectionModel {
   int? associationId;
   int? inspectorId;
   String? reference;
-  dynamic score;
+  double? score;
   String? status;
   String? createdAt;
   String? updatedAt;

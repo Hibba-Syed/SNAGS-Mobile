@@ -1,9 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/profile/profile_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo_impl.dart';
@@ -11,6 +13,7 @@ import 'package:iskaan_inspections_mobile/repo/profile/profile_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/profile/profile_repo_impl.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/preference_utils.dart';
 
 part 'dashboard_state.dart';
@@ -62,6 +65,24 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
+  Future<void> getInspectionsStatisticsByMonth() async {
+    InspectionsStatisticsByMonthResponseModel? statisticsResponse =
+        await _inspectionRepo.getInspectionsStatisticsByMonth().onError(
+      (error, stackTrace) {
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    if (statisticsResponse != null) {
+      emit(state.copyWith(
+          inspectionsStatisticsByMonth: statisticsResponse.record));
+    } else {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
   Future<void> getSnagsStatistics() async {
     SnagsStatisticsResponseModel? statisticsResponse =
         await _snagRepo.getSnagsStatistics().onError(
@@ -74,6 +95,25 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     if (statisticsResponse != null) {
       emit(state.copyWith(snagsStatistics: statisticsResponse.record));
+    } else {
+      Fluttertoast.showToast(msg: 'Something went wrong');
+    }
+  }
+
+  Future<void> getSnagsStatisticsByMonth() async {
+    SnagsStatisticsByMonthResponseModel? statisticsResponse =
+        await _snagRepo.getSnagsStatisticsByMonth().onError(
+      (error, stackTrace) {
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    if (statisticsResponse != null) {
+      print('not null');
+      print(statisticsResponse.record?.first);
+      emit(state.copyWith(snagsStatisticsByMonth: statisticsResponse.record));
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong');
     }
@@ -117,6 +157,8 @@ class DashboardCubit extends Cubit<DashboardState> {
     emit(state.copyWith(isLoading: true));
     await Future.wait([
       getProfile(),
+      getInspectionsStatisticsByMonth(),
+      getSnagsStatisticsByMonth(),
       getInspectionsStatistics(),
       getSnagsStatistics(),
       getRecentInspections(),
@@ -126,5 +168,28 @@ class DashboardCubit extends Cubit<DashboardState> {
       throw error!;
     });
     emit(state.copyWith(isLoading: false));
+  }
+
+  List<int> getActiveInspectionsStatistics() {
+    List<int> values = [];
+    print('inspecttt:: ${state.inspectionsStatisticsByMonth}');
+    state.inspectionsStatisticsByMonth?.forEach((element) {
+      if (element.name == AppConstants.inspectionInProgress.title||
+          element.name == AppConstants.inspectionReadyForSubmission.title) {
+        values.addAll(element.data as Iterable<int>);
+      }
+    });
+    return values;
+  }
+
+  List<int> getActiveSnagsStatistics() {
+    List<int> values = [];
+    state.snagsStatisticsByMonth?.forEach((element) {
+      if (element.name == AppConstants.snagNew.title ||
+          element.name == AppConstants.snagInProgress.title) {
+        values.addAll(element.data as Iterable<int>);
+      }
+    });
+    return values;
   }
 }

@@ -29,7 +29,7 @@ class InspectionDetailSnagsScreen extends StatelessWidget {
           Expanded(
             child: (snags?.isNotEmpty ?? false)
                 ? ListView.separated(
-                    itemCount: 10,
+                    itemCount: snags?.length??0,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(

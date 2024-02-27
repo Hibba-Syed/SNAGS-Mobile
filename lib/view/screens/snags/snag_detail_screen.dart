@@ -289,8 +289,8 @@ class SnagDetailScreen extends StatelessWidget {
                                       ),
                                       SnagDetailItemWidget(
                                         title: 'Score',
-                                        value: state
-                                            .snagDetails?.inspection?.score,
+                                        value:
+                                            '${state.snagDetails?.inspection?.score ?? 0}',
                                       ),
                                     ],
                                   )

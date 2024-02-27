@@ -70,4 +70,53 @@ class AppConstants {
     title: 'High Risk',
     color: const Color(0xFFf9352c),
   );
+  static StatusModel inspectionLogCreated = StatusModel(
+    title: 'created',
+    color: const Color(0xFFa4cdfe),
+  );
+  static StatusModel inspectionLogUpdated = StatusModel(
+    title: 'updated',
+    color: const Color(0xFFf2d774),
+  );
+  static StatusModel inspectionLogSubmitted = StatusModel(
+    title: 'submitted',
+    color: const Color(0xFF74c5cc),
+  );
+  static StatusModel inspectionLogRejected = StatusModel(
+    title: 'rejected',
+    color: const Color(0xFFfb8680),
+  );
+  static StatusModel inspectionLogApproved = StatusModel(
+    title: 'approved',
+    color: const Color(0xFF81e0ab),
+  );
+  static StatusModel inspectionLogArchived = StatusModel(
+    title: 'archived',
+    color: const Color(0xFF78767a),
+  );
+
+  static StatusModel snagLogCreated = StatusModel(
+    title: 'created',
+    color: const Color(0xFFa4cdfe),
+  );
+  static StatusModel snagLogUpdated = StatusModel(
+    title: 'updated',
+    color: const Color(0xFFf2d774),
+  );
+  static StatusModel snagLogStarted = StatusModel(
+    title: 'started',
+    color: const Color(0xFF81e0ab),
+  );
+  static StatusModel snagLogCompleted = StatusModel(
+    title: 'completed',
+    color: const Color(0xFF74c5cc),
+  );
+  static StatusModel snagLogCancelled = StatusModel(
+    title: 'cancelled',
+    color: const Color(0xFFfb8680),
+  );
+  static StatusModel snagLogMerged = StatusModel(
+    title: 'merged',
+    color: const Color(0xFF9c9bf3),
+  );
 }

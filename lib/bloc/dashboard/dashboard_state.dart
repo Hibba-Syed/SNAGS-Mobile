@@ -8,6 +8,8 @@ class DashboardState {
   final SnagsStatisticsRecord? snagsStatistics;
   final List<InspectionModel>? recentInspections;
   final List<SnagModel>? recentSnags;
+  final List<SnagsStatisticsByMonthRecord>? snagsStatisticsByMonth;
+  final List<InspectionsStatisticsByMonthRecord>? inspectionsStatisticsByMonth;
   const DashboardState({
     this.isFloatingButtonExpanded = false,
     this.isLoading = false,
@@ -16,6 +18,8 @@ class DashboardState {
     this.snagsStatistics,
     this.recentInspections,
     this.recentSnags,
+    this.snagsStatisticsByMonth,
+    this.inspectionsStatisticsByMonth,
   });
   DashboardState copyWith({
     bool? isFloatingButtonExpanded,
@@ -25,17 +29,21 @@ class DashboardState {
     SnagsStatisticsRecord? snagsStatistics,
     List<InspectionModel>? recentInspections,
     List<SnagModel>? recentSnags,
+    List<SnagsStatisticsByMonthRecord>? snagsStatisticsByMonth,
+    List<InspectionsStatisticsByMonthRecord>? inspectionsStatisticsByMonth,
   }) {
     return DashboardState(
       isFloatingButtonExpanded:
           isFloatingButtonExpanded ?? this.isFloatingButtonExpanded,
       isLoading: isLoading ?? this.isLoading,
-      profileRecord: profileRecord??this.profileRecord,
+      profileRecord: profileRecord ?? this.profileRecord,
       inspectionsStatistics:
           inspectionsStatistics ?? this.inspectionsStatistics,
       snagsStatistics: snagsStatistics ?? this.snagsStatistics,
       recentInspections: recentInspections ?? this.recentInspections,
       recentSnags: recentSnags ?? this.recentSnags,
+      snagsStatisticsByMonth: snagsStatisticsByMonth??this.snagsStatisticsByMonth,
+      inspectionsStatisticsByMonth: inspectionsStatisticsByMonth??this.inspectionsStatisticsByMonth,
     );
   }
 }
