@@ -8,7 +8,7 @@ import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 class MultiSelectedDropdownWidget<T> extends StatelessWidget {
   final String? label;
   final String? hint;
-  final List<T> selectedItems ;
+  final List<T>? selectedItems ;
   final List<T> items;
   final String Function(T)? itemAsString;
   final bool Function(T, T)? compareFn;
@@ -68,7 +68,7 @@ class MultiSelectedDropdownWidget<T> extends StatelessWidget {
 
             ),
           ),
-          selectedItems: selectedItems,
+          selectedItems: selectedItems??[],
           items: items,
           itemAsString: itemAsString,
           compareFn: compareFn,

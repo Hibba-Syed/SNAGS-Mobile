@@ -10,6 +10,9 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
 
+import '../../../bloc/communities/communities_cubit.dart';
+import 'components/snags_filter_bottom_sheet.dart';
+
 class SnagsScreen extends StatefulWidget {
   const SnagsScreen({super.key});
 
@@ -43,7 +46,9 @@ class _SnagsScreenState extends State<SnagsScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: SearchTextField(
-                  onFilterPressed: () {},
+                  onFilterPressed: () {
+                    _snagsFilterBottomSheet(context);
+                  },
                 ),
               ),
               UIHelper.verticalSpace(16.0),
@@ -97,4 +102,16 @@ class _SnagsScreenState extends State<SnagsScreen> {
       ),
     );
   }
+  _snagsFilterBottomSheet(context)  {
+    showModalBottomSheet(
+      //isScrollControlled: true,
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        context.read<CommunitiesCubit>().getCommunitiesFilter(context);
+        return const SnagsFilterBottomSheet();
+      },
+    );
+  }
+
 }

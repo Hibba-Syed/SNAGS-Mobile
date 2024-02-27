@@ -10,6 +10,9 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
 
+import '../../../bloc/communities/communities_cubit.dart';
+import 'components/inspection_filter_bottom_sheet.dart';
+
 class InspectionScreen extends StatefulWidget {
   const InspectionScreen({super.key});
 
@@ -21,7 +24,7 @@ class _InspectionScreenState extends State<InspectionScreen> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    super.initState();
+    super.initState();  
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
@@ -44,7 +47,9 @@ class _InspectionScreenState extends State<InspectionScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 10.0),
                 child: SearchTextField(
-                  onFilterPressed: () {},
+                  onFilterPressed: () {
+                    _inspectionFilterBottomSheet(context);
+                  },
                 ),
               ),
               Expanded(
@@ -94,4 +99,16 @@ class _InspectionScreenState extends State<InspectionScreen> {
       ),
     );
   }
+  _inspectionFilterBottomSheet(context)  {
+    showModalBottomSheet(
+      //isScrollControlled: true,
+      context: context,
+      barrierColor: Colors.transparent,
+      builder: (context) {
+        context.read<CommunitiesCubit>().getCommunitiesFilter(context);
+        return const InspectionFilterBottomSheet();
+      },
+    );
+  }
+
 }
