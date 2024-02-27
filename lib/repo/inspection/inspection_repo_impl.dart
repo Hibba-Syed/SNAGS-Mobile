@@ -32,8 +32,11 @@ class InspectionRepoImpl implements InspectionRepo {
     String? toDate,
   }) async {
     try {
+      String? associationIdsString = associationIds?.join(',');
+      String? companyIdsString = companyIds?.join(',');
+      String? statusesString = statuses?.join(',');
       String url =
-          '${ApiUrl.inspections}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIds ?? ''}&company_ids=${companyIds ?? ''}&status=${statuses ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
+          '${ApiUrl.inspections}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIdsString ?? ''}&company_ids=${companyIdsString ?? ''}&status=${statusesString ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return InspectionsResponseModel.fromJson(response);
     } catch (e) {
@@ -54,7 +57,8 @@ class InspectionRepoImpl implements InspectionRepo {
   }
 
   @override
-  Future<InspectionsStatisticsByMonthResponseModel?> getInspectionsStatisticsByMonth() async{
+  Future<InspectionsStatisticsByMonthResponseModel?>
+      getInspectionsStatisticsByMonth() async {
     try {
       String url = '${ApiUrl.inspectionsStatisticsByMonth}?months=12';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
