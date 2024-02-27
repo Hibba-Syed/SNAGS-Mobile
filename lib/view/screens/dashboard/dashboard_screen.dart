@@ -206,7 +206,7 @@ class DashboardScreen extends StatelessWidget {
                     ),
                     // const Spacer(),
                     Container(
-                      height: 50,
+                      height: 48,
                       width: 130,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -308,7 +308,7 @@ class DashboardScreen extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      height: 50,
+                      height: 48,
                       width: 130,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -323,7 +323,7 @@ class DashboardScreen extends StatelessWidget {
                         fillColor: AppColors.darkGrey.withOpacity(0.1),
                         icon: const Icon(Icons.keyboard_arrow_down_outlined),
                         selectedItem: null,
-                        items: [],
+                        items: ['1','2','3','4'],
                         onChanged: (value) {},
                       ),
                     ),
