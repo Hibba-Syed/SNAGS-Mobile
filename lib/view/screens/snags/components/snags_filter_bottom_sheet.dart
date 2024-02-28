@@ -58,6 +58,8 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                 selectedItems:
                 context.watch<SnagsCubit>().state.selectedCompanies,
                 items: Globals().profileRecord?.companies??[],
+                itemAsString: (companies) => companies.name ?? '',
+                compareFn: (companies, item) => companies.name == item.name,
                 onChanged: (values) {
                   context.read<SnagsCubit>().onChangeSelectedCompanies(values);
                 },

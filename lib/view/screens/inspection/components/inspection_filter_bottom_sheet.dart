@@ -8,7 +8,6 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
 import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 
-import '../../../../bloc/communities/communities_cubit.dart';
 import '../../../../bloc/inspection/inspection_cubit.dart';
 import '../../../../res/constants/app_colors.dart';
 import '../../../../res/styles/styles.dart';
@@ -66,6 +65,8 @@ class _InspectionFilterBottomSheetState
                     .state
                     .selectedCompanies,
                 items: Globals().profileRecord?.companies ?? [],
+                itemAsString: (companies) => companies.name ?? '',
+                compareFn: (companies, item) => companies.name == item.name,
                 onChanged:  (values) {
                   context
                       .read<InspectionCubit>().onChangeSelectedCompanies(values);
