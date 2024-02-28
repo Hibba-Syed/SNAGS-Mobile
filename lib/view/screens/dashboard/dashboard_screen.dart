@@ -11,10 +11,9 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/high_risk_snags_container.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/pending_inspections_container.dart';
+import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/active_snags_container.dart';
+import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/active_inspections_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/recent_inspection_item_widget.dart';
-import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/total_communities_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
@@ -25,11 +24,10 @@ import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.d
 import 'package:iskaan_inspections_mobile/view/widgets/snags_status_container.dart';
 
 import '../../widgets/dropdown/dropdown_widget.dart';
-import 'components/action_required_item_widget.dart';
 import '../../widgets/inspactions_status_container.dart';
 
 class DashboardScreen extends StatelessWidget {
-  DashboardScreen({super.key});
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +90,8 @@ class DashboardScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.all(10.0),
                     children: [
-                      PendingInspectionsContainer(),
-                      HighRiskSnagsContainer(),
-                      TotalCommunitiesContainer(),
+                      ActiveInspectionsContainer(),
+                      ActiveSnagsContainer(),
                     ],
                   ),
                 ),
@@ -390,14 +387,13 @@ class DashboardScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   InspectionModel item = state.recentInspections![index];
                   return RecentInspectionItemWidget(
+                    id: item.id,
                     reference: item.reference ?? '--',
                     status: item.status ?? '--',
                     communityName: item.association?.name ?? '--',
                     userName: item.inspector?.fullName ?? '--',
                     date: item.updatedAt ?? item.createdAt,
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.inspectionDetail);
-                    },
+
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -428,17 +424,17 @@ class DashboardScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  SnagModel item = state.recentSnags![index];
+                  SnagModel? snag = state.recentSnags?[index];
                   return SnagWidget(
-                    reference: item.reference ?? '--',
-                    status: item.status ?? '--',
-                    risk: item.risk ?? '--',
-                    title: item.title ?? '--',
-                    imageUrl: '',
-                    description: item.description ?? '--',
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.snagDetail);
-                    },
+                    id: snag?.id,
+                    imageUrl: snag?.images?.isNotEmpty ?? false
+                        ? snag?.images?.first.path
+                        : '',
+                    reference: snag?.reference ?? '--',
+                    risk: snag?.risk ?? '--',
+                    status: snag?.status ?? '--',
+                    title: snag?.title ?? '--',
+                    description: snag?.description ?? '--',
                   );
                 },
                 separatorBuilder: (context, index) {

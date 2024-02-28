@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/add_button_with_title.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
+
 class InspectionDetailSnagsScreen extends StatelessWidget {
-  const InspectionDetailSnagsScreen({super.key});
+  final List<SnagModel>? snags;
+  const InspectionDetailSnagsScreen({
+    super.key,
+    required this.snags,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Column(
         children: [
           Padding(
@@ -20,29 +27,34 @@ class InspectionDetailSnagsScreen extends StatelessWidget {
           ),
           UIHelper.verticalSpace(16.0),
           Expanded(
-            child: ListView.separated(
-              itemCount: 10,
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-              itemBuilder: (context, index) {
-                return  SnagWidget(
-                  imageUrl: '',
-                  reference: 'INS001-24-00003',
-                  risk: 'High Risk',
-                  status: 'In Progress',
-                  title: 'Door Glass Broken',
-                  description: 'The glass of the back entrance of the building is crack and it is dangerous for the people of the community.',
-                  onTap: (){
-                    Navigator.pushNamed(context, AppRoutes.snagDetail);
-                  },
-                );
-              },
-              separatorBuilder: (context, index) {
-                return UIHelper.verticalSpace(14.0);
-              },
-            ),
+            child: (snags?.isNotEmpty ?? false)
+                ? ListView.separated(
+                    itemCount: snags?.length??0,
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10.0),
+                    itemBuilder: (context, index) {
+                      SnagModel? snag = snags?[index];
+                      return SnagWidget(
+                        id: snag?.id,
+                        imageUrl: snag?.images?.isNotEmpty ?? false
+                            ? snag?.images?.first.path
+                            : '',
+                        reference: snag?.reference ?? '--',
+                        risk: snag?.risk ?? '--',
+                        status: snag?.status ?? '--',
+                        title: snag?.title ?? '--',
+                        description: snag?.description ?? '--',
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return UIHelper.verticalSpace(14.0);
+                    },
+                  )
+                : const EmptyWidget(
+                    text: 'No Snags found',
+                  ),
           ),
         ],
       ),

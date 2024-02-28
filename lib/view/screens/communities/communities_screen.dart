@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_inspections/community_detail_inspections_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_snags/community_detail_snags_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_details_statistics/community_detail_statistics_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
@@ -60,9 +63,31 @@ class _CommunitiesScreenState extends State<CommunitiesScreen> {
                             communityName: item.name ?? '--',
                             companyName: item.company?.name ?? '--',
                             onTap: () {
-                              print(item.id);
+                              context
+                                  .read<CommunityDetailStatisticsCubit>()
+                                  .onChangeId(item.id);
+                              context
+                                  .read<CommunityDetailInspectionsCubit>()
+                                  .onChangeId(item.id);
+                              context
+                                  .read<CommunityDetailSnagsCubit>()
+                                  .onChangeId(item.id);
+                              context
+                                  .read<CommunityDetailStatisticsCubit>()
+                                  .getCommunitySnagsStatistics();
+                              context
+                                  .read<CommunityDetailStatisticsCubit>()
+                                  .getCommunityInspectionsStatistics();
+                              context
+                                  .read<CommunityDetailInspectionsCubit>()
+                                  .getCommunityInspections();
+                              context
+                                  .read<CommunityDetailSnagsCubit>()
+                                  .getCommunitySnags();
+
                               Navigator.pushNamed(
-                                  context, AppRoutes.communityDetail);
+                                  context, AppRoutes.communityDetail,
+                                  arguments: {'name': item.name});
                             },
                           );
                         },

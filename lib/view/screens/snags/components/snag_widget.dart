@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 
 class SnagWidget extends StatelessWidget {
+  final int? id;
   final String? imageUrl;
   final String risk;
   final String status;
   final String reference;
   final String title;
   final String description;
-  final VoidCallback onTap;
   const SnagWidget({
     super.key,
+    required this.id,
     required this.imageUrl,
     required this.risk,
     required this.status,
     required this.reference,
     required this.title,
     required this.description,
-    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (id != null) {
+          context.read<SnagDetailCubit>().getSnagDetails(id: id!);
+        }
+        context.read<SnagDetailCubit>().onChangeReference(reference);
+        Navigator.pushNamed(context, AppRoutes.snagDetail);
+      },
       child: Container(
         width: deviceWidth,
         height: 120,
@@ -36,7 +45,6 @@ class SnagWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(10.0),
-
         ),
         child: Row(
           children: [

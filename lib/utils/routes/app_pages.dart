@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/auth/auth_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_inspections/community_detail_inspections_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_snags/community_detail_snags_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_details_statistics/community_detail_statistics_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/community_detail/community_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
@@ -99,16 +103,31 @@ class AppPages {
     PageEntity(
       route: AppRoutes.communityDetail,
       page: const CommunityDetailScreen(),
-      bloc: BlocProvider(
-        create: (context) => CommunityDetailCubit(),
+      bloc: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => CommunityDetailCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CommunityDetailStatisticsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CommunityDetailSnagsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => CommunityDetailInspectionsCubit(),
+          ),
+        ],
+        child: const SizedBox.shrink(),
       ),
+
     ),
     PageEntity(
       route: AppRoutes.inspectionDetail,
       page: const InspectionDetailScreen(),
-      // bloc: BlocProvider(
-      //   create: (context) => CommunityDetailCubit(),
-      // ),
+      bloc: BlocProvider(
+        create: (context) => InspectionDetailsCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.addInspection,

@@ -17,9 +17,10 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    Map<String,dynamic> arguments =ModalRoute.of(context)?.settings.arguments as Map<String,dynamic>;
     return Scaffold(
-      appBar: const AppBarWidget(
-        title: 'IT Plaza',
+      appBar:  AppBarWidget(
+        title: arguments['name'],
       ),
       body: DefaultTabController(
         length: 3,

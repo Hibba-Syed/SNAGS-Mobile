@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 
-import '../../res/constants/app_colors.dart';
 
 class InspectionsStatusContainer extends StatelessWidget {
   final String status;

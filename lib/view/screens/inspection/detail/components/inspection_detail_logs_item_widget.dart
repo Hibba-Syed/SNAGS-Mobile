@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_log_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 
@@ -43,7 +44,7 @@ class InspectionDetailLogsItemWidget extends StatelessWidget {
                 text: text,
                 style: AppTextStyles.style14Grey400,
                 children: [
-                  TextSpan(text: by, style: AppTextStyles.style14Primary600),
+                  TextSpan(text: ' $by', style: AppTextStyles.style14Primary600),
                 ],
               ),
             ),
@@ -52,7 +53,7 @@ class InspectionDetailLogsItemWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InspectionStatusWidget(status: status,),
+              InspectionLogStatusWidget(status: status,),
               DateTextWidget(
                 date: date,
               ),

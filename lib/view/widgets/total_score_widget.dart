@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 
 class TotalScoreWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class TotalScoreWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.133),
+        color: getColor().withOpacity(0.133),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Row(
@@ -24,7 +25,7 @@ class TotalScoreWidget extends StatelessWidget {
           Text(
             'Total Score:',
             style: TextStyle(
-              color: color,
+              color: getColor(),
               fontSize: 12.0,
               fontWeight: FontWeight.w600,
             ),
@@ -33,7 +34,7 @@ class TotalScoreWidget extends StatelessWidget {
           Text(
             score,
             style: TextStyle(
-              color: color,
+              color: getColor(),
               fontSize: 12.0,
               fontWeight: FontWeight.w400,
             ),
@@ -41,5 +42,15 @@ class TotalScoreWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+  Color getColor(){
+    double parsedScore = double.parse(score);
+    if(parsedScore>=70){
+      return AppColors.green;
+    }else if(parsedScore>=40){
+      return AppColors.yellow;
+    }else{
+      return AppColors.red;
+    }
   }
 }
