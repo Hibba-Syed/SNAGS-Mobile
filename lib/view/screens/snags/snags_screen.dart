@@ -10,7 +10,6 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
 
-import '../../../bloc/communities/communities_cubit.dart';
 import 'components/snags_filter_bottom_sheet.dart';
 
 class SnagsScreen extends StatefulWidget {
@@ -46,6 +45,7 @@ class _SnagsScreenState extends State<SnagsScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: SearchTextField(
+                  isFilterApplied: (state.selectedStatuses?.isEmpty??true) && (state.selectedCommunities?.isEmpty??true) ? false : true,
                   onFilterPressed: () {
                     _snagsFilterBottomSheet(context);
                   },
