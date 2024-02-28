@@ -17,6 +17,7 @@ class AppImages {
   static const String icSnags = "${baseSvgPath}ic_snags.svg";
   static const String icProfile = "${baseSvgPath}ic_profile.svg";
   static const String icLogout = "${baseSvgPath}ic_logout.svg";
+  static const String icClearFilter = "${baseSvgPath}ic_clear_filter.svg";
 
   ///lottie animations
   static const String forgotJson = "${baseJsonPath}forgot.json";
