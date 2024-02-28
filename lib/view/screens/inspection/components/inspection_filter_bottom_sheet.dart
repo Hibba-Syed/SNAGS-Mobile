@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
+import 'package:iskaan_inspections_mobile/res/globals.dart';
+import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 
 import '../../../../bloc/communities/communities_cubit.dart';
 import '../../../../bloc/inspection/inspection_cubit.dart';
@@ -55,12 +58,18 @@ class _InspectionFilterBottomSheetState
                   bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                 ),
               ),
-              child: MultiSelectedDropdownWidget(
+              child: MultiSelectedDropdownWidget<Company>(
                 icon: const Icon(Icons.keyboard_arrow_down_outlined),
                 hint: "Select Company",
-                selectedItems: const [],
-                items: const ["1", "2", "3"],
-                onChanged: (List<dynamic> selectedItems) {},
+                selectedItems: context
+                    .watch<InspectionCubit>()
+                    .state
+                    .selectedCompanies,
+                items: Globals().profileRecord?.companies ?? [],
+                onChanged:  (values) {
+                  context
+                      .read<InspectionCubit>().onChangeSelectedCompanies(values);
+                },
               ),
             ),
             UIHelper.verticalSpace(10),
@@ -81,8 +90,7 @@ class _InspectionFilterBottomSheetState
                       .watch<InspectionCubit>()
                       .state
                       .selectedCommunities,
-                  items:
-                      context.watch<CommunitiesCubit>().state.communities ?? [],
+                  items: Globals().profileRecord?.associations ?? [],
                   itemAsString: (community) => community.name ?? '',
                   compareFn: (community, item) => community.name == item.name,
                   onChanged: (value) {
@@ -123,29 +131,37 @@ class _InspectionFilterBottomSheetState
             UIHelper.verticalSpace(16),
             InkWell(
               onTap: () {
-                pickDateRang();
+                pickDateRange();
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      dateRange != null
-                          ? "${dateRange?.start.year} / ${dateRange?.start.month} / ${dateRange?.start.day}   ${dateRange?.end.year} / ${dateRange?.end.month} / ${dateRange?.end.day} "
-                          : 'Select date range',
-                      style: AppTextStyles.style16darkGrey600,
+              child: BlocBuilder<InspectionCubit, InspectionState>(
+                builder: (context, state) {
+                  print('state from: ${state.fromDate}');
+                  print('state to: ${state.toDate}');
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom:
+                            BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                      ),
                     ),
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Icon(Icons.keyboard_arrow_down_outlined),
-                    )
-                  ],
-                ),
+                    child: Row(
+                      children: [
+                        Text(
+                          ((state.fromDate?.isNotEmpty ?? false) &&
+                                  (state.toDate?.isNotEmpty ?? false))
+                              ? "${DateTimeUtil.getFormattedDate(state.fromDate)}  -  ${DateTimeUtil.getFormattedDate(state.toDate)}"
+                              : 'Select date range',
+                          style: AppTextStyles.style16darkGrey600,
+                        ),
+                        const Spacer(),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Icon(Icons.keyboard_arrow_down_outlined),
+                        )
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
             UIHelper.verticalSpace(15),
@@ -158,6 +174,7 @@ class _InspectionFilterBottomSheetState
                   ),
                   child: IconButton(
                     onPressed: () {
+                      context.read<InspectionCubit>().clearFilterData();
                       Navigator.pop(context);
                     },
                     icon: SvgPicture.asset(AppImages.icClearFilter),
@@ -169,6 +186,7 @@ class _InspectionFilterBottomSheetState
                     overlayColor:
                         const MaterialStatePropertyAll(Colors.transparent),
                     onTap: () {
+                      context.read<InspectionCubit>().getInspections();
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -192,18 +210,38 @@ class _InspectionFilterBottomSheetState
     );
   }
 
-  Future pickDateRang() async {
+  Future pickDateRange() async {
     DateTimeRange? newDateRange = await showDateRangePicker(
-      initialDateRange: dateRange,
       context: context,
       firstDate: DateTime(2019),
       lastDate: DateTime(2025, 01, 01),
     );
-    if (newDateRange == null) {
-      dateRange = null;
+    if (newDateRange != null) {
+      context
+          .read<InspectionCubit>()
+          .onChangeFromDate(newDateRange.start.toString());
+      context
+          .read<InspectionCubit>()
+          .onChangeToDate(newDateRange.end.toString());
     } else {
-      dateRange = newDateRange;
+      context.read<InspectionCubit>().onChangeFromDate('');
+      context.read<InspectionCubit>().onChangeToDate('');
     }
-    setState(() {});
   }
+
+//
+  // Future pickDateRang() async {
+  //   DateTimeRange? newDateRange = await showDateRangePicker(
+  //     initialDateRange: dateRange,
+  //     context: context,
+  //     firstDate: DateTime(2019),
+  //     lastDate: DateTime(2025, 01, 01),
+  //   );
+  //   if (newDateRange == null) {
+  //     dateRange = null;
+  //   } else {
+  //     dateRange = newDateRange;
+  //   }
+  //   setState(() {});
+  // }
 }

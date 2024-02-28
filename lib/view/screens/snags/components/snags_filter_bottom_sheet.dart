@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
-
-import '../../../../bloc/communities/communities_cubit.dart';
-import '../../../../bloc/inspection/inspection_cubit.dart';
+import 'package:iskaan_inspections_mobile/res/globals.dart';
 import '../../../../bloc/snags/snags_cubit.dart';
 import '../../../../model/association/association_model.dart';
 import '../../../../res/constants/app_colors.dart';
@@ -53,12 +52,15 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                   bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                 ),
               ),
-              child: MultiSelectedDropdownWidget(
+              child: MultiSelectedDropdownWidget<Company>(
                 icon: const Icon(Icons.keyboard_arrow_down_outlined),
                 hint: "Select Company",
-                selectedItems: const [],
-                items: const ["1", "2", "3"],
-                onChanged: (List<dynamic> selectedItems) {},
+                selectedItems:
+                context.watch<SnagsCubit>().state.selectedCompanies,
+                items: Globals().profileRecord?.companies??[],
+                onChanged: (values) {
+                  context.read<SnagsCubit>().onChangeSelectedCompanies(values);
+                },
               ),
             ),
             UIHelper.verticalSpace(10),
@@ -77,8 +79,7 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                   icon: const Icon(Icons.keyboard_arrow_down_outlined),
                   selectedItems:
                       context.watch<SnagsCubit>().state.selectedCommunities,
-                  items:
-                      context.watch<CommunitiesCubit>().state.communities ?? [],
+                  items:Globals().profileRecord?.associations ?? [],
                   itemAsString: (community) => community.name ?? '',
                   compareFn: (community, item) => community.name == item.name,
                   onChanged: (value) {
@@ -154,7 +155,7 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.read<SnagsCubit>().clearFilterData();
                     },
                     icon: SvgPicture.asset(AppImages.icClearFilter),
                   ),
@@ -165,6 +166,7 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                     overlayColor:
                         const MaterialStatePropertyAll(Colors.transparent),
                     onTap: () {
+                      context.read<SnagsCubit>().getSnags();
                       Navigator.pop(context);
                     },
                     child: Container(
