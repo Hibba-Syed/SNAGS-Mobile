@@ -11,6 +11,10 @@ class SnagsCubit extends Cubit<SnagsState> {
 
   final SnagRepo _snagRepo = SnagRepoImpl();
 
+  onChangeSelectedStatuses( List<String>? status){
+    emit(state.copyWith(selectedCStatuses: status));
+  }
+
   Future<void> getSnags() async {
     emit(state.copyWith(isLoading: true, page: 1));
     SnagsResponseModel? response = await _snagRepo

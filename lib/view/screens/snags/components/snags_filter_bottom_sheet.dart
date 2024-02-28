@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../bloc/communities/communities_cubit.dart';
 import '../../../../bloc/inspection/inspection_cubit.dart';
+import '../../../../bloc/snags/snags_cubit.dart';
 import '../../../../model/association/association_model.dart';
 import '../../../../res/constants/app_colors.dart';
 import '../../../../res/constants/constants.dart';
@@ -106,13 +107,13 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                   hint: "Select Status",
                   icon: const Icon(Icons.keyboard_arrow_down_outlined),
                   selectedItems: context
-                      .watch<InspectionCubit>()
+                      .watch<SnagsCubit>()
                       .state
                       .selectedCStatuses,
                   items:AppConstants.snagsStatuses,
                   onChanged: (value) {
                     context
-                        .read<InspectionCubit>()
+                        .read<SnagsCubit>()
                         .onChangeSelectedStatuses(value);
                   },
                 ),
