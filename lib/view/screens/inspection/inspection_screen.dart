@@ -47,6 +47,7 @@ class _InspectionScreenState extends State<InspectionScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 10.0),
                 child: SearchTextField(
+                  isFilterApplied: (state.selectedStatuses?.isEmpty??true) && (state.selectedCommunities?.isEmpty??true) ? false : true,
                   onFilterPressed: () {
                     _inspectionFilterBottomSheet(context);
                   },
@@ -105,7 +106,6 @@ class _InspectionScreenState extends State<InspectionScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<CommunitiesCubit>().getCommunitiesFilter(context);
         return const InspectionFilterBottomSheet();
       },
     );

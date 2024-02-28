@@ -10,6 +10,7 @@ class SearchTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
   final VoidCallback? onFilterPressed;
+  final bool isFilterApplied;
   const SearchTextField({
     super.key,
     this.initialValue,
@@ -18,6 +19,7 @@ class SearchTextField extends StatelessWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.onFilterPressed,
+    this.isFilterApplied=false,
   });
 
   @override
@@ -28,9 +30,9 @@ class SearchTextField extends StatelessWidget {
           child: Container(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(5.0),
-                ),
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
             child: TextFormField(
               initialValue: initialValue,
               controller: controller,
@@ -58,21 +60,34 @@ class SearchTextField extends StatelessWidget {
         ),
         if (onFilterPressed != null) UIHelper.horizontalSpace(10.0),
         if (onFilterPressed != null)
-          InkWell(
-            onTap: onFilterPressed,
-            child: Container(
-              width: 48.0,
-              height: 48.0,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(5.0),
-
+          Stack(
+            children: [
+              InkWell(
+                onTap: onFilterPressed,
+                child: Container(
+                  width: 48.0,
+                  height: 48.0,
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: const Icon(
+                    Icons.filter_alt_outlined,
+                    color: AppColors.lightGrey,
+                  ),
+                ),
               ),
-              child: const Icon(
-                Icons.filter_alt_outlined,
-                color: AppColors.lightGrey,
+              if(isFilterApplied)
+              const Positioned(
+                right: 10.0,
+                top: 10.0,
+                child: Icon(
+                  Icons.circle,
+                  color: AppColors.green,
+                  size: 10.0,
+                ),
               ),
-            ),
+            ],
           ),
       ],
     );

@@ -108,7 +108,6 @@ class _SnagsScreenState extends State<SnagsScreen> {
       context: context,
       barrierColor: Colors.transparent,
       builder: (context) {
-        context.read<CommunitiesCubit>().getCommunitiesFilter(context);
         return const SnagsFilterBottomSheet();
       },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
@@ -12,11 +13,28 @@ class SnagsCubit extends Cubit<SnagsState> {
 
   final SnagRepo _snagRepo = SnagRepoImpl();
 
-  onChangeSelectedStatuses( List<String>? status){
+  onChangeSelectedStatuses(List<String>? status) {
     emit(state.copyWith(selectedStatuses: status));
   }
-  onChangeSelectedCommunities(List<Association>? communities){
+
+  onChangeSelectedCommunities(List<Association>? communities) {
     emit(state.copyWith(selectedCommunities: communities));
+  }
+
+  onChangeSelectedCompanies(List<Company>? companies) {
+    emit(state.copyWith(selectedCompanies: companies));
+  }
+
+  clearFilterData() {
+    emit(
+      state.copyWith(
+        selectedCommunities: [],
+        selectedStatuses: [],
+        fromDate: '',
+        toDate: '',
+        selectedCompanies: [],
+      ),
+    );
   }
 
   Future<void> getSnags() async {
@@ -24,6 +42,11 @@ class SnagsCubit extends Cubit<SnagsState> {
     SnagsResponseModel? response = await _snagRepo
         .getSnags(
       page: state.page,
+      associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
+      companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
+      statuses: state.selectedStatuses,
+      // fromDate: state.fromDate,
+      // toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {
@@ -48,6 +71,11 @@ class SnagsCubit extends Cubit<SnagsState> {
     SnagsResponseModel? response = await _snagRepo
         .getSnags(
       page: state.page,
+      associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
+      companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
+      statuses: state.selectedStatuses,
+      // fromDate: state.fromDate,
+      // toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {
