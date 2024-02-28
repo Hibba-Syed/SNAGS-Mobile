@@ -24,6 +24,13 @@ class SnagsCubit extends Cubit<SnagsState> {
   onChangeSelectedCompanies(List<Company>? companies) {
     emit(state.copyWith(selectedCompanies: companies));
   }
+  onChangeFromDate(String? fromDate) {
+    emit(state.copyWith(fromDate: fromDate));
+  }
+
+  onChangeToDate(String? toDate) {
+    emit(state.copyWith(toDate: toDate));
+  }
 
   clearFilterData() {
     emit(
@@ -45,8 +52,8 @@ class SnagsCubit extends Cubit<SnagsState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {
@@ -74,8 +81,8 @@ class SnagsCubit extends Cubit<SnagsState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {

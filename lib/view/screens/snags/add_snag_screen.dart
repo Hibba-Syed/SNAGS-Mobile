@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:image_editor_plus/options.dart';
@@ -14,10 +14,18 @@ import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart
 import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
-class AddSnagScreen extends StatelessWidget {
+class AddSnagScreen extends StatefulWidget {
   AddSnagScreen({super.key});
+
+  @override
+  State<AddSnagScreen> createState() => _AddSnagScreenState();
+}
+
+class _AddSnagScreenState extends State<AddSnagScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final ImagePicker _imagePicker = ImagePicker();
+  final List<File> _selectedFiles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -92,38 +100,108 @@ class AddSnagScreen extends StatelessWidget {
                 ),
                 UIHelper.verticalSpace(10.0),
                 const Text(
-                  'Upload Images',
+                  'Add Images',
                   style: AppTextStyles.style16LightGrey400,
                 ),
                 UIHelper.verticalSpace(8.0),
-                CustomButton(
-                  text: 'Add Images',
-                  invert: true,
-                  icon: const Icon(
-                    Icons.photo_outlined,
-                    color: AppColors.primary,
-                  ),
-                  onPressed: () async {
-                    XFile? pickedImage = await _imagePicker.pickImage(
-                      source: ImageSource.camera,
-                    );
-                    if(pickedImage!=null){
-                      final bytes = await File(pickedImage.path).readAsBytes();
-                      // final img.Image? image = img.decodeImage(bytes);
-                      final Uint8List editedImages = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  ImageEditor(
-                            image: bytes,
-                            imagePickerOption: const ImagePickerOption(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width / 4,
+                  child: ListView.builder(
+                      itemCount: _selectedFiles.length+1,
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        if(index==_selectedFiles.length){
+                          return InkWell(
+                            onTap: () async {
+                              XFile? pickedImage = await _imagePicker.pickImage(
+                                source: ImageSource.camera,
+                              );
+                              if(pickedImage!=null){
+                                final bytes = await File(pickedImage.path).readAsBytes();
+                                // final img.Image? image = img.decodeImage(bytes);
+                                final Uint8List? editedImage = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>  ImageEditor(
+                                      image: bytes,
+                                      imagePickerOption: const ImagePickerOption(
+                                      ),
+                                    ),
+                                  ),
+                                );
+                                if(editedImage!=null){
+                                  final tempDir = await getTemporaryDirectory();
+                                  File file = await File('${tempDir.path}/image.png').create();
+                                  file.writeAsBytesSync(editedImage);
+                                  _selectedFiles.add(file,);
+                                  setState(() {
+                                  });
+                                }
+                              }
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width/4,
+                              height: MediaQuery.of(context).size.width/4,
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              child: const Icon(Icons.add_a_photo_outlined,color: AppColors.primary,),
+                            ),
+                          );
+                        }
+                        return Container(
+                          width: MediaQuery.of(context).size.width / 4,
+                          height: MediaQuery.of(context).size.width / 4,
+                          margin: const EdgeInsets.only(right: 10.0),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(
+                              color: AppColors.primary,
                             ),
                           ),
-                        ),
-                      );
-                      print(editedImages);
-                    }
-                  },
+                          child: Image.file(
+                            _selectedFiles[index],
+                            fit: BoxFit.fill,
+                          ),
+                        );
+                      }),
                 ),
+                // CustomButton(
+                //   text: 'Add Images',
+                //   invert: true,
+                //   icon: const Icon(
+                //     Icons.photo_outlined,
+                //     color: AppColors.primary,
+                //   ),
+                //   onPressed: () async {
+                //     XFile? pickedImage = await _imagePicker.pickImage(
+                //       source: ImageSource.camera,
+                //     );
+                //     if(pickedImage!=null){
+                //       final bytes = await File(pickedImage.path).readAsBytes();
+                //       // final img.Image? image = img.decodeImage(bytes);
+                //       final Uint8List editedImages = await Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) =>  ImageEditor(
+                //             image: bytes,
+                //             imagePickerOption: const ImagePickerOption(
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //       print(editedImages);
+                //     }
+                //   },
+                // ),
                 UIHelper.verticalSpace(2.0),
                 const Text(
                   '• Maximum image size should be 2MB',

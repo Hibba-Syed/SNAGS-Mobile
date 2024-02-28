@@ -209,7 +209,7 @@ class DashboardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: DropdownWidget(
-                        hint: "6 Months",
+                        hint: "1M",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -218,7 +218,7 @@ class DashboardScreen extends StatelessWidget {
                         fillColor: AppColors.darkGrey.withOpacity(0.1),
                         icon: const Icon(Icons.keyboard_arrow_down_outlined),
                         selectedItem: null,
-                        items: [],
+                        items: ['1M','6M','1Y','ALL'],
                         onChanged: (value) {},
                       ),
                     ),
@@ -311,7 +311,7 @@ class DashboardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: DropdownWidget(
-                        hint: "6 Months",
+                        hint: "1M",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -320,7 +320,7 @@ class DashboardScreen extends StatelessWidget {
                         fillColor: AppColors.darkGrey.withOpacity(0.1),
                         icon: const Icon(Icons.keyboard_arrow_down_outlined),
                         selectedItem: null,
-                        items: ['1','2','3','4'],
+                        items: ['1M','6M','1Y','ALL'],
                         onChanged: (value) {},
                       ),
                     ),

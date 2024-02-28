@@ -136,8 +136,6 @@ class _InspectionFilterBottomSheetState
               },
               child: BlocBuilder<InspectionCubit, InspectionState>(
                 builder: (context, state) {
-                  print('state from: ${state.fromDate}');
-                  print('state to: ${state.toDate}');
                   return Container(
                     decoration: BoxDecoration(
                       border: Border(
@@ -220,29 +218,13 @@ class _InspectionFilterBottomSheetState
     if (newDateRange != null) {
       context
           .read<InspectionCubit>()
-          .onChangeFromDate(newDateRange.start.toString());
+          .onChangeFromDate(newDateRange.start.toUtc().toIso8601String());
       context
           .read<InspectionCubit>()
-          .onChangeToDate(newDateRange.end.toString());
+          .onChangeToDate(newDateRange.end.toUtc().toIso8601String());
     } else {
       context.read<InspectionCubit>().onChangeFromDate('');
       context.read<InspectionCubit>().onChangeToDate('');
     }
   }
-
-//
-  // Future pickDateRang() async {
-  //   DateTimeRange? newDateRange = await showDateRangePicker(
-  //     initialDateRange: dateRange,
-  //     context: context,
-  //     firstDate: DateTime(2019),
-  //     lastDate: DateTime(2025, 01, 01),
-  //   );
-  //   if (newDateRange == null) {
-  //     dateRange = null;
-  //   } else {
-  //     dateRange = newDateRange;
-  //   }
-  //   setState(() {});
-  // }
 }

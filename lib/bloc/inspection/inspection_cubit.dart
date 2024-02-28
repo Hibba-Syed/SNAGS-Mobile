@@ -51,8 +51,8 @@ class InspectionCubit extends Cubit<InspectionState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {
@@ -81,8 +81,8 @@ class InspectionCubit extends Cubit<InspectionState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {

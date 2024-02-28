@@ -23,7 +23,7 @@ class _InspectionScreenState extends State<InspectionScreen> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
-    super.initState();  
+    super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
@@ -37,54 +37,57 @@ class _InspectionScreenState extends State<InspectionScreen> {
     return Scaffold(
       body: BlocBuilder<InspectionCubit, InspectionState>(
         builder: (context, state) {
-          if (state.isLoading == true) {
-            return const CustomLoader();
-          }
           return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 10.0),
                 child: SearchTextField(
-                  isFilterApplied: (state.selectedStatuses?.isEmpty??true) && (state.selectedCommunities?.isEmpty??true) ? false : true,
+                  isFilterApplied: (state.selectedStatuses?.isEmpty ?? true) &&
+                          (state.selectedCommunities?.isEmpty ?? true)
+                      ? false
+                      : true,
                   onFilterPressed: () {
                     _inspectionFilterBottomSheet(context);
                   },
                 ),
               ),
               Expanded(
-                child: state.inspections?.isNotEmpty ?? false
-                    ? RefreshIndicator(
-                        onRefresh: () async {
-                          await context
-                              .read<InspectionCubit>()
-                              .getInspections();
-                        },
-                        child: ListView.separated(
-                          itemCount: state.inspections?.length ?? 0,
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 10.0),
-                          itemBuilder: (context, index) {
-                            InspectionModel item = state.inspections![index];
-                            return InspectionWidget(
-                              id: item.id,
-                              reference: item.reference ?? '--',
-                              status: item.status ?? '--',
-                              communityName: item.association?.name ?? '--',
-                              companyName: item.company?.name ?? '',
-                              userName: item.inspector?.fullName ?? '--',
-                              date: item.updatedAt ?? item.createdAt,
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return UIHelper.verticalSpace(10.0);
-                          },
-                        ),
-                      )
-                    : const EmptyWidget(text: 'No Inspections found'),
+                child: state.isLoading == true
+                    ? const CustomLoader()
+                    : state.inspections?.isNotEmpty ?? false
+                        ? RefreshIndicator(
+                            onRefresh: () async {
+                              await context
+                                  .read<InspectionCubit>()
+                                  .getInspections();
+                            },
+                            child: ListView.separated(
+                              itemCount: state.inspections?.length ?? 0,
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 10.0),
+                              itemBuilder: (context, index) {
+                                InspectionModel item =
+                                    state.inspections![index];
+                                return InspectionWidget(
+                                  id: item.id,
+                                  reference: item.reference ?? '--',
+                                  status: item.status ?? '--',
+                                  communityName: item.association?.name ?? '--',
+                                  companyName: item.company?.name ?? '',
+                                  userName: item.inspector?.fullName ?? '--',
+                                  date: item.updatedAt ?? item.createdAt,
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return UIHelper.verticalSpace(10.0);
+                              },
+                            ),
+                          )
+                        : const EmptyWidget(text: 'No Inspections found'),
               ),
               if (state.loadMore) const CustomLoader(),
             ],
@@ -99,7 +102,8 @@ class _InspectionScreenState extends State<InspectionScreen> {
       ),
     );
   }
-  _inspectionFilterBottomSheet(context)  {
+
+  _inspectionFilterBottomSheet(context) {
     showModalBottomSheet(
       //isScrollControlled: true,
       context: context,
@@ -109,5 +113,4 @@ class _InspectionScreenState extends State<InspectionScreen> {
       },
     );
   }
-
 }
