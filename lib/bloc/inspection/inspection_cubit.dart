@@ -15,7 +15,7 @@ class InspectionCubit extends Cubit<InspectionState> {
     emit(state.copyWith(selectedCommunities: communities));
   }
   onChangeSelectedStatuses( List<String>? status){
-    emit(state.copyWith(selectedCStatuses: status));
+    emit(state.copyWith(selectedStatuses: status));
   }
 
   Future<void> getInspections() async {

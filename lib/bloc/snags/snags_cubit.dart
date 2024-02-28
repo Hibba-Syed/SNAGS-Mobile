@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
@@ -10,6 +11,13 @@ class SnagsCubit extends Cubit<SnagsState> {
   SnagsCubit() : super(const SnagsState());
 
   final SnagRepo _snagRepo = SnagRepoImpl();
+
+  onChangeSelectedStatuses( List<String>? status){
+    emit(state.copyWith(selectedStatuses: status));
+  }
+  onChangeSelectedCommunities(List<Association>? communities){
+    emit(state.copyWith(selectedCommunities: communities));
+  }
 
   Future<void> getSnags() async {
     emit(state.copyWith(isLoading: true, page: 1));

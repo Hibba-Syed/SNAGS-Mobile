@@ -5,7 +5,7 @@ class InspectionState {
   final bool loadMore;
   final List<InspectionModel>? inspections;
   final List<Association>? selectedCommunities;
-  final List<String>? selectedCStatuses;
+  final List<String>? selectedStatuses;
   final int page;
   const InspectionState({
     this.isLoading = false,
@@ -13,14 +13,14 @@ class InspectionState {
     this.inspections,
     this.selectedCommunities,
     this.page = 1,
-    this.selectedCStatuses,
+    this.selectedStatuses,
   });
   InspectionState copyWith({
     bool? isLoading,
     bool? loadMore,
     List<InspectionModel>? inspections,
     List<Association>? selectedCommunities,
-    final List<String>? selectedCStatuses,
+    final List<String>? selectedStatuses,
     int? page,
 
   }) {
@@ -29,7 +29,7 @@ class InspectionState {
       loadMore: loadMore??this.loadMore,
       inspections: inspections ?? this.inspections,
       selectedCommunities: selectedCommunities??this.selectedCommunities,
-      selectedCStatuses: selectedCStatuses ?? this.selectedCStatuses,
+      selectedStatuses: selectedStatuses ?? this.selectedStatuses,
       page: page ?? this.page,
 
     );

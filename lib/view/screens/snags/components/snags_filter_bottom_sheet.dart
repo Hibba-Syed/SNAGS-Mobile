@@ -5,6 +5,7 @@ import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 
 import '../../../../bloc/communities/communities_cubit.dart';
 import '../../../../bloc/inspection/inspection_cubit.dart';
+import '../../../../bloc/snags/snags_cubit.dart';
 import '../../../../model/association/association_model.dart';
 import '../../../../res/constants/app_colors.dart';
 import '../../../../res/constants/constants.dart';
@@ -24,7 +25,7 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10.0),
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.only(
@@ -66,32 +67,26 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
               style: AppTextStyles.style16darkGrey600,
             ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                  ),
                 ),
-              ),
                 child: MultiSelectedDropdownWidget<Association>(
                   hint: "Select Community",
                   icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                  selectedItems: context
-                      .watch<InspectionCubit>()
-                      .state
-                      .selectedCommunities,
+                  selectedItems:
+                      context.watch<SnagsCubit>().state.selectedCommunities,
                   items:
-                  context.watch<CommunitiesCubit>().state.communities ??
-                      [],
+                      context.watch<CommunitiesCubit>().state.communities ?? [],
                   itemAsString: (community) => community.name ?? '',
-                  compareFn: (community, item) =>
-                  community.name == item.name,
+                  compareFn: (community, item) => community.name == item.name,
                   onChanged: (value) {
                     context
-                        .read<InspectionCubit>()
+                        .read<SnagsCubit>()
                         .onChangeSelectedCommunities(value);
                   },
-                )
-
-            ),
+                )),
             UIHelper.verticalSpace(10),
             const Text(
               "Status",
@@ -106,14 +101,12 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
               child: MultiSelectedDropdownWidget<String>(
                 hint: "Select Status",
                 icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                selectedItems: context
-                    .watch<InspectionCubit>()
-                    .state
-                    .selectedCStatuses,
-                items:AppConstants.snagsStatuses,
+                selectedItems:
+                    context.watch<SnagsCubit>().state.selectedStatuses,
+                items: AppConstants.snagsStatuses,
                 onChanged: (value) {
                   context
-                      .read<InspectionCubit>()
+                      .read<SnagsCubit>()
                       .onChangeSelectedStatuses(value);
                 },
               ),
@@ -131,8 +124,7 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom:
-                        BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                   ),
                 ),
                 child: Row(
@@ -166,7 +158,6 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
                     },
                     icon: SvgPicture.asset(AppImages.icClearFilter),
                   ),
-
                 ),
                 UIHelper.horizontalSpace(10),
                 Expanded(

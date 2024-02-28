@@ -26,7 +26,7 @@ class _InspectionFilterBottomSheetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10.0),
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.only(
@@ -38,11 +38,12 @@ class _InspectionFilterBottomSheetState
           children: [
             UIHelper.verticalSpace(10),
             const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Inspection Filter",
-                  style: AppTextStyles.style21Grey600,
-                )),
+              alignment: Alignment.center,
+              child: Text(
+                "Inspection Filter",
+                style: AppTextStyles.style21Grey600,
+              ),
+            ),
             UIHelper.verticalSpace(15),
             const Text(
               "Community Management Company",
@@ -68,33 +69,28 @@ class _InspectionFilterBottomSheetState
               style: AppTextStyles.style16darkGrey600,
             ),
             Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                  ),
                 ),
-              ),
-              child: MultiSelectedDropdownWidget<Association>(
-                    hint: "Select Community",
-                    icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                    selectedItems: context
-                        .watch<InspectionCubit>()
-                        .state
-                        .selectedCommunities,
-                    items:
-                        context.watch<CommunitiesCubit>().state.communities ??
-                            [],
-                    itemAsString: (community) => community.name ?? '',
-                    compareFn: (community, item) =>
-                        community.name == item.name,
-                    onChanged: (value) {
-                      context
-                          .read<InspectionCubit>()
-                          .onChangeSelectedCommunities(value);
-                    },
-                  )
-
-
-            ),
+                child: MultiSelectedDropdownWidget<Association>(
+                  hint: "Select Community",
+                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                  selectedItems: context
+                      .watch<InspectionCubit>()
+                      .state
+                      .selectedCommunities,
+                  items:
+                      context.watch<CommunitiesCubit>().state.communities ?? [],
+                  itemAsString: (community) => community.name ?? '',
+                  compareFn: (community, item) => community.name == item.name,
+                  onChanged: (value) {
+                    context
+                        .read<InspectionCubit>()
+                        .onChangeSelectedCommunities(value);
+                  },
+                )),
             UIHelper.verticalSpace(10),
             const Text(
               "Status",
@@ -109,11 +105,9 @@ class _InspectionFilterBottomSheetState
               child: MultiSelectedDropdownWidget<String>(
                 hint: "Select Status",
                 icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                selectedItems: context
-                    .watch<InspectionCubit>()
-                    .state
-                    .selectedCStatuses,
-                items:AppConstants.inspectionStatuses,
+                selectedItems:
+                    context.watch<InspectionCubit>().state.selectedStatuses,
+                items: AppConstants.inspectionStatuses,
                 onChanged: (value) {
                   context
                       .read<InspectionCubit>()
@@ -134,8 +128,7 @@ class _InspectionFilterBottomSheetState
               child: Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom:
-                        BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                   ),
                 ),
                 child: Row(
