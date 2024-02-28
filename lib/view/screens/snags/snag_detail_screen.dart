@@ -7,6 +7,7 @@ import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
+import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_detail_container.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_detail_item_widget.dart';
@@ -200,7 +201,7 @@ class SnagDetailScreen extends StatelessWidget {
                                 ),
                                 SnagDetailItemWidget(
                                   title: 'Description',
-                                  value: state.snagDetails?.description ?? '--',
+                                  value: state.snagDetails?.title ?? '--',
                                 ),
                                 SnagDetailItemWidget(
                                   title: 'Community Management Company',
@@ -243,12 +244,20 @@ class SnagDetailScreen extends StatelessWidget {
                                 UIHelper.verticalSpace(10.0),
                                 if (state.snagDetails?.status ==
                                     AppConstants.snagCompleted.title)
-                                  const SnagDetailItemWidget(
+                                  SnagDetailItemWidget(
                                     title: 'Completion Notes',
-                                    value: 'state.snagDetails?.completionNotes',
+                                    value: state.snagDetails?.closeNote ?? '--',
                                   ),
                                 if (state.snagDetails?.status ==
-                                    AppConstants.snagCompleted.title)
+                                    AppConstants.snagCancelled.title)
+                                  SnagDetailItemWidget(
+                                    title: 'Cancellation Notes',
+                                    value: state.snagDetails?.closeNote ?? '--',
+                                  ),
+                                if (state.snagDetails?.status ==
+                                        AppConstants.snagCompleted.title ||
+                                    state.snagDetails?.status ==
+                                        AppConstants.snagCancelled.title)
                                   UIHelper.verticalSpace(10.0),
                               ],
                             ),
@@ -269,12 +278,15 @@ class SnagDetailScreen extends StatelessWidget {
                                       ),
                                       SnagDetailItemWidget(
                                         title: 'Status',
-                                        widget: Flexible(
-                                          child: InspectionStatusWidget(
-                                            status: state.snagDetails
-                                                    ?.inspection?.status ??
-                                                '--',
-                                          ),
+                                        widget: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            InspectionStatusWidget(
+                                              status: state.snagDetails
+                                                      ?.inspection?.status ??
+                                                  '--',
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       SnagDetailItemWidget(
@@ -317,27 +329,30 @@ class SnagDetailScreen extends StatelessWidget {
                                         itemBuilder: (context, index) {
                                           Comment item = state
                                               .snagDetails!.comments![index];
-                                          return Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color:
-                                                        AppColors.lightGrey)),
-                                            child: Row(
-                                              children: [
-                                                NetworkImageWidget(
-                                                  width: 40.0,
-                                                  height: 40.0,
-                                                  url: item.commenter
-                                                      ?.profilePicture,
-                                                  shape: BoxShape.circle,
-                                                  placeHolder: const Icon(
-                                                    Icons.person,
-                                                    color: AppColors.grey,
-                                                  ),
+                                          return Row(
+                                            children: [
+                                              NetworkImageWidget(
+                                                width: 40.0,
+                                                height: 40.0,
+                                                url: item
+                                                    .commenter?.profilePicture,
+                                                shape: BoxShape.circle,
+                                                placeHolder: const Icon(
+                                                  Icons.person,
+                                                  color: AppColors.grey,
                                                 ),
-                                                UIHelper.horizontalSpace(10.0),
-                                                Expanded(
+                                              ),
+                                              UIHelper.horizontalSpace(10.0),
+                                              Expanded(
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                    color: Colors.grey.shade100,
+                                                  ),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -360,8 +375,9 @@ class SnagDetailScreen extends StatelessWidget {
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
-                                                          item.createdAt ??
-                                                              '--',
+                                                          DateTimeUtil
+                                                              .getFormattedDateTime(
+                                                                  item.createdAt),
                                                           style: AppTextStyles
                                                               .style12LightGrey400,
                                                         ),
@@ -369,8 +385,8 @@ class SnagDetailScreen extends StatelessWidget {
                                                     ],
                                                   ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           );
                                         },
                                         separatorBuilder: (context, index) {
@@ -378,27 +394,42 @@ class SnagDetailScreen extends StatelessWidget {
                                         },
                                       ),
                                       UIHelper.verticalSpace(10.0),
-                                      Row(
-                                        children: [
-                                          const Expanded(
-                                            child: TextFieldWidget(
-                                              hint: 'Add a comment',
-                                            ),
+                                      TextFieldWidget(
+                                        hint: 'Add a comment',
+                                        fillColor: Colors.grey.shade100,
+                                        suffix: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.send),
+                                          color: AppColors.primary,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.red,
                                           ),
-                                          UIHelper.horizontalSpace(10.0),
-                                          InkWell(
-                                            onTap: () {},
-                                            child: Container(
-                                              width: 40.0,
-                                              height: 50.0,
-                                              color: AppColors.primary,
-                                              child: const Icon(
-                                                Icons.send,
-                                                color: AppColors.white,
-                                              ),
-                                            ),
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.red,
                                           ),
-                                        ],
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: const BorderSide(
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   )
@@ -422,11 +453,8 @@ class SnagDetailScreen extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       LogModel item =
                                           state.snagDetails!.logs![index];
-                                      return Container(
+                                      return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: AppColors.lightGrey)),
                                         child: Row(
                                           children: [
                                             NetworkImageWidget(
@@ -453,8 +481,8 @@ class SnagDetailScreen extends StatelessWidget {
                                                           .style12LightGrey400,
                                                       children: [
                                                         TextSpan(
-                                                            text: item
-                                                                .logger?.name,
+                                                            text:
+                                                                ' ${item.logger?.name ?? '--'}',
                                                             style: AppTextStyles
                                                                 .style14Primary600),
                                                       ],
@@ -462,7 +490,9 @@ class SnagDetailScreen extends StatelessWidget {
                                                   ),
                                                   UIHelper.verticalSpace(5.0),
                                                   Text(
-                                                    item.createdAt ?? '--',
+                                                    DateTimeUtil
+                                                        .getFormattedDateTime(
+                                                            item.createdAt),
                                                     style: AppTextStyles
                                                         .style12LightGrey400,
                                                   )

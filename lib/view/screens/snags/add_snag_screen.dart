@@ -1,5 +1,12 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_editor_plus/image_editor_plus.dart';
+import 'package:image_editor_plus/options.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
@@ -8,8 +15,9 @@ import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
 class AddSnagScreen extends StatelessWidget {
-   AddSnagScreen({super.key});
-  final GlobalKey<FormState> _formKey =GlobalKey<FormState>();
+  AddSnagScreen({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +43,8 @@ class AddSnagScreen extends StatelessWidget {
                   selectedItem: null,
                   items: const ['Hello', 'To', 'The', 'Future'],
                   onChanged: (value) {},
-                  validator: (value){
-                    if(value?.isEmpty??true){
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
                       return 'required';
                     }
                     return null;
@@ -57,10 +65,10 @@ class AddSnagScreen extends StatelessWidget {
                   label: 'Risk *',
                   hint: 'Select Risk',
                   selectedItem: null,
-                  items: const ['High', 'Low', 'Medium',],
+                  items: AppConstants.snagRisks,
                   onChanged: (value) {},
-                  validator: (value){
-                    if(value?.isEmpty??true){
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
                       return 'required';
                     }
                     return null;
@@ -95,7 +103,26 @@ class AddSnagScreen extends StatelessWidget {
                     Icons.photo_outlined,
                     color: AppColors.primary,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    XFile? pickedImage = await _imagePicker.pickImage(
+                      source: ImageSource.camera,
+                    );
+                    if(pickedImage!=null){
+                      final bytes = await File(pickedImage.path).readAsBytes();
+                      // final img.Image? image = img.decodeImage(bytes);
+                      final Uint8List editedImages = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>  ImageEditor(
+                            image: bytes,
+                            imagePickerOption: const ImagePickerOption(
+                            ),
+                          ),
+                        ),
+                      );
+                      print(editedImages);
+                    }
+                  },
                 ),
                 UIHelper.verticalSpace(2.0),
                 const Text(
@@ -106,9 +133,7 @@ class AddSnagScreen extends StatelessWidget {
                 CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    if(_formKey.currentState!.validate()){
-
-                    }
+                    if (_formKey.currentState!.validate()) {}
                   },
                 ),
               ],

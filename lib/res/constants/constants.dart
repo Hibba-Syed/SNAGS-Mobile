@@ -42,47 +42,7 @@ class AppConstants {
     color: const Color(0xFF2dcb73),
   );
 
-  /// snags statuses
-  static const List<String> snagsStatuses = [
-    "New",
-    "In-Progress",
-    "Completed",
-    "Cancelled",
-  ];
-  static StatusModel snagNew = StatusModel(
-    title: "New",
-    color: const Color(0xFF179faa),
-  );
-  static StatusModel snagInProgress = StatusModel(
-    title: "In-Progress",
-    color: const Color(0xFFe9bc18),
-  );
-  static StatusModel snagCompleted = StatusModel(
-    title: "Completed",
-    color: const Color(0xFF2dcb73),
-  );
-  static StatusModel snagCancelled = StatusModel(
-    title: "Cancelled",
-    color: const Color(0xFFf9554c),
-  );
-
-  /// snag risks
-  static RiskModel snagNoRisk = RiskModel(
-    title: 'No Risk',
-    color: const Color(0xFF94A3B8),
-  );
-  static RiskModel snagLowRisk = RiskModel(
-    title: 'Low Risk',
-    color: const Color(0xFF2dcb73),
-  );
-  static RiskModel snagMediumRisk = RiskModel(
-    title: 'Medium Risk',
-    color: const Color(0xFFe9bc18),
-  );
-  static RiskModel snagHighRisk = RiskModel(
-    title: 'High Risk',
-    color: const Color(0xFFf9352c),
-  );
+  ///inspection logs
   static StatusModel inspectionLogCreated = StatusModel(
     title: 'created',
     color: const Color(0xFFa4cdfe),
@@ -108,6 +68,50 @@ class AppConstants {
     color: const Color(0xFF78767a),
   );
 
+  /// snags statuses
+  static const List<String> snagsStatuses = [
+    "New",
+    "In-Progress",
+    "Completed",
+    "Cancelled",
+  ];
+  static StatusModel snagNew = StatusModel(
+    title: "New",
+    color: const Color(0xFF179faa),
+  );
+  static StatusModel snagInProgress = StatusModel(
+    title: "In-Progress",
+    color: const Color(0xFFe9bc18),
+  );
+  static StatusModel snagCompleted = StatusModel(
+    title: "Completed",
+    color: const Color(0xFF2dcb73),
+  );
+  static StatusModel snagCancelled = StatusModel(
+    title: "Cancelled",
+    color: const Color(0xFFf9554c),
+  );
+
+  /// snag risks
+  static List<String> snagRisks = ['No Risk', 'Low Risk', 'Medium Risk', 'High Risk'];
+  static RiskModel snagNoRisk = RiskModel(
+    title: 'No Risk',
+    color: const Color(0xFF94A3B8),
+  );
+  static RiskModel snagLowRisk = RiskModel(
+    title: 'Low Risk',
+    color: const Color(0xFF2dcb73),
+  );
+  static RiskModel snagMediumRisk = RiskModel(
+    title: 'Medium Risk',
+    color: const Color(0xFFe9bc18),
+  );
+  static RiskModel snagHighRisk = RiskModel(
+    title: 'High Risk',
+    color: const Color(0xFFf9352c),
+  );
+
+  ///snag logs
   static StatusModel snagLogCreated = StatusModel(
     title: 'created',
     color: const Color(0xFFa4cdfe),
