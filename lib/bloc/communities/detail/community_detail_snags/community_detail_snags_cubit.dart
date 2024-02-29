@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
-import 'package:iskaan_inspections_mobile/model/association/associations_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
-import 'package:iskaan_inspections_mobile/repo/association/association_repo.dart';
-import 'package:iskaan_inspections_mobile/repo/association/association_repo_impl.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
 
@@ -17,7 +15,7 @@ class CommunityDetailSnagsCubit extends Cubit<CommunityDetailSnagsState> {
   Future<void> getCommunitySnags() async {
     emit(state.copyWith(isLoading: true));
     SnagsResponseModel? response = await _snagRepo.getSnags(
-      associationIds: [state.communityId!],
+      associationIds: [state.community!.id!],
     ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
@@ -39,7 +37,7 @@ class CommunityDetailSnagsCubit extends Cubit<CommunityDetailSnagsState> {
     int page = state.page + 1;
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     SnagsResponseModel? response = await _snagRepo.getSnags(
-      associationIds: [state.communityId!],
+      associationIds: [state.community!.id!],
       page: state.page,
     ).onError(
       (error, stackTrace) {
@@ -66,7 +64,7 @@ class CommunityDetailSnagsCubit extends Cubit<CommunityDetailSnagsState> {
     }
   }
 
-  onChangeId(int? id) {
-    emit(state.copyWith(communityId: id));
+  onChangeCommunity(Association? community) {
+    emit(state.copyWith(community: community));
   }
 }

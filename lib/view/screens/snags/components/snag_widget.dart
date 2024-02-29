@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 
@@ -16,6 +18,7 @@ class SnagWidget extends StatelessWidget {
   final String reference;
   final String title;
   final String description;
+  final Association? community;
   const SnagWidget({
     super.key,
     required this.id,
@@ -25,6 +28,7 @@ class SnagWidget extends StatelessWidget {
     required this.reference,
     required this.title,
     required this.description,
+    this.community,
   });
 
   @override
@@ -33,10 +37,11 @@ class SnagWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (id != null) {
+          context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
           context.read<SnagDetailCubit>().getSnagDetails(id: id!);
         }
         context.read<SnagDetailCubit>().onChangeReference(reference);
-        Navigator.pushNamed(context, AppRoutes.snagDetail);
+        Navigator.pushNamed(context, AppRoutes.snagDetail,arguments: community);
       },
       child: Container(
         width: deviceWidth,
@@ -48,22 +53,10 @@ class SnagWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.network(
-              imageUrl ?? '',
+            NetworkImageWidget(
+              url: imageUrl,
               width: deviceWidth / 3,
               height: 120,
-              fit: BoxFit.fill,
-              errorBuilder: (context, obj, trace) {
-                return Container(
-                  width: deviceWidth / 3,
-                  height: 120,
-                  color: Colors.grey.shade300,
-                  child: const Icon(
-                    Icons.image_outlined,
-                    color: AppColors.grey,
-                  ),
-                );
-              },
             ),
             Expanded(
               child: Padding(

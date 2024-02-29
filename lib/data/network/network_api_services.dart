@@ -182,6 +182,8 @@ class NetworkApiServices implements BaseApiServices {
   dynamic returnResponse(http.Response response) {
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
+    print('body:: $body');
+    print('code:: $statusCode');
     switch (statusCode) {
       // Add your own status code errors or message
       case 200:

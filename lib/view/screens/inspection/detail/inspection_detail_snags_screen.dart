@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
@@ -38,7 +39,14 @@ class InspectionDetailSnagsScreen extends StatelessWidget {
                       SnagModel? snag = snags?[index];
                       return SnagWidget(
                         id: snag?.id,
-                        imageUrl: snag?.images?.isNotEmpty ?? false
+                        imageUrl: (snag?.status ==
+                            AppConstants.snagCompleted.title ||
+                            snag?.status ==
+                                AppConstants.snagCancelled.title)
+                            ? snag?.closingImages?.isNotEmpty ?? false
+                            ? snag?.closingImages?.first.path
+                            : ''
+                            : snag?.images?.isNotEmpty ?? false
                             ? snag?.images?.first.path
                             : '',
                         reference: snag?.reference ?? '--',

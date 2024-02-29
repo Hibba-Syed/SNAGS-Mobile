@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/add_snag/add_snag_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
@@ -19,25 +21,26 @@ import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
-class AddSnagScreen extends StatefulWidget {
+class EditSnagScreen extends StatefulWidget {
   final Association? community;
-  const AddSnagScreen({super.key,this.community});
+  const EditSnagScreen({super.key,this.community});
 
   @override
-  State<AddSnagScreen> createState() => _AddSnagScreenState();
+  State<EditSnagScreen> createState() => _EditSnagScreenState();
 }
 
-class _AddSnagScreenState extends State<AddSnagScreen> {
+class _EditSnagScreenState extends State<EditSnagScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final ImagePicker _imagePicker = ImagePicker();
   final List<AddSnagImageModel> _selectedFiles = [];
+  SnagModel? _selectedSnag;
   Association? _selectedCommunity;
   String? _selectedRisk;
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _additionalNotesController =
-      TextEditingController();
+  TextEditingController();
   bool _isCommunityEnabled = true;
 
   @override
@@ -45,8 +48,9 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
     super.initState();
     Future.delayed(Duration.zero, () {
       // Access arguments here
-      final arguments = ModalRoute.of(context)?.settings.arguments;
-      _selectedCommunity = arguments as Association?;
+      final Map<String,dynamic> arguments = ModalRoute.of(context)?.settings.arguments as Map<String,dynamic>;
+      _selectedCommunity = arguments['community'] as Association;
+      _selectedSnag = arguments['snag'] as SnagModel;
       if (_selectedCommunity != null) {
         _isCommunityEnabled = false;
       }
@@ -66,7 +70,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(
-        title: 'Add Snag',
+        title: 'Edit Snag',
         isNotificationEnabled: false,
       ),
       body: Stack(
@@ -74,7 +78,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
           Container(
             margin: const EdgeInsets.all(16.0),
             padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
             decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(10.0)),
@@ -176,18 +180,18 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                             onPressed: () async {
                                               Navigator.pop(context);
                                               XFile? pickedImage =
-                                                  await _imagePicker.pickImage(
+                                              await _imagePicker.pickImage(
                                                 source: ImageSource.gallery,
                                               );
                                               if (pickedImage != null) {
                                                 File? editedFile =
-                                                    await editImageAndGetFile(
-                                                        pickedImage);
+                                                await editImageAndGetFile(
+                                                    pickedImage);
                                                 if (editedFile != null) {
                                                   _selectedFiles.add(
                                                     AddSnagImageModel(
                                                         filePath:
-                                                            editedFile.path),
+                                                        editedFile.path),
                                                   );
                                                   setState(() {});
                                                 }
@@ -200,18 +204,18 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                             onPressed: () async {
                                               Navigator.pop(context);
                                               XFile? pickedImage =
-                                                  await _imagePicker.pickImage(
+                                              await _imagePicker.pickImage(
                                                 source: ImageSource.camera,
                                               );
                                               if (pickedImage != null) {
                                                 File? editedFile =
-                                                    await editImageAndGetFile(
-                                                        pickedImage);
+                                                await editImageAndGetFile(
+                                                    pickedImage);
                                                 if (editedFile != null) {
                                                   _selectedFiles.add(
                                                     AddSnagImageModel(
                                                         filePath:
-                                                            editedFile.path),
+                                                        editedFile.path),
                                                   );
                                                   setState(() {});
                                                 }
@@ -257,17 +261,17 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                               onPressed: () async {
                                                 Navigator.pop(context);
                                                 XFile? pickedImage =
-                                                    await _imagePicker
-                                                        .pickImage(
+                                                await _imagePicker
+                                                    .pickImage(
                                                   source: ImageSource.gallery,
                                                 );
                                                 if (pickedImage != null) {
                                                   File? editedFile =
-                                                      await editImageAndGetFile(
-                                                          pickedImage);
+                                                  await editImageAndGetFile(
+                                                      pickedImage);
                                                   if (editedFile != null) {
                                                     _selectedFiles[index]
-                                                            .filePath =
+                                                        .filePath =
                                                         editedFile.path;
                                                     setState(() {});
                                                   }
@@ -280,17 +284,17 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                               onPressed: () async {
                                                 Navigator.pop(context);
                                                 XFile? pickedImage =
-                                                    await _imagePicker
-                                                        .pickImage(
+                                                await _imagePicker
+                                                    .pickImage(
                                                   source: ImageSource.camera,
                                                 );
                                                 if (pickedImage != null) {
                                                   File? editedFile =
-                                                      await editImageAndGetFile(
-                                                          pickedImage);
+                                                  await editImageAndGetFile(
+                                                      pickedImage);
                                                   if (editedFile != null) {
                                                     _selectedFiles[index]
-                                                            .filePath =
+                                                        .filePath =
                                                         editedFile.path;
                                                     setState(() {});
                                                   }
@@ -313,16 +317,16 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: _selectedFiles[index]
-                                              .filePath
-                                              ?.isNotEmpty ??
-                                          false
+                                      .filePath
+                                      ?.isNotEmpty ??
+                                      false
                                       ? Image.file(
-                                          File(_selectedFiles[index].filePath!),
-                                          fit: BoxFit.cover,
-                                        )
+                                    File(_selectedFiles[index].filePath!),
+                                    fit: BoxFit.cover,
+                                  )
                                       : NetworkImageWidget(
-                                          url: _selectedFiles[index].url,
-                                        ),
+                                    url: _selectedFiles[index].url,
+                                  ),
                                 ),
                               ),
                               Positioned(
@@ -365,18 +369,18 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                         if (_formKey.currentState!.validate()) {
                           if (_selectedFiles.isNotEmpty) {
                             context.read<AddSnagCubit>().addSnag(
-                                  context,
-                                  data: {
-                                    'association_id': 126,
-                                    'risk': _selectedRisk,
-                                    'title': 'title',
-                                    'description': _descriptionController.text,
-                                    'location': _locationController.text,
-                                  },
-                                  filesPaths: _selectedFiles
-                                      .map((e) => e.filePath!)
-                                      .toList(),
-                                );
+                              context,
+                              data: {
+                                'association_id': 126,
+                                'risk': _selectedRisk,
+                                'title': 'title',
+                                'description': _descriptionController.text,
+                                'location': _locationController.text,
+                              },
+                              filesPaths: _selectedFiles
+                                  .map((e) => e.filePath!)
+                                  .toList(),
+                            );
                           } else {
                             Fluttertoast.showToast(msg: 'Please add image');
                           }

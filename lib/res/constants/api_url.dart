@@ -8,6 +8,7 @@ class ApiUrl {
   static const String snags = '$baseUrl/snags/snags';
   static const String snagsStatistics = '$baseUrl/snags/statistics/snag';
   static const String snagsStatisticsByMonth = '$baseUrl/snags/statistics/snag-by-month';
+  static const String addSnag = '$baseUrl/snags/statistics/snag-by-month';
   static const String associations = '$baseUrl/snags/associations';
   static const String associationSnagsStatistics = '$baseUrl/snags/associations/1/statistics/snag';
   static const String associationInspectionsStatistics = '$baseUrl/snags/associations/1/statistics/inspection';

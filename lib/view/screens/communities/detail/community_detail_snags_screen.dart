@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_snags/community_detail_snags_cubit.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
@@ -44,14 +45,22 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
                               SnagModel? snag = state.snags?[index];
                               return SnagWidget(
                                 id: snag?.id,
-                                imageUrl: snag?.images?.isNotEmpty ?? false
-                                    ? snag?.images?.first.path
-                                    : '',
+                                imageUrl: (snag?.status ==
+                                            AppConstants.snagCompleted.title ||
+                                        snag?.status ==
+                                            AppConstants.snagCancelled.title)
+                                    ? snag?.closingImages?.isNotEmpty ?? false
+                                        ? snag?.closingImages?.first.path
+                                        : ''
+                                    : snag?.images?.isNotEmpty ?? false
+                                        ? snag?.images?.first.path
+                                        : '',
                                 reference: snag?.reference ?? '--',
                                 risk: snag?.risk ?? '--',
                                 status: snag?.status ?? '--',
                                 title: snag?.title ?? '--',
                                 description: snag?.description ?? '--',
+                                community: state.community,
                               );
                             },
                             separatorBuilder: (context, index) {
@@ -66,7 +75,9 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Snag',
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.addSnag);
+          Navigator.pushNamed(context, AppRoutes.addSnag,
+              arguments:
+                  context.read<CommunityDetailSnagsCubit>().state.community);
         },
       ),
     );

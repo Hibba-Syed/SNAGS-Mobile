@@ -36,11 +36,11 @@ class NetworkImageWidget extends StatelessWidget {
         height: height,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
+          color: Colors.grey.shade300,
           shape: shape,
         ),
         child: placeHolder ?? const Icon(
-          Icons.image,
+          Icons.image_outlined,
           color: AppColors.lightGrey,
         ),
       );

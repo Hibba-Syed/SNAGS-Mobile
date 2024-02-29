@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
@@ -427,7 +427,14 @@ class DashboardScreen extends StatelessWidget {
                   SnagModel? snag = state.recentSnags?[index];
                   return SnagWidget(
                     id: snag?.id,
-                    imageUrl: snag?.images?.isNotEmpty ?? false
+                    imageUrl: (snag?.status ==
+                        AppConstants.snagCompleted.title ||
+                        snag?.status ==
+                            AppConstants.snagCancelled.title)
+                        ? snag?.closingImages?.isNotEmpty ?? false
+                        ? snag?.closingImages?.first.path
+                        : ''
+                        : snag?.images?.isNotEmpty ?? false
                         ? snag?.images?.first.path
                         : '',
                     reference: snag?.reference ?? '--',

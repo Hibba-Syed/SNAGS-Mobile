@@ -1,13 +1,13 @@
-import 'dart:convert';
-
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
+import 'package:iskaan_inspections_mobile/model/snag/add_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
+import 'package:http/http.dart' as http;
 
 class SnagRepoImpl implements SnagRepo {
   final BaseApiServices _apiService = NetworkApiServices();
@@ -64,6 +64,24 @@ class SnagRepoImpl implements SnagRepo {
       String url = '${ApiUrl.snagsStatisticsByMonth}?months=12';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsStatisticsByMonthResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AddSnagResponseModel?> addSnag({
+    required Map<String, dynamic> data,
+    required List<http.MultipartFile> files,
+  }) async {
+    try {
+      String url = ApiUrl.snags;
+      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
+        url,
+        data,
+        files,
+      );
+      return AddSnagResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

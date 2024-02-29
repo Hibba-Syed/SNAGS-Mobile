@@ -2,6 +2,7 @@ import 'package:iskaan_inspections_mobile/model/association/association_model.da
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 
 class InspectionDetailsResponseModel {

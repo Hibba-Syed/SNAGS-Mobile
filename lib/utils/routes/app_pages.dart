@@ -13,6 +13,7 @@ import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cub
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/send_otp/send_otp_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/add_snag/add_snag_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -26,6 +27,7 @@ import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspect
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/profile/edit_profile_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/edit_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
@@ -142,7 +144,17 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.addSnag,
-      page: AddSnagScreen(),
+      page: const AddSnagScreen(),
+      bloc: BlocProvider(
+        create: (context) => AddSnagCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.editSnag,
+      page: const EditSnagScreen(),
+      bloc: BlocProvider(
+        create: (context) => AddSnagCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.editProfile,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
@@ -66,17 +68,24 @@ class _SnagsScreenState extends State<SnagsScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 10.0),
                           itemBuilder: (context, index) {
-                            SnagModel item = state.snags![index];
+                            SnagModel? snag = state.snags?[index];
                             return SnagWidget(
-                              id: item.id,
-                              imageUrl: item.images?.isNotEmpty ?? false
-                                  ? item.images?.first.path
+                              id: snag?.id,
+                              imageUrl: (snag?.status ==
+                                  AppConstants.snagCompleted.title ||
+                                  snag?.status ==
+                                      AppConstants.snagCancelled.title)
+                                  ? snag?.closingImages?.isNotEmpty ?? false
+                                  ? snag?.closingImages?.first.path
+                                  : ''
+                                  : snag?.images?.isNotEmpty ?? false
+                                  ? snag?.images?.first.path
                                   : '',
-                              reference: item.reference ?? '--',
-                              risk: item.risk ?? '--',
-                              status: item.status ?? '--',
-                              title: item.title ?? '--',
-                              description: item.description ?? '--',
+                              reference: snag?.reference ?? '--',
+                              risk: snag?.risk ?? '--',
+                              status: snag?.status ?? '--',
+                              title: snag?.title ?? '--',
+                              description: snag?.description ?? '--',
 
                             );
                           },

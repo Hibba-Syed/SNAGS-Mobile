@@ -2,12 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
+import 'package:iskaan_inspections_mobile/model/comment_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/date_time.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_detail_bottom_buttons.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_detail_container.dart';
@@ -130,20 +132,10 @@ class SnagDetailScreen extends StatelessWidget {
                                                                           BorderRadius.circular(
                                                                               5.0),
                                                                     ),
-                                                                    child: Image
-                                                                        .network(
-                                                                      i.path ??
-                                                                          '',
-                                                                      errorBuilder: (context,
-                                                                          object,
-                                                                          stackTrace) {
-                                                                        return const Icon(
-                                                                          Icons
-                                                                              .image_outlined,
-                                                                          color:
-                                                                              AppColors.lightGrey,
-                                                                        );
-                                                                      },
+                                                                    child:
+                                                                        NetworkImageWidget(
+                                                                      url: i
+                                                                          .path,
                                                                     ),
                                                                   );
                                                                 },
@@ -582,7 +574,17 @@ class SnagDetailScreen extends StatelessWidget {
                           ),
                         ),
                         SnagDetailBottomButtons(
-                          onEditPressed: () {},
+                          onEditPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.editSnag,
+                              arguments:{
+                                'community':ModalRoute.of(context)?.settings.arguments,
+                                'snag':state.snagDetails
+                              }
+                                  ,
+                            );
+                          },
                           onMergePressed: () {},
                           onStartPressed: () {},
                         ),
