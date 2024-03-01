@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -97,6 +98,7 @@ class _InspectionScreenState extends State<InspectionScreen> {
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Inspection',
         onTap: () {
+          context.read<AddEditInspectionCubit>().clearData();
           Navigator.pushNamed(context, AppRoutes.addInspection);
         },
       ),

@@ -1,26 +1,30 @@
-import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 
-class AddSnagResponseModel {
-  AddSnagResponseModel({
+class InspectorsResponseModel {
+  InspectorsResponseModel({
     this.status,
-    this.record,
+    this.inspectors,
     this.code,
     this.meta,
     this.requestStatus,
     this.message,
   });
 
-  AddSnagResponseModel.fromJson(dynamic json) {
+  InspectorsResponseModel.fromJson(dynamic json) {
     status = json['status'];
-    record = json['record'] != null ? SnagModel.fromJson(json['record']) : null;
+    if (json['record'] != null) {
+      inspectors = [];
+      json['record'].forEach((v) {
+        inspectors?.add(Inspector.fromJson(v));
+      });
+    }
     code = json['code'];
     meta = json['meta'];
     requestStatus = json['request_status'];
     message = json['message'];
   }
   String? status;
-  SnagModel? record;
+  List<Inspector>? inspectors;
   int? code;
   dynamic meta;
   bool? requestStatus;
@@ -29,8 +33,8 @@ class AddSnagResponseModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = status;
-    if (record != null) {
-      map['record'] = record?.toJson();
+    if (inspectors != null) {
+      map['record'] = inspectors?.map((v) => v.toJson()).toList();
     }
     map['code'] = code;
     map['meta'] = meta;

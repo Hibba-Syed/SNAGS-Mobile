@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:iskaan_inspections_mobile/bloc/snags/add_snag/add_snag_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/add_edit_snag/add_edit_snag_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
@@ -21,7 +21,7 @@ import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widg
 
 class AddSnagScreen extends StatefulWidget {
   final Association? community;
-  const AddSnagScreen({super.key,this.community});
+  const AddSnagScreen({super.key, this.community});
 
   @override
   State<AddSnagScreen> createState() => _AddSnagScreenState();
@@ -50,16 +50,8 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
       if (_selectedCommunity != null) {
         _isCommunityEnabled = false;
       }
-      setState(() {
-      });
+      setState(() {});
     });
-
-    // _selectedFiles.add(
-    //   ImageModel(
-    //     url:
-    //         'https://www.homelane.com/blog/wp-content/uploads/2020/01/shutterstock_1027213192.jpg',
-    //   ),
-    // );
   }
 
   @override
@@ -364,13 +356,15 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           if (_selectedFiles.isNotEmpty) {
-                            context.read<AddSnagCubit>().addSnag(
+                            /// here i am sending description in title and notes in description because the backend required data in this way
+                            context.read<AddEditSnagCubit>().addSnag(
                                   context,
                                   data: {
                                     'association_id': 126,
                                     'risk': _selectedRisk,
-                                    'title': 'title',
-                                    'description': _descriptionController.text,
+                                    'title': _descriptionController.text,
+                                    'description':
+                                        _additionalNotesController.text,
                                     'location': _locationController.text,
                                   },
                                   filesPaths: _selectedFiles
@@ -388,7 +382,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
               ),
             ),
           ),
-          BlocBuilder<AddSnagCubit, AddSnagState>(
+          BlocBuilder<AddEditSnagCubit, AddEditSnagState>(
             builder: (context, state) {
               return Visibility(
                 visible: state.isLoading,

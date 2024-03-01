@@ -1,6 +1,6 @@
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
-import 'package:iskaan_inspections_mobile/model/snag/add_snag_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/add_edit_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
@@ -70,7 +70,7 @@ class SnagRepoImpl implements SnagRepo {
   }
 
   @override
-  Future<AddSnagResponseModel?> addSnag({
+  Future<AddEditSnagResponseModel?> addSnag({
     required Map<String, dynamic> data,
     required List<http.MultipartFile> files,
   }) async {
@@ -81,7 +81,25 @@ class SnagRepoImpl implements SnagRepo {
         data,
         files,
       );
-      return AddSnagResponseModel.fromJson(response);
+      return AddEditSnagResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<AddEditSnagResponseModel?> updateSnag({
+    required int id,
+    required Map<String, dynamic> data,
+    required List<http.MultipartFile> files,
+  }) async {
+    try {
+      String url = '${ApiUrl.snags}/$id?_method=PUT';
+      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
+        url,
+        data,
+        files,
+      );
+      return AddEditSnagResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

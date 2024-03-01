@@ -7,13 +7,14 @@ import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_deta
 import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_details_statistics/community_detail_statistics_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/community_detail/community_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/notification/notifications_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/profile/profile_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/send_otp/send_otp_cubit.dart';
-import 'package:iskaan_inspections_mobile/bloc/snags/add_snag/add_snag_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/add_edit_snag/add_edit_snag_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -134,6 +135,9 @@ class AppPages {
     PageEntity(
       route: AppRoutes.addInspection,
       page: const AddInspectionScreen(),
+      bloc: BlocProvider(
+        create: (context) => AddEditInspectionCubit(),
+      ),
     ),
     PageEntity(
       route: AppRoutes.snagDetail,
@@ -146,14 +150,14 @@ class AppPages {
       route: AppRoutes.addSnag,
       page: const AddSnagScreen(),
       bloc: BlocProvider(
-        create: (context) => AddSnagCubit(),
+        create: (context) => AddEditSnagCubit(),
       ),
     ),
     PageEntity(
       route: AppRoutes.editSnag,
       page: const EditSnagScreen(),
       bloc: BlocProvider(
-        create: (context) => AddSnagCubit(),
+        create: (context) => AddEditSnagCubit(),
       ),
     ),
     PageEntity(

@@ -46,7 +46,6 @@ class SnagsStatisticsRecord {
       this.cancelledSnagsCount,});
 
   SnagsStatisticsRecord.fromJson(dynamic json) {
-    print('json:: $json');
     snagsCount = json['snags_count'];
     newSnagsCount = json['new_snags_count'];
     inProgressSnagsCount = json['in_progress_snags_count'];

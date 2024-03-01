@@ -52,8 +52,8 @@ class InspectionDetailSnagsScreen extends StatelessWidget {
                         reference: snag?.reference ?? '--',
                         risk: snag?.risk ?? '--',
                         status: snag?.status ?? '--',
-                        title: snag?.title ?? '--',
-                        description: snag?.description ?? '--',
+                        title: snag?.description ?? '--',
+                        location: snag?.location ?? '--',
                       );
                     },
                     separatorBuilder: (context, index) {

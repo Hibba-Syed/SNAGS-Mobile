@@ -17,7 +17,7 @@ class SnagWidget extends StatelessWidget {
   final String status;
   final String reference;
   final String title;
-  final String description;
+  final String location;
   final Association? community;
   const SnagWidget({
     super.key,
@@ -27,7 +27,7 @@ class SnagWidget extends StatelessWidget {
     required this.status,
     required this.reference,
     required this.title,
-    required this.description,
+    required this.location,
     this.community,
   });
 
@@ -92,7 +92,7 @@ class SnagWidget extends StatelessWidget {
                             ),
                             UIHelper.verticalSpace(3.0),
                             Text(
-                              description,
+                              location,
                               style: AppTextStyles.style12LightGrey400,
                             ),
                           ],

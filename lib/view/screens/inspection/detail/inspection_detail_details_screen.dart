@@ -114,6 +114,7 @@ class InspectionDetailDetailsScreen extends StatelessWidget {
           ),
         ),
         InspectionDetailBottomButtons(
+          status: inspectionDetails?.status??'',
           onSubmitPressed: () {},
           onEditPressed: () {},
           onArchivePressed: () {},

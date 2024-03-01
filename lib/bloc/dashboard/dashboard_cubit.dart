@@ -112,8 +112,6 @@ class DashboardCubit extends Cubit<DashboardState> {
       },
     );
     if (statisticsResponse != null) {
-      print('not null');
-      print(statisticsResponse.record?.first);
       emit(state.copyWith(snagsStatisticsByMonth: statisticsResponse.record));
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong');

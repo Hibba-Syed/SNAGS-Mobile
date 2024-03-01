@@ -16,7 +16,7 @@ class InspectionCategoryItemWidget extends StatefulWidget {
     super.key,
     required this.title,
     required this.onRatingUpdate,
-    this.onNoteChanged,
+    required this.onNoteChanged,
     required this.onScoreUpdate,
   });
 
@@ -66,7 +66,7 @@ class _InspectionCategoryItemWidgetState
                   ),
                   RatingBar(
                     unratedColor: AppColors.yellow,
-                    allowHalfRating: true,
+                    allowHalfRating: false,
                     glow: false,
                     itemSize: 24,
                     initialRating: _rating,
@@ -107,14 +107,12 @@ class _InspectionCategoryItemWidgetState
                           _isNotInspectable = value;
                           _isRatingIgnored = value;
                           _rating = 0.0;
-
-                          // if (value) {
                           _isRatingChanged = true;
-                          widget.onRatingUpdate(_rating);
-                          // } else {
-                          //   _isRatingChanged = false;
-                          //   widget.onRatingUpdate(null);
-                          // }
+                          if (value) {
+                            widget.onRatingUpdate(-1);
+                          } else {
+                            widget.onRatingUpdate(_rating);
+                          }
                         },
                       );
                     },

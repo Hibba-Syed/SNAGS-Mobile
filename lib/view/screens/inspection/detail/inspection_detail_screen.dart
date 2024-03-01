@@ -81,7 +81,7 @@ class _InspectionDetailScreenState extends State<InspectionDetailScreen> {
                                   inspectionDetails: state.inspectionDetails,
                                 ),
                                 InspectionDetailLogsScreen(
-                                  logs: state.inspectionDetails?.logs,
+                                  inspectionDetails: state.inspectionDetails,
                                 ),
                                 InspectionDetailSnagsScreen(
                                   snags: state.inspectionDetails?.snags,

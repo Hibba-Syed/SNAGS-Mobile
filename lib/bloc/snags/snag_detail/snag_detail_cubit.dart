@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
@@ -32,6 +34,7 @@ class SnagDetailCubit extends Cubit<SnagDetailState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null) {
+      log(response.record!.toJson().toString());
       emit(state.copyWith(snagDetails: response.record));
     } else {
       Fluttertoast.showToast(

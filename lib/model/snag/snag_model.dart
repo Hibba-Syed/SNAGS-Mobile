@@ -81,7 +81,7 @@ class SnagModel {
   }
   int? id;
   int? companyId;
-  int? associationId;
+  dynamic associationId;
   int? inspectorId;
   String? reference;
   String? status;

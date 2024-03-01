@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
@@ -124,6 +125,7 @@ class DashboardScreen extends StatelessWidget {
                         buttonColor: AppColors.cGreen,
                         text: 'Add Inspection',
                         onPressed: () {
+                          context.read<AddEditInspectionCubit>().clearData();
                           Navigator.pushNamed(context, AppRoutes.addInspection);
                           context
                               .read<DashboardCubit>()
@@ -440,8 +442,8 @@ class DashboardScreen extends StatelessWidget {
                     reference: snag?.reference ?? '--',
                     risk: snag?.risk ?? '--',
                     status: snag?.status ?? '--',
-                    title: snag?.title ?? '--',
-                    description: snag?.description ?? '--',
+                    title: snag?.description ?? '--',
+                    location: snag?.location ?? '--',
                   );
                 },
                 separatorBuilder: (context, index) {

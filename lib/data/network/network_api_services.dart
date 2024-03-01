@@ -109,6 +109,34 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   @override
+  Future getAuthPutApiResponse(String url, dynamic data) async {
+    dynamic responseJson;
+    try {
+      final response = await http
+          .put(
+        Uri.parse(url),
+        headers: {
+          'accept': "application/json",
+          'Content-Type': "application/json",
+          'authorization': 'Bearer ${Globals().token}'
+        },
+        body: jsonEncode(data),
+      )
+          .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+        throw FetchDataException(
+            "Connection timeout, please check your internet");
+      });
+      debugPrint(
+          'status code: ${response.statusCode}\n body: ${response.body}');
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
+    }
+
+    return responseJson;
+  }
+
+  @override
   Future getPostApiMultipartResponse(
     String url,
     Map<String, dynamic>? data,
@@ -178,12 +206,46 @@ class NetworkApiServices implements BaseApiServices {
       throw FetchDataException(e.toString());
     }
   }
+  @override
+  Future getAuthPutApiMultipartResponse(
+      String url,
+      Map<String, dynamic>? data,
+      List<http.MultipartFile> files,
+      ) async {
+    dynamic responseJson;
+    try {
+      var request = http.MultipartRequest("PUT", Uri.parse(url));
+      if (data != null) {
+        data.forEach((key, value) {
+          request.fields[key] = value.toString();
+        });
+      }
+      request.files.addAll(files);
+      Map<String, String> headers = {
+        "content-type": "multipart/form-data",
+        'Accept': 'application/json',
+        "Authorization": "Bearer ${Globals().token}"
+      };
+      request.headers.addAll(headers);
+      var streamedResponse = await request
+          .send()
+          .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+        throw FetchDataException(
+            "Connection timeout, please check your internet");
+      });
+      var response = await http.Response.fromStream(streamedResponse);
+      responseJson = returnResponse(response);
+      return responseJson;
+    } on SocketException catch (e) {
+      throw FetchDataException(e.toString());
+    }
+  }
 
   dynamic returnResponse(http.Response response) {
     final body = json.decode(response.body);
     final statusCode = response.statusCode;
-    print('body:: $body');
-    print('code:: $statusCode');
+    // print('body:: $body');
+    // print('code:: $statusCode');
     switch (statusCode) {
       // Add your own status code errors or message
       case 200:

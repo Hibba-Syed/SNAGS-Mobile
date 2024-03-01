@@ -1,15 +1,15 @@
-part of 'add_snag_cubit.dart';
+part of 'add_edit_snag_cubit.dart';
 
-class AddSnagState {
+class AddEditSnagState {
   final bool isLoading;
-  const AddSnagState({
+  const AddEditSnagState({
     this.isLoading = false,
   });
-  AddSnagState copyWith({
+  AddEditSnagState copyWith({
     bool? isLoading,
     String? selectedRisk,
   }) {
-    return AddSnagState(
+    return AddEditSnagState(
       isLoading: isLoading ?? this.isLoading,
     );
   }

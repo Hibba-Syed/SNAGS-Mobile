@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
@@ -47,7 +46,10 @@ class _SnagsScreenState extends State<SnagsScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: SearchTextField(
-                  isFilterApplied: (state.selectedStatuses?.isEmpty??true) && (state.selectedCommunities?.isEmpty??true) ? false : true,
+                  isFilterApplied: (state.selectedStatuses?.isEmpty ?? true) &&
+                          (state.selectedCommunities?.isEmpty ?? true)
+                      ? false
+                      : true,
                   onFilterPressed: () {
                     _snagsFilterBottomSheet(context);
                   },
@@ -72,21 +74,20 @@ class _SnagsScreenState extends State<SnagsScreen> {
                             return SnagWidget(
                               id: snag?.id,
                               imageUrl: (snag?.status ==
-                                  AppConstants.snagCompleted.title ||
-                                  snag?.status ==
-                                      AppConstants.snagCancelled.title)
+                                          AppConstants.snagCompleted.title ||
+                                      snag?.status ==
+                                          AppConstants.snagCancelled.title)
                                   ? snag?.closingImages?.isNotEmpty ?? false
-                                  ? snag?.closingImages?.first.path
-                                  : ''
+                                      ? snag?.closingImages?.first.path
+                                      : ''
                                   : snag?.images?.isNotEmpty ?? false
-                                  ? snag?.images?.first.path
-                                  : '',
+                                      ? snag?.images?.first.path
+                                      : '',
                               reference: snag?.reference ?? '--',
                               risk: snag?.risk ?? '--',
                               status: snag?.status ?? '--',
-                              title: snag?.title ?? '--',
-                              description: snag?.description ?? '--',
-
+                              title: snag?.description ?? '--',
+                              location: snag?.location ?? '--',
                             );
                           },
                           separatorBuilder: (context, index) {
@@ -111,7 +112,8 @@ class _SnagsScreenState extends State<SnagsScreen> {
       ),
     );
   }
-  _snagsFilterBottomSheet(context)  {
+
+  _snagsFilterBottomSheet(context) {
     showModalBottomSheet(
       //isScrollControlled: true,
       context: context,
@@ -121,5 +123,4 @@ class _SnagsScreenState extends State<SnagsScreen> {
       },
     );
   }
-
 }
