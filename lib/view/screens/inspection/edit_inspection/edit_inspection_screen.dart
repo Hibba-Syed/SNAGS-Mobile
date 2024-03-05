@@ -2,29 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
-import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
-import 'package:iskaan_inspections_mobile/view/screens/inspection/components/inspection_category_widget.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/edit_inspection/components/edit_inspection_category_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 
-class AddInspectionScreen extends StatefulWidget {
-  const AddInspectionScreen({super.key});
+class EditInspectionScreen extends StatefulWidget {
+  const EditInspectionScreen({super.key});
 
   @override
-  State<AddInspectionScreen> createState() => _AddInspectionScreenState();
+  State<EditInspectionScreen> createState() => _AddInspectionScreenState();
 }
 
-class _AddInspectionScreenState extends State<AddInspectionScreen> {
+class _AddInspectionScreenState extends State<EditInspectionScreen> {
+  InspectionDetails? _inspectionDetails;
+  Association? _selectedCommunity;
+  bool _isCommunityEnabled = true;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      _inspectionDetails = arguments['inspection_details'] as InspectionDetails;
+      _selectedCommunity = _inspectionDetails?.association;
+      if (arguments['community'] != null) {
+        _selectedCommunity = arguments['community'] as Association;
+        _isCommunityEnabled = false;
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(
-        title: 'Add Inspection',
+        title: 'Edit Inspection',
         isNotificationEnabled: false,
       ),
       body: Padding(
@@ -32,8 +51,9 @@ class _AddInspectionScreenState extends State<AddInspectionScreen> {
         child: Column(
           children: [
             DropdownWidget<Association>(
+              enabled: _isCommunityEnabled,
               hint: 'Select a Community',
-              selectedItem: null,
+              selectedItem: _selectedCommunity,
               items: Globals().profileRecord?.associations ?? [],
               itemAsString: (community) => community.name ?? '',
               compareFn: (community, item) => community.id == item.id,
@@ -64,28 +84,26 @@ class _AddInspectionScreenState extends State<AddInspectionScreen> {
                   if (state.isLoading == true) {
                     return const CustomLoader();
                   }
-                  if (state.inspectionTemplateRecord?.categories?.isEmpty ??
-                      true) {
+                  if (_inspectionDetails?.categories?.isEmpty ?? true) {
                     return const EmptyWidget(
                       text: 'No Categories found',
                     );
                   }
                   return ListView.separated(
-                    itemCount:
-                        state.inspectionTemplateRecord?.categories?.length ?? 0,
+                    itemCount: _inspectionDetails?.categories?.length ?? 0,
                     shrinkWrap: true,
                     itemBuilder: (ctx, index) {
-                      InspectionTemplateCategory? item =
-                          state.inspectionTemplateRecord?.categories?[index];
-                      return InspectionCategoryWidget(
-                        communityId:
-                            state.inspectionTemplateRecord!.associationId!,
+                      InspectionCategory? item =
+                          _inspectionDetails?.categories?[index];
+                      return EditInspectionCategoryWidget(
                         inspectors: state.inspectors,
-                        inspectionTemplateCategory: item!,
-                        onSavePressed: (formData) async {
+                        inspectionCategory: item!,
+                        onUpdatePressed: (formData) async {
                           await context
                               .read<AddEditInspectionCubit>()
-                              .addInspection(context, data: formData);
+                              .updateInspection(context,
+                                  inspectionId: _inspectionDetails!.id!,
+                                  data: formData);
                         },
                       );
                     },

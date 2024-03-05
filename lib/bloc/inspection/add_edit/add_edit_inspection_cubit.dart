@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/add_edit_inspection_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspectors_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
@@ -51,7 +53,7 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
       id: communityId,
     )
         .onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -61,21 +63,23 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null) {
-      emit(state.copyWith(inspectionTemplateRecord: response.record??InspectionTemplateRecord()));
+      emit(state.copyWith(
+          inspectionTemplateRecord:
+              response.record ?? InspectionTemplateRecord()));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while fetching template');
     }
   }
 
-  Future<void> addInspection({dynamic data}) async {
+  Future<void> addInspection(BuildContext context, {dynamic data}) async {
     emit(state.copyWith(isLoading: true));
-    final response = await _inspectionRepo
+    final AddEditInspectionResponseModel? response = await _inspectionRepo
         .addInspection(
       data: data,
     )
         .onError(
-          (error, stackTrace) {
+      (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -84,12 +88,45 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
       },
     );
     emit(state.copyWith(isLoading: false));
-    // if (response != null) {
-    //   emit(state.copyWith(inspectionTemplateRecord: response.record??InspectionTemplateRecord()));
-    // } else {
-    //   Fluttertoast.showToast(
-    //       msg: 'Something went wrong while adding inspections');
-    // }
+    if (response != null) {
+      Navigator.pop(context, true);
+      Fluttertoast.showToast(msg: 'Inspection added successfully');
+      // emit(state.copyWith(inspectionTemplateRecord: response.record??InspectionTemplateRecord()));
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while adding inspections');
+    }
   }
 
+  Future<void> updateInspection(
+    BuildContext context, {
+    required int inspectionId,
+    required dynamic data,
+  }) async {
+    print('data:: $data');
+    emit(state.copyWith(isLoading: true));
+    final AddEditInspectionResponseModel? response = await _inspectionRepo
+        .updateInspection(
+      id: inspectionId,
+      data: data,
+    )
+        .onError(
+      (error, stackTrace) {
+        emit(state.copyWith(isLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    );
+    emit(state.copyWith(isLoading: false));
+    if (response != null) {
+      Navigator.pop(context, true);
+      Fluttertoast.showToast(msg: 'Inspection updated successfully');
+      // emit(state.copyWith(inspectionTemplateRecord: response.record??InspectionTemplateRecord()));
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Something went wrong while updating inspections');
+    }
+  }
 }

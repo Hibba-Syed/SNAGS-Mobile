@@ -24,7 +24,7 @@ class InspectionDetailBottomButtons extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
-          if (status == AppConstants.inspectionInProgress.title)
+          if (status == AppConstants.inspectionReadyForSubmission.title)
             Column(
               children: [
                 CustomButton(

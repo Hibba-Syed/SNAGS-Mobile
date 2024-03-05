@@ -1,10 +1,10 @@
 class InspectionTemplateResponseModel {
   InspectionTemplateResponseModel({
-      this.status, 
-      this.record, 
-      this.code, 
-      this.meta, 
-      this.requestStatus, 
+      this.status,
+      this.record,
+      this.code,
+      this.meta,
+      this.requestStatus,
       this.message,});
 
   InspectionTemplateResponseModel.fromJson(dynamic json) {
@@ -39,9 +39,9 @@ class InspectionTemplateResponseModel {
 
 class InspectionTemplateRecord {
   InspectionTemplateRecord({
-      this.id, 
-      this.companyId, 
-      this.associationId, 
+      this.id,
+      this.companyId,
+      this.associationId,
       this.categories,});
 
   InspectionTemplateRecord.fromJson(dynamic json) {
@@ -75,10 +75,10 @@ class InspectionTemplateRecord {
 
 class InspectionTemplateCategory {
   InspectionTemplateCategory({
-      this.id, 
-      this.companyId, 
-      this.inspectionId, 
-      this.title, 
+      this.id,
+      this.companyId,
+      this.inspectionId,
+      this.title,
       this.items,});
 
   InspectionTemplateCategory.fromJson(dynamic json) {
@@ -115,8 +115,8 @@ class InspectionTemplateCategory {
 
 class InspectionTemplateCategoryItem {
   InspectionTemplateCategoryItem({
-      this.id, 
-      this.inspectionCategoryId, 
+      this.id,
+      this.inspectionCategoryId,
       this.title,});
 
   InspectionTemplateCategoryItem.fromJson(dynamic json) {

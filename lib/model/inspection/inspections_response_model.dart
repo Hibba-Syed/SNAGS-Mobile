@@ -117,6 +117,7 @@ class InspectionModel {
     reference = json['reference'];
     score = json['score'];
     status = json['status'];
+    submittedAt = json['submitted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
@@ -131,6 +132,7 @@ class InspectionModel {
   String? reference;
   double? score;
   String? status;
+  String? submittedAt;
   String? createdAt;
   String? updatedAt;
   dynamic deletedAt;
@@ -147,6 +149,7 @@ class InspectionModel {
     map['reference'] = reference;
     map['score'] = score;
     map['status'] = status;
+    map['submitted_at'] = submittedAt;
     map['created_at'] = createdAt;
     map['updated_at'] = updatedAt;
     map['deleted_at'] = deletedAt;

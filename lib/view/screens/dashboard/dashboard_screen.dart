@@ -125,11 +125,16 @@ class DashboardScreen extends StatelessWidget {
                         buttonColor: AppColors.cGreen,
                         text: 'Add Inspection',
                         onPressed: () {
-                          context.read<AddEditInspectionCubit>().clearData();
-                          Navigator.pushNamed(context, AppRoutes.addInspection);
                           context
                               .read<DashboardCubit>()
                               .onChangeIsFloatingButtonExpanded(false);
+                          context.read<AddEditInspectionCubit>().clearData();
+                          Navigator.pushNamed(context, AppRoutes.addInspection).then((value){
+                            if(value==true){
+                              context
+                                  .read<DashboardCubit>().getRecentInspections();
+                            }
+                          });
                         },
                       ),
                       UIHelper.verticalSpace(10.0),

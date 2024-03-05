@@ -76,6 +76,7 @@ class _InspectionDetailScreenState extends State<InspectionDetailScreen> {
                           ),
                           Expanded(
                             child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
                               children: [
                                 InspectionDetailDetailsScreen(
                                   inspectionDetails: state.inspectionDetails,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
+import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_detail_bottom_buttons.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_detail_logs_item_widget.dart';
@@ -8,9 +10,11 @@ import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 
 class InspectionDetailLogsScreen extends StatelessWidget {
   final InspectionDetails? inspectionDetails;
+  final Association? community;
   const InspectionDetailLogsScreen({
     super.key,
     required this.inspectionDetails,
+    this.community,
   });
 
   @override
@@ -43,7 +47,16 @@ class InspectionDetailLogsScreen extends StatelessWidget {
         InspectionDetailBottomButtons(
           status: inspectionDetails?.status??'',
           onSubmitPressed: () {},
-          onEditPressed: () {},
+          onEditPressed: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.editInspection,
+              arguments: {
+                'community': inspectionDetails?.association,//pass this to check if user is coming from specific community
+                'inspection_details': inspectionDetails,
+              },
+            );
+          },
           onArchivePressed: () {},
         ),
         UIHelper.verticalSpace(10.0),

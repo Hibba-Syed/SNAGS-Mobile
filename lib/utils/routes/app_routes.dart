@@ -11,6 +11,7 @@ class AppRoutes {
   static const String communityDetail = "/community_detail";
   static const String inspectionDetail = "/inspection_detail";
   static const String addInspection = "/add_inspection";
+  static const String editInspection = "/edit_inspection";
   static const String snagDetail = "/snag_detail";
   static const String addSnag = "/add_snag";
   static const String editSnag = "/edit_snag";

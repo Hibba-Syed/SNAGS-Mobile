@@ -7,14 +7,14 @@ import 'package:iskaan_inspections_mobile/view/screens/inspection/components/ni_
 import 'package:iskaan_inspections_mobile/view/screens/inspection/components/zero_rating_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
-class InspectionCategoryItemWidget extends StatefulWidget {
+class EditInspectionCategoryItemWidget extends StatefulWidget {
   final String title;
   final int? rating;
   final String? note;
   final void Function(int?) onRatingUpdate;
   final void Function(String)? onNoteChanged;
   final void Function() onScoreUpdate;
-  const InspectionCategoryItemWidget({
+  const EditInspectionCategoryItemWidget({
     super.key,
     required this.title,
     this.rating,
@@ -25,12 +25,12 @@ class InspectionCategoryItemWidget extends StatefulWidget {
   });
 
   @override
-  State<InspectionCategoryItemWidget> createState() =>
-      _InspectionCategoryItemWidgetState();
+  State<EditInspectionCategoryItemWidget> createState() =>
+      _EditInspectionCategoryItemWidgetState();
 }
 
-class _InspectionCategoryItemWidgetState
-    extends State<InspectionCategoryItemWidget> {
+class _EditInspectionCategoryItemWidgetState
+    extends State<EditInspectionCategoryItemWidget> {
   final TextEditingController _noteController = TextEditingController();
   bool _isRatingIgnored = false;
   bool _isRatingChanged = false;
@@ -42,7 +42,7 @@ class _InspectionCategoryItemWidgetState
     super.initState();
     _rating = widget.rating;
     _noteController.text = widget.note ?? '';
-    if (_rating == -1) {
+    if(_rating == -1){
       _isNotInspectable = true;
     }
     setState(() {});

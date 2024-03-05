@@ -21,8 +21,7 @@ import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widge
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
 class EditSnagScreen extends StatefulWidget {
-  final Association? community;
-  const EditSnagScreen({super.key, this.community});
+  const EditSnagScreen({super.key,});
 
   @override
   State<EditSnagScreen> createState() => _EditSnagScreenState();

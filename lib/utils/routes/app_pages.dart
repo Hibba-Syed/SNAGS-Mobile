@@ -25,6 +25,7 @@ import 'package:iskaan_inspections_mobile/view/screens/communities/detail/commun
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/main_dashboard_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/add_inspection_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/edit_inspection/edit_inspection_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/profile/edit_profile_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
@@ -123,7 +124,6 @@ class AppPages {
         ],
         child: const SizedBox.shrink(),
       ),
-
     ),
     PageEntity(
       route: AppRoutes.inspectionDetail,
@@ -135,6 +135,13 @@ class AppPages {
     PageEntity(
       route: AppRoutes.addInspection,
       page: const AddInspectionScreen(),
+      bloc: BlocProvider(
+        create: (context) => AddEditInspectionCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.editInspection,
+      page: const EditInspectionScreen(),
       bloc: BlocProvider(
         create: (context) => AddEditInspectionCubit(),
       ),

@@ -8,7 +8,8 @@ abstract class BaseApiServices {
   Future<dynamic> getPostApiResponse(String url, dynamic data);
 
   Future<dynamic> getAuthPostApiResponse(String url, dynamic data);
-  Future<dynamic> getAuthPutApiResponse(String url, dynamic data);
+  Future<dynamic> getAuthPutApiResponse(String url, {dynamic data});
+  Future<dynamic> getAuthDeleteApiResponse(String url);
 
   Future<dynamic> getPostApiMultipartResponse(
     String url,

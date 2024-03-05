@@ -1,6 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
@@ -10,26 +10,25 @@ import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart
 import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
-class InspectionCategoryWidget extends StatefulWidget {
-  final int communityId;
+class EditInspectionCategoryWidget extends StatefulWidget {
   final List<Inspector>? inspectors;
-  final InspectionTemplateCategory inspectionTemplateCategory;
-  final ValueChanged onSavePressed;
+  final InspectionCategory inspectionCategory;
+  final ValueChanged onUpdatePressed;
 
-  const InspectionCategoryWidget({
+  const EditInspectionCategoryWidget({
     super.key,
-    required this.communityId,
     required this.inspectors,
-    required this.inspectionTemplateCategory,
-    required this.onSavePressed,
+    required this.inspectionCategory,
+    required this.onUpdatePressed,
   });
 
   @override
-  State<InspectionCategoryWidget> createState() =>
-      _InspectionCategoryWidgetState();
+  State<EditInspectionCategoryWidget> createState() =>
+      _EditInspectionCategoryWidgetState();
 }
 
-class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
+class _EditInspectionCategoryWidgetState
+    extends State<EditInspectionCategoryWidget> {
   final TextEditingController _categoryNoteController = TextEditingController();
   bool _isExpanded = false;
   double _totalScore = 0.0;
@@ -41,14 +40,15 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
   void initState() {
     super.initState();
     _categoryFormData = {
-      "association_id": widget.communityId,
-      "category_id": widget.inspectionTemplateCategory.id,
-      "note": null,
+      "category_id": widget.inspectionCategory.id,
+      "note": widget.inspectionCategory.note,
     };
-    widget.inspectionTemplateCategory.items?.forEach((element) {
+    _categoryNoteController.text = widget.inspectionCategory.note ?? '';
+    _totalScore = widget.inspectionCategory.score ?? 0.0;
+    widget.inspectionCategory.items?.forEach((element) {
       _categoryFormData["item_${element.id}"] = <String, dynamic>{
-        "note": null,
-        "rating": null,
+        "note": element.note,
+        "rating": element.rating,
       };
     });
     setState(() {});
@@ -80,7 +80,7 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
               children: [
                 Flexible(
                   child: Text(
-                    widget.inspectionTemplateCategory.title ?? '--',
+                    widget.inspectionCategory.title ?? '--',
                     style: AppTextStyles.style16Grey600,
                   ),
                 ),
@@ -147,13 +147,12 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
                 Form(
                   key: _formKey,
                   child: ListView.separated(
-                    itemCount:
-                        widget.inspectionTemplateCategory.items?.length ?? 0,
+                    itemCount: widget.inspectionCategory.items?.length ?? 0,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      InspectionTemplateCategoryItem? item =
-                          widget.inspectionTemplateCategory.items?[index];
+                      InspectionCategoryItem? item =
+                          widget.inspectionCategory.items?[index];
                       return InspectionCategoryItemWidget(
                         title: item?.title ?? '--',
                         note: _categoryFormData["item_${item?.id}"]['note'],
@@ -167,9 +166,7 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
                         },
                         onScoreUpdate: () {
                           _totalScore = _totalScore +
-                              (100 /
-                                  widget.inspectionTemplateCategory.items!
-                                      .length);
+                              (100 / widget.inspectionCategory.items!.length);
                           setState(() {});
                         },
                       );
@@ -217,11 +214,11 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
                 UIHelper.verticalSpace(10.0),
                 CustomButton(
                   buttonColor: AppColors.cGreen,
-                  text: 'Save',
+                  text: 'Update',
                   onPressed: () {
                     print(_categoryFormData);
                     if (_formKey.currentState!.validate()) {
-                      widget.onSavePressed(_categoryFormData);
+                      widget.onUpdatePressed(_categoryFormData);
                     }
                   },
                 ),

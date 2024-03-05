@@ -109,7 +109,7 @@ class NetworkApiServices implements BaseApiServices {
   }
 
   @override
-  Future getAuthPutApiResponse(String url, dynamic data) async {
+  Future getAuthPutApiResponse(String url, {dynamic data}) async {
     dynamic responseJson;
     try {
       final response = await http
@@ -121,6 +121,32 @@ class NetworkApiServices implements BaseApiServices {
           'authorization': 'Bearer ${Globals().token}'
         },
         body: jsonEncode(data),
+      )
+          .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+        throw FetchDataException(
+            "Connection timeout, please check your internet");
+      });
+      debugPrint(
+          'status code: ${response.statusCode}\n body: ${response.body}');
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
+    }
+
+    return responseJson;
+  }
+  @override
+  Future getAuthDeleteApiResponse(String url) async {
+    dynamic responseJson;
+    try {
+      final response = await http
+          .delete(
+        Uri.parse(url),
+        headers: {
+          'accept': "application/json",
+          'Content-Type': "application/json",
+          'authorization': 'Bearer ${Globals().token}'
+        },
       )
           .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
@@ -251,6 +277,8 @@ class NetworkApiServices implements BaseApiServices {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
+      case 204:
+        return true;
       case 400:
         throw BadRequestException(body['message']);
       case 401:

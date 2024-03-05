@@ -398,6 +398,7 @@ class SnagDetailScreen extends StatelessWidget {
                                                     .snagDetails!
                                                     .comments![index];
                                                 return Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     NetworkImageWidget(
                                                       width: 40.0,
@@ -537,6 +538,7 @@ class SnagDetailScreen extends StatelessWidget {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   NetworkImageWidget(
                                                     width: 40.0,
@@ -610,7 +612,7 @@ class SnagDetailScreen extends StatelessWidget {
                               arguments: {
                                 'community':
                                     ModalRoute.of(context)?.settings.arguments,
-                                'snag': state.snagDetails
+                                'snag': state.snagDetails,
                               },
                             ).then((value) {
                               if (value != null) {
