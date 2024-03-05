@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/activities/activities_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/auth/auth_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/communities_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_inspections/community_detail_inspections_cubit.dart';
@@ -27,7 +28,9 @@ import 'package:iskaan_inspections_mobile/view/screens/inspection/add_inspection
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/inspection_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/edit_inspection/edit_inspection_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/notification/notifications_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/profile/activities_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/profile/edit_profile_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/profile/permissions_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/edit_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
@@ -69,6 +72,17 @@ class AppPages {
       bloc: BlocProvider(
         create: (context) => SendOtpCubit(),
       ),
+    ),
+    PageEntity(
+      route: AppRoutes.activities,
+      page: const ActivitiesScreen(),
+      bloc: BlocProvider(
+        create: (context) => ActivitiesCubit(),
+      ),
+    ),
+    PageEntity(
+      route: AppRoutes.permissions,
+      page: const PermissionsScreen(),
     ),
     PageEntity(
       route: AppRoutes.mainDashboard,

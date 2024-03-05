@@ -21,6 +21,7 @@ import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart
 import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/log_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
@@ -398,7 +399,8 @@ class SnagDetailScreen extends StatelessWidget {
                                                     .snagDetails!
                                                     .comments![index];
                                                 return Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     NetworkImageWidget(
                                                       width: 40.0,
@@ -534,61 +536,12 @@ class SnagDetailScreen extends StatelessWidget {
                                           itemBuilder: (context, index) {
                                             LogModel item =
                                                 state.snagDetails!.logs![index];
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  NetworkImageWidget(
-                                                    width: 40.0,
-                                                    height: 40.0,
-                                                    url: item
-                                                        .logger?.profilePicture,
-                                                    shape: BoxShape.circle,
-                                                    placeHolder: const Icon(
-                                                      Icons.person,
-                                                      color: AppColors.grey,
-                                                    ),
-                                                  ),
-                                                  UIHelper.horizontalSpace(
-                                                      10.0),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        RichText(
-                                                          text: TextSpan(
-                                                            text:
-                                                                item.description ??
-                                                                    '--',
-                                                            style: AppTextStyles
-                                                                .style12LightGrey400,
-                                                            children: [
-                                                              TextSpan(
-                                                                  text:
-                                                                      ' ${item.logger?.name ?? '--'}',
-                                                                  style: AppTextStyles
-                                                                      .style14Primary600),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        UIHelper.verticalSpace(
-                                                            5.0),
-                                                        Text(
-                                                          DateTimeUtil
-                                                              .getFormattedDateTime(
-                                                                  item.createdAt),
-                                                          style: AppTextStyles
-                                                              .style12LightGrey400,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                            return LogWidget(
+                                              description: item.description,
+                                              loggerName: item.logger?.name,
+                                              date: item.createdAt,
+                                              loggerImageUrl:
+                                                  item.logger?.profilePicture,
                                             );
                                           },
                                           separatorBuilder: (context, index) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/activities/activities_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/role_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
@@ -106,6 +108,29 @@ class ProfileScreen extends StatelessWidget {
                   iconData: Icons.lock,
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.updatePassword);
+                  },
+                ),
+                const Divider(
+                  color: AppColors.lightGrey,
+                  thickness: 0.2,
+                ),
+                ProfileRowButton(
+                  title: 'Activity',
+                  iconData: Icons.history,
+                  onTap: () {
+                    context.read<ActivitiesCubit>().getActivities();
+                    Navigator.pushNamed(context, AppRoutes.activities);
+                  },
+                ),
+                const Divider(
+                  color: AppColors.lightGrey,
+                  thickness: 0.2,
+                ),
+                ProfileRowButton(
+                  title: 'Permissions',
+                  iconData: Icons.verified_user_outlined,
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.permissions);
                   },
                 ),
               ],

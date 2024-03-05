@@ -2,6 +2,7 @@ class ApiUrl {
   static const String baseUrl = 'https://api.oamservices.com';
   static const String login = '$baseUrl/snags/login';
   static const String profile = '$baseUrl/snags/profile';
+  static const String activities = '$baseUrl/snags/profile/activities';
   static const String inspections = '$baseUrl/snags/inspections';
   static const String inspectionsStatistics = '$baseUrl/snags/statistics/inspection';
   static const String inspectionsStatisticsByMonth = '$baseUrl/snags/statistics/inspection-by-month';
