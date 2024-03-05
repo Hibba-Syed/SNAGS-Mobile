@@ -44,9 +44,9 @@ class NetworkApiServices implements BaseApiServices {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });
-      responseJson = returnResponse(response);
       debugPrint(
           'get status code: ${response.statusCode}\n body: ${response.body}');
+      responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException("No Internet Connection");
     }
@@ -135,25 +135,29 @@ class NetworkApiServices implements BaseApiServices {
 
     return responseJson;
   }
+
   @override
   Future getAuthDeleteApiResponse(String url) async {
     dynamic responseJson;
     try {
-      final response = await http
-          .delete(
+      final response = await http.delete(
         Uri.parse(url),
         headers: {
           'accept': "application/json",
           'Content-Type': "application/json",
           'authorization': 'Bearer ${Globals().token}'
         },
-      )
-          .timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
+      ).timeout(const Duration(seconds: timeoutDuration), onTimeout: () {
         throw FetchDataException(
             "Connection timeout, please check your internet");
       });
       debugPrint(
           'status code: ${response.statusCode}\n body: ${response.body}');
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        responseJson = returnResponse(response);
+      }
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException("No Internet Connection");
@@ -232,12 +236,13 @@ class NetworkApiServices implements BaseApiServices {
       throw FetchDataException(e.toString());
     }
   }
+
   @override
   Future getAuthPutApiMultipartResponse(
-      String url,
-      Map<String, dynamic>? data,
-      List<http.MultipartFile> files,
-      ) async {
+    String url,
+    Map<String, dynamic>? data,
+    List<http.MultipartFile> files,
+  ) async {
     dynamic responseJson;
     try {
       var request = http.MultipartRequest("PUT", Uri.parse(url));
@@ -260,6 +265,7 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
+
       responseJson = returnResponse(response);
       return responseJson;
     } on SocketException catch (e) {
@@ -277,8 +283,6 @@ class NetworkApiServices implements BaseApiServices {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
-      case 204:
-        return true;
       case 400:
         throw BadRequestException(body['message']);
       case 401:

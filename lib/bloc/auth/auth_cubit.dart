@@ -49,4 +49,39 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
+  Future<void> updatePassword(
+    BuildContext context, {
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+    await _authRepo.updatePassword(
+      data: {
+        'current_password': currentPassword,
+        'password': newPassword,
+        'password_confirmation': confirmPassword,
+      },
+    ).onError(
+      (error, stackTrace) {
+        emit(state.copyWith(isLoading: false));
+        Fluttertoast.showToast(
+          msg: error.toString(),
+        );
+        throw error!;
+      },
+    ).then(
+      (response) {
+        emit(state.copyWith(isLoading: false));
+        if (response != null) {
+          Fluttertoast.showToast(msg: 'Password updated successfully');
+          Navigator.pop(context);
+        } else {
+          Fluttertoast.showToast(
+              msg: 'Something went wrong, please try again later');
+        }
+      },
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -81,6 +82,25 @@ class _InspectionScreenState extends State<InspectionScreen> {
                                   companyName: item.company?.name ?? '',
                                   userName: item.inspector?.fullName ?? '--',
                                   date: item.updatedAt ?? item.createdAt,
+                                  onTap: (){
+                                    context.read<InspectionDetailsCubit>().onChangeReference(item.reference);
+                                    if (item.id != null) {
+                                      context
+                                          .read<InspectionDetailsCubit>()
+                                          .getInspectionDetails(id: item.id!);
+                                    }
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.inspectionDetail,
+                                      arguments: {
+                                        'is_from_community': false,
+                                      },
+                                    ).then((value) {
+                                      if(value==true){
+                                        context.read<InspectionCubit>().getInspections();
+                                      }
+                                    });
+                                  },
                                 );
                               },
                               separatorBuilder: (context, index) {

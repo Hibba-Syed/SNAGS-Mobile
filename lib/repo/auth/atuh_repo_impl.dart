@@ -1,6 +1,7 @@
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
 import 'package:iskaan_inspections_mobile/model/auth/login_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/auth/update_password_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/auth/auth_repo.dart';
 import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
 
@@ -12,6 +13,18 @@ class AuthRepoImpl implements AuthRepo {
       dynamic response =
           await _apiService.getPostApiResponse(ApiUrl.login, data);
       return LoginResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UpdatePasswordResponseModel?> updatePassword(
+      {required Map<String, dynamic> data}) async {
+    try {
+      dynamic response = await _apiService
+          .getAuthPutApiResponse(ApiUrl.changePassword, data: data);
+      return UpdatePasswordResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

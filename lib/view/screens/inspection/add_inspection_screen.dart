@@ -20,6 +20,30 @@ class AddInspectionScreen extends StatefulWidget {
 }
 
 class _AddInspectionScreenState extends State<AddInspectionScreen> {
+  Association? _selectedCommunity;
+  bool _isCommunityEnabled = true;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      // Access arguments here
+      final arguments = ModalRoute.of(context)?.settings.arguments;
+      _selectedCommunity = arguments as Association?;
+      if (_selectedCommunity != null) {
+        _isCommunityEnabled = false;
+        context
+            .read<AddEditInspectionCubit>().onChangeCommunityId(_selectedCommunity?.id);
+        context
+            .read<AddEditInspectionCubit>()
+            .getInspectionTemplate();
+        context
+            .read<AddEditInspectionCubit>()
+            .getInspectors(communityId: _selectedCommunity!.id!);
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,19 +56,23 @@ class _AddInspectionScreenState extends State<AddInspectionScreen> {
         child: Column(
           children: [
             DropdownWidget<Association>(
+              enabled: _isCommunityEnabled,
               hint: 'Select a Community',
-              selectedItem: null,
+              selectedItem: _selectedCommunity,
               items: Globals().profileRecord?.associations ?? [],
               itemAsString: (community) => community.name ?? '',
               compareFn: (community, item) => community.id == item.id,
               onChanged: (value) {
+                _selectedCommunity = value;
                 if (value?.id != null) {
                   context
-                      .read<AddEditInspectionCubit>()
-                      .getInspectionTemplate(communityId: value!.id!);
+                      .read<AddEditInspectionCubit>().onChangeCommunityId(value?.id);
                   context
                       .read<AddEditInspectionCubit>()
-                      .getInspectors(communityId: value.id!);
+                      .getInspectionTemplate();
+                  context
+                      .read<AddEditInspectionCubit>()
+                      .getInspectors(communityId: value!.id!);
                 }
               },
               border: OutlineInputBorder(

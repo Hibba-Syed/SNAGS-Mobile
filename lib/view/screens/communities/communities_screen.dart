@@ -68,7 +68,7 @@ class _CommunitiesScreenState extends State<CommunitiesScreen> {
                                   .onChangeId(item.id);
                               context
                                   .read<CommunityDetailInspectionsCubit>()
-                                  .onChangeId(item.id);
+                                  .onChangeCommunity(item);
                               context
                                   .read<CommunityDetailSnagsCubit>()
                                   .onChangeCommunity(item);

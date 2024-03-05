@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_inspections/community_detail_inspections_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/add_edit_inspection_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspectors_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
@@ -46,11 +51,11 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
     }
   }
 
-  Future<void> getInspectionTemplate({required int communityId}) async {
+  Future<void> getInspectionTemplate() async {
     emit(state.copyWith(isLoading: true));
     InspectionTemplateResponseModel? response = await _inspectionRepo
         .getInspectionTemplate(
-      id: communityId,
+      id: state.communityId!,
     )
         .onError(
       (error, stackTrace) {
@@ -103,7 +108,6 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
     required int inspectionId,
     required dynamic data,
   }) async {
-    print('data:: $data');
     emit(state.copyWith(isLoading: true));
     final AddEditInspectionResponseModel? response = await _inspectionRepo
         .updateInspection(
@@ -121,12 +125,25 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
     );
     emit(state.copyWith(isLoading: false));
     if (response != null) {
-      Navigator.pop(context, true);
+      onChangeInspectionDetails(response.record);
       Fluttertoast.showToast(msg: 'Inspection updated successfully');
+      context
+          .read<InspectionDetailsCubit>()
+          .getInspectionDetails(id: inspectionId);
+      context.read<DashboardCubit>().getRecentInspections();
+      context.read<CommunityDetailInspectionsCubit>().getCommunityInspections();
+      context.read<InspectionCubit>().getInspections();
+
       // emit(state.copyWith(inspectionTemplateRecord: response.record??InspectionTemplateRecord()));
     } else {
       Fluttertoast.showToast(
           msg: 'Something went wrong while updating inspections');
     }
+  }
+  onChangeCommunityId(int? id){
+    emit(state.copyWith(communityId: id));
+  }
+  onChangeInspectionDetails(InspectionDetails? details){
+    emit(state.copyWith(inspectionDetails: details));
   }
 }

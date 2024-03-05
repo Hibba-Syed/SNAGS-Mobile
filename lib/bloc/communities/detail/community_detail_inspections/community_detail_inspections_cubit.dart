@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo_impl.dart';
@@ -15,7 +16,7 @@ class CommunityDetailInspectionsCubit
   Future<void> getCommunityInspections() async {
     emit(state.copyWith(isLoading: true));
     InspectionsResponseModel? response =
-        await _inspectionRepo.getInspections(associationIds: [state.communityId!],).onError(
+        await _inspectionRepo.getInspections(associationIds: [state.community!.id!],).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
@@ -38,7 +39,7 @@ class CommunityDetailInspectionsCubit
     emit(state.copyWith(loadMore: true, isLoading: false, page: page));
     InspectionsResponseModel? response = await _inspectionRepo
         .getInspections(
-      associationIds: [state.communityId!],
+      associationIds: [state.community!.id!],
       page: state.page,
     )
         .onError(
@@ -67,7 +68,7 @@ class CommunityDetailInspectionsCubit
     }
   }
 
-  onChangeId(int? id){
-    emit(state.copyWith(communityId: id));
+  onChangeCommunity(Association? community){
+    emit(state.copyWith(community: community));
   }
 }

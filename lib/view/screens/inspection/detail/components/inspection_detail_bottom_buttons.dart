@@ -4,18 +4,23 @@ import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 
 class InspectionDetailBottomButtons extends StatelessWidget {
   final String status;
   final VoidCallback onSubmitPressed;
   final VoidCallback onEditPressed;
   final VoidCallback onArchivePressed;
+  final bool isSubmitLoading;
+  final bool isArchiveLoading;
   const InspectionDetailBottomButtons({
     super.key,
     required this.status,
     required this.onSubmitPressed,
     required this.onEditPressed,
     required this.onArchivePressed,
+    this.isSubmitLoading=false,
+    this.isArchiveLoading=false,
   });
 
   @override
@@ -28,7 +33,7 @@ class InspectionDetailBottomButtons extends StatelessWidget {
             Column(
               children: [
                 CustomButton(
-                  icon: const Icon(
+                  icon: isSubmitLoading? const CustomLoader():const Icon(
                     Icons.send,
                     color: AppColors.white,
                   ),
@@ -68,7 +73,7 @@ class InspectionDetailBottomButtons extends StatelessWidget {
                   status == AppConstants.inspectionRejected.title)
                 Flexible(
                   child: CustomButton(
-                    icon: const Icon(
+                    icon: isArchiveLoading? const CustomLoader():const Icon(
                       Icons.archive,
                       color: AppColors.white,
                     ),

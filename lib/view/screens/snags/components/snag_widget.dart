@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
-import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
@@ -18,7 +17,7 @@ class SnagWidget extends StatelessWidget {
   final String reference;
   final String title;
   final String location;
-  final Association? community;
+  final VoidCallback onTap;
   const SnagWidget({
     super.key,
     required this.id,
@@ -28,21 +27,14 @@ class SnagWidget extends StatelessWidget {
     required this.reference,
     required this.title,
     required this.location,
-    this.community,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        if (id != null) {
-          context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
-          context.read<SnagDetailCubit>().getSnagDetails(id: id!);
-        }
-        context.read<SnagDetailCubit>().onChangeReference(reference);
-        Navigator.pushNamed(context, AppRoutes.snagDetail,arguments: community);
-      },
+      onTap: onTap,
       child: Container(
         width: deviceWidth,
         height: 120,

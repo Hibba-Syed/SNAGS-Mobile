@@ -20,7 +20,6 @@ class EditInspectionScreen extends StatefulWidget {
 }
 
 class _AddInspectionScreenState extends State<EditInspectionScreen> {
-  InspectionDetails? _inspectionDetails;
   Association? _selectedCommunity;
   bool _isCommunityEnabled = true;
   @override
@@ -29,13 +28,25 @@ class _AddInspectionScreenState extends State<EditInspectionScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      _inspectionDetails = arguments['inspection_details'] as InspectionDetails;
-      _selectedCommunity = _inspectionDetails?.association;
+      _selectedCommunity = context
+          .read<AddEditInspectionCubit>()
+          .state
+          .inspectionDetails
+          ?.association;
       if (arguments['community'] != null) {
         _selectedCommunity = arguments['community'] as Association;
         _isCommunityEnabled = false;
       }
       setState(() {});
+      if (_selectedCommunity?.id != null) {
+        context
+            .read<AddEditInspectionCubit>()
+            .onChangeCommunityId(_selectedCommunity?.id);
+        context.read<AddEditInspectionCubit>().getInspectionTemplate();
+        context
+            .read<AddEditInspectionCubit>()
+            .getInspectors(communityId: _selectedCommunity!.id!);
+      }
     });
   }
 
@@ -61,10 +72,13 @@ class _AddInspectionScreenState extends State<EditInspectionScreen> {
                 if (value?.id != null) {
                   context
                       .read<AddEditInspectionCubit>()
-                      .getInspectionTemplate(communityId: value!.id!);
+                      .onChangeCommunityId(value?.id);
                   context
                       .read<AddEditInspectionCubit>()
-                      .getInspectors(communityId: value.id!);
+                      .getInspectionTemplate();
+                  context
+                      .read<AddEditInspectionCubit>()
+                      .getInspectors(communityId: value!.id!);
                 }
               },
               border: OutlineInputBorder(
@@ -84,17 +98,17 @@ class _AddInspectionScreenState extends State<EditInspectionScreen> {
                   if (state.isLoading == true) {
                     return const CustomLoader();
                   }
-                  if (_inspectionDetails?.categories?.isEmpty ?? true) {
+                  if (state.inspectionDetails?.categories?.isEmpty ?? true) {
                     return const EmptyWidget(
                       text: 'No Categories found',
                     );
                   }
                   return ListView.separated(
-                    itemCount: _inspectionDetails?.categories?.length ?? 0,
+                    itemCount: state.inspectionDetails?.categories?.length ?? 0,
                     shrinkWrap: true,
                     itemBuilder: (ctx, index) {
                       InspectionCategory? item =
-                          _inspectionDetails?.categories?[index];
+                          state.inspectionDetails?.categories?[index];
                       return EditInspectionCategoryWidget(
                         inspectors: state.inspectors,
                         inspectionCategory: item!,
@@ -102,7 +116,7 @@ class _AddInspectionScreenState extends State<EditInspectionScreen> {
                           await context
                               .read<AddEditInspectionCubit>()
                               .updateInspection(context,
-                                  inspectionId: _inspectionDetails!.id!,
+                                  inspectionId: state.inspectionDetails!.id!,
                                   data: formData);
                         },
                       );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
@@ -12,11 +15,11 @@ import 'package:iskaan_inspections_mobile/view/widgets/total_score_widget.dart';
 
 class InspectionDetailDetailsScreen extends StatelessWidget {
   final InspectionDetails? inspectionDetails;
-  final Association? community;
+  final bool? isFromCommunity;
   const InspectionDetailDetailsScreen({
     super.key,
     required this.inspectionDetails,
-    this.community,
+    this.isFromCommunity = false,
   });
 
   @override
@@ -117,21 +120,38 @@ class InspectionDetailDetailsScreen extends StatelessWidget {
             ),
           ),
         ),
-        InspectionDetailBottomButtons(
-          status: inspectionDetails?.status ?? '',
-          onSubmitPressed: () {},
-          onEditPressed: () {
-            Navigator.pushNamed(
-              context,
-              AppRoutes.editInspection,
-              arguments: {
-                'community': community,//pass this to check if user is coming from specific community
-                'inspection_details': inspectionDetails,
-              },
-            );
-          },
-          onArchivePressed: () {},
-        ),
+        BlocBuilder<InspectionDetailsCubit, InspectionDetailsState>(
+            builder: (context, state) {
+          return InspectionDetailBottomButtons(
+            status: inspectionDetails?.status ?? '',
+            onSubmitPressed: () {
+              context
+                  .read<InspectionDetailsCubit>()
+                  .submitInspection(context,id: inspectionDetails!.id!);
+            },
+            onEditPressed: () {
+              context
+                  .read<AddEditInspectionCubit>()
+                  .onChangeInspectionDetails(inspectionDetails);
+              Navigator.pushNamed(
+                context,
+                AppRoutes.editInspection,
+                arguments: {
+                  'community': isFromCommunity == true
+                      ? inspectionDetails?.association
+                      : null, //pass this to check if user is coming from specific community
+                },
+              );
+            },
+            onArchivePressed: () {
+              context
+                  .read<InspectionDetailsCubit>()
+                  .archiveInspection(context,id: inspectionDetails!.id!);
+            },
+            isSubmitLoading: state.isSubmitLoading,
+            isArchiveLoading: state.isArchiveLoading,
+          );
+        }),
         UIHelper.verticalSpace(10.0),
       ],
     );

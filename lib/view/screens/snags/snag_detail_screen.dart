@@ -559,12 +559,16 @@ class SnagDetailScreen extends StatelessWidget {
                         SnagDetailBottomButtons(
                           status: state.snagDetails?.status ?? '',
                           onEditPressed: () {
+                            Map<String, dynamic>? args = ModalRoute.of(context)
+                                ?.settings
+                                .arguments as Map<String, dynamic>;
                             Navigator.pushNamed(
                               context,
                               AppRoutes.editSnag,
                               arguments: {
-                                'community':
-                                    ModalRoute.of(context)?.settings.arguments,
+                                'community': args['is_from_community'] == true
+                                    ? state.snagDetails?.association
+                                    : null,
                                 'snag': state.snagDetails,
                               },
                             ).then((value) {

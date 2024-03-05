@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/main_dashboard/main_dashboard_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
@@ -449,6 +450,20 @@ class DashboardScreen extends StatelessWidget {
                     status: snag?.status ?? '--',
                     title: snag?.description ?? '--',
                     location: snag?.location ?? '--',
+                      onTap: (){
+                        if (snag?.id != null) {
+                          context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
+                          context.read<SnagDetailCubit>().getSnagDetails(id: snag!.id!);
+                        }
+                        context.read<SnagDetailCubit>().onChangeReference(snag?.reference);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.snagDetail,
+                          arguments: {
+                            'is_from_community': false,
+                          },
+                        );
+                      },
                   );
                 },
                 separatorBuilder: (context, index) {
