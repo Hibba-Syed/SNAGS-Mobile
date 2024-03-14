@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/comment_model.dart';
+import 'package:iskaan_inspections_mobile/model/image_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
@@ -85,24 +86,44 @@ class SnagDetailScreen extends StatelessWidget {
                                         children: [
                                           Column(
                                             children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    2,
-                                                clipBehavior:
-                                                    Clip.antiAliasWithSaveLayer,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0)),
-                                                child:
-                                                    (state.snagDetails?.images
-                                                                ?.isNotEmpty ??
-                                                            false)
+                                              Builder(
+                                                builder: (context) {
+                                                  List<ImageModel> images = [];
+                                                  if ((state.snagDetails
+                                                              ?.status ==
+                                                          AppConstants
+                                                              .snagCompleted
+                                                              .title ||
+                                                      state.snagDetails
+                                                              ?.status ==
+                                                          AppConstants
+                                                              .snagCancelled
+                                                              .title)) {
+                                                    images = state.snagDetails
+                                                            ?.closingImages ??
+                                                        [];
+                                                  } else {
+                                                    images = state.snagDetails
+                                                            ?.images ??
+                                                        [];
+                                                  }
+                                                  return Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    clipBehavior: Clip
+                                                        .antiAliasWithSaveLayer,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.0)),
+                                                    child: (images.isNotEmpty)
                                                         ? Stack(
                                                             children: [
                                                               CarouselSlider(
@@ -122,38 +143,33 @@ class SnagDetailScreen extends StatelessWidget {
                                                                             index);
                                                                   },
                                                                 ),
-                                                                items: state
-                                                                    .snagDetails
-                                                                    ?.images
-                                                                    ?.map((i) {
-                                                                  return Builder(
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return Container(
-                                                                        width: MediaQuery.of(context)
+                                                                items: images
+                                                                    .map((i) {
+                                                                  return Container(
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width,
+                                                                    height: MediaQuery.of(context)
                                                                             .size
-                                                                            .width,
-                                                                        height:
-                                                                            MediaQuery.of(context).size.width /
-                                                                                2,
-                                                                        clipBehavior:
-                                                                            Clip.antiAliasWithSaveLayer,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .shade200,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5.0),
-                                                                        ),
-                                                                        child:
-                                                                            NetworkImageWidget(
-                                                                          url: i
-                                                                              .path,
-                                                                        ),
-                                                                      );
-                                                                    },
+                                                                            .width /
+                                                                        2,
+                                                                    clipBehavior:
+                                                                        Clip.antiAliasWithSaveLayer,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade200,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5.0),
+                                                                    ),
+                                                                    child:
+                                                                        NetworkImageWidget(
+                                                                      url: i
+                                                                          .path,
+                                                                    ),
                                                                   );
                                                                 }).toList(),
                                                               ),
@@ -207,6 +223,8 @@ class SnagDetailScreen extends StatelessWidget {
                                                             text:
                                                                 'No Images found',
                                                           ),
+                                                  );
+                                                },
                                               ),
                                               UIHelper.verticalSpace(10.0),
                                               SizedBox(
@@ -582,7 +600,9 @@ class SnagDetailScreen extends StatelessWidget {
                               }
                             });
                           },
-                          onMergePressed: () {},
+                          onMergePressed: () {
+                            Navigator.pushNamed(context, AppRoutes.mergeSnag);
+                          },
                           onStartPressed: () {
                             _showStartDialog(context);
                           },

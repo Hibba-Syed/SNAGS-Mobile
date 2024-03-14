@@ -14,14 +14,14 @@ import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_fie
 
 import 'components/inspection_filter_bottom_sheet.dart';
 
-class InspectionScreen extends StatefulWidget {
-  const InspectionScreen({super.key});
+class InspectionsScreen extends StatefulWidget {
+  const InspectionsScreen({super.key});
 
   @override
-  State<InspectionScreen> createState() => _InspectionScreenState();
+  State<InspectionsScreen> createState() => _InspectionsScreenState();
 }
 
-class _InspectionScreenState extends State<InspectionScreen> {
+class _InspectionsScreenState extends State<InspectionsScreen> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {

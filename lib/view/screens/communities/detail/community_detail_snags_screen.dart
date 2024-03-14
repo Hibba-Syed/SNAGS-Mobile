@@ -46,27 +46,37 @@ class CommunityDetailSnagsScreen extends StatelessWidget {
                               SnagModel? snag = state.snags?[index];
                               return SnagWidget(
                                 id: snag?.id,
-                                imageUrl: (snag?.status ==
+                                imagesUrls: (snag?.status ==
                                             AppConstants.snagCompleted.title ||
                                         snag?.status ==
                                             AppConstants.snagCancelled.title)
-                                    ? snag?.closingImages?.isNotEmpty ?? false
-                                        ? snag?.closingImages?.first.path
-                                        : ''
+                                    ? (snag?.closingImages?.isNotEmpty ?? false)
+                                        ? snag?.closingImages
+                                            ?.map((e) => e.path)
+                                            .toList()
+                                        : []
                                     : snag?.images?.isNotEmpty ?? false
-                                        ? snag?.images?.first.path
-                                        : '',
+                                        ? snag?.images
+                                            ?.map((e) => e.path)
+                                            .toList()
+                                        : [],
                                 reference: snag?.reference ?? '--',
                                 risk: snag?.risk ?? '--',
                                 status: snag?.status ?? '--',
                                 title: snag?.description ?? '--',
                                 location: snag?.location ?? '--',
-                                onTap: (){
+                                onTap: () {
                                   if (snag?.id != null) {
-                                    context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
-                                    context.read<SnagDetailCubit>().getSnagDetails(id: snag!.id!);
+                                    context
+                                        .read<SnagDetailCubit>()
+                                        .onChangeCarouselIndex(0);
+                                    context
+                                        .read<SnagDetailCubit>()
+                                        .getSnagDetails(id: snag!.id!);
                                   }
-                                  context.read<SnagDetailCubit>().onChangeReference(snag?.reference);
+                                  context
+                                      .read<SnagDetailCubit>()
+                                      .onChangeReference(snag?.reference);
                                   Navigator.pushNamed(
                                     context,
                                     AppRoutes.snagDetail,

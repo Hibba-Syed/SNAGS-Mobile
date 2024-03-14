@@ -10,6 +10,7 @@ class SnagsState {
   final String? fromDate;
   final String? toDate;
   final int page;
+  final String? searchKeyword;
   const SnagsState({
     this.isLoading = false,
     this.loadMore = false,
@@ -20,6 +21,7 @@ class SnagsState {
     this.selectedCommunities,
     this.toDate,
     this.fromDate,
+    this.searchKeyword,
   });
   SnagsState copyWith({
     bool? isLoading,
@@ -31,6 +33,7 @@ class SnagsState {
     final String? fromDate,
     final String? toDate,
     int? page,
+    String? searchKeyword,
   }) {
     return SnagsState(
       isLoading: isLoading ?? this.isLoading,
@@ -41,7 +44,8 @@ class SnagsState {
       selectedStatuses: selectedStatuses ?? this.selectedStatuses,
       selectedCommunities: selectedCommunities ?? this.selectedCommunities,
       fromDate: fromDate ?? this.fromDate,
-      toDate: toDate ?? this.toDate
+      toDate: toDate ?? this.toDate,
+      searchKeyword: searchKeyword?? this.searchKeyword,
     );
   }
 }

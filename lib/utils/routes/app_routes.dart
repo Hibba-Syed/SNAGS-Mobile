@@ -16,6 +16,7 @@ class AppRoutes {
   static const String snagDetail = "/snag_detail";
   static const String addSnag = "/add_snag";
   static const String editSnag = "/edit_snag";
+  static const String mergeSnag = "/merge_snag";
   static const String editProfile = "/edit_profile";
   static const String updatePassword = "/update_password";
   static const String activities = '/activities';

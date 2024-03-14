@@ -1,9 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
-import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
@@ -11,7 +9,7 @@ import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget
 
 class SnagWidget extends StatelessWidget {
   final int? id;
-  final String? imageUrl;
+  final List<String?>? imagesUrls;
   final String risk;
   final String status;
   final String reference;
@@ -21,7 +19,7 @@ class SnagWidget extends StatelessWidget {
   const SnagWidget({
     super.key,
     required this.id,
-    required this.imageUrl,
+    required this.imagesUrls,
     required this.risk,
     required this.status,
     required this.reference,
@@ -45,11 +43,33 @@ class SnagWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            NetworkImageWidget(
-              url: imageUrl,
-              width: deviceWidth / 3,
-              height: 120,
-            ),
+            if (imagesUrls?.isEmpty ?? true)
+              NetworkImageWidget(
+                url: '',
+                width: deviceWidth / 3,
+                height: 120,
+              ),
+            if (imagesUrls?.isNotEmpty ?? false)
+              SizedBox(
+                width: deviceWidth / 3,
+                height: 120,
+                child: CarouselSlider(
+                  items: imagesUrls
+                      ?.map(
+                        (e) => NetworkImageWidget(
+                          url: e,
+                          width: deviceWidth / 3,
+                          height: 120,
+                        ),
+                      )
+                      .toList(),
+                  options: CarouselOptions(
+                    autoPlay: imagesUrls!.length > 1 ? true : false,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1,
+                  ),
+                ),
+              ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),

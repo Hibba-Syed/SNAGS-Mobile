@@ -37,16 +37,18 @@ class _SnagsScreenState extends State<SnagsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SnagsCubit, SnagsState>(
-        builder: (context, state) {
-          if (state.isLoading == true) {
-            return const CustomLoader();
-          }
-          return Column(
-            children: [
-              Padding(
+      body: Column(
+        children: [
+          BlocBuilder<SnagsCubit, SnagsState>(
+            builder: (context, state) {
+              return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: SearchTextField(
+                  initialValue: state.searchKeyword,
+                  onFieldSubmitted: (value) async {
+                    context.read<SnagsCubit>().onChangeSearchKeyWord(value);
+                    await context.read<SnagsCubit>().getSnags();
+                  },
                   isFilterApplied: (state.selectedStatuses?.isEmpty ?? true) &&
                           (state.selectedCommunities?.isEmpty ?? true)
                       ? false
@@ -55,69 +57,97 @@ class _SnagsScreenState extends State<SnagsScreen> {
                     _snagsFilterBottomSheet(context);
                   },
                 ),
-              ),
-              UIHelper.verticalSpace(16.0),
-              Expanded(
-                child: state.snags?.isNotEmpty ?? false
-                    ? RefreshIndicator(
-                        onRefresh: () async {
-                          await context.read<SnagsCubit>().getSnags();
-                        },
-                        child: ListView.separated(
-                          itemCount: state.snags?.length ?? 0,
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 10.0),
-                          itemBuilder: (context, index) {
-                            SnagModel? snag = state.snags?[index];
-                            return SnagWidget(
-                              id: snag?.id,
-                              imageUrl: (snag?.status ==
-                                          AppConstants.snagCompleted.title ||
-                                      snag?.status ==
-                                          AppConstants.snagCancelled.title)
-                                  ? snag?.closingImages?.isNotEmpty ?? false
-                                      ? snag?.closingImages?.first.path
-                                      : ''
-                                  : snag?.images?.isNotEmpty ?? false
-                                      ? snag?.images?.first.path
-                                      : '',
-                              reference: snag?.reference ?? '--',
-                              risk: snag?.risk ?? '--',
-                              status: snag?.status ?? '--',
-                              title: snag?.description ?? '--',
-                              location: snag?.location ?? '--',
-                              onTap: (){
-                                if (snag?.id != null) {
-                                  context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
-                                  context.read<SnagDetailCubit>().getSnagDetails(id: snag!.id!);
-                                }
-                                context.read<SnagDetailCubit>().onChangeReference(snag?.reference);
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.snagDetail,
-                                  arguments: {
-                                    'is_from_community': false,
+              );
+            },
+          ),
+          UIHelper.verticalSpace(16.0),
+          BlocBuilder<SnagsCubit, SnagsState>(
+            builder: (context, state) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: state.isLoading
+                          ? const CustomLoader()
+                          : state.snags?.isNotEmpty ?? false
+                              ? RefreshIndicator(
+                                  onRefresh: () async {
+                                    await context.read<SnagsCubit>().getSnags();
                                   },
-                                );
-                              },
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return UIHelper.verticalSpace(14.0);
-                          },
-                        ),
-                      )
-                    : const EmptyWidget(
-                        text: 'No Snags found',
-                      ),
-              ),
-              if (state.loadMore) const CustomLoader(),
-            ],
-          );
-        },
+                                  child: ListView.separated(
+                                    itemCount: state.snags?.length ?? 0,
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 10.0),
+                                    itemBuilder: (context, index) {
+                                      SnagModel? snag = state.snags?[index];
+                                      return SnagWidget(
+                                        id: snag?.id,
+                                        imagesUrls: (snag?.status ==
+                                                    AppConstants
+                                                        .snagCompleted.title ||
+                                                snag?.status ==
+                                                    AppConstants
+                                                        .snagCancelled.title)
+                                            ? (snag?.closingImages
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? snag?.closingImages
+                                                    ?.map((e) => e.path)
+                                                    .toList()
+                                                : []
+                                            : snag?.images?.isNotEmpty ?? false
+                                                ? snag?.images
+                                                    ?.map((e) => e.path)
+                                                    .toList()
+                                                : [],
+                                        reference: snag?.reference ?? '--',
+                                        risk: snag?.risk ?? '--',
+                                        status: snag?.status ?? '--',
+                                        title: snag?.description ?? '--',
+                                        location: snag?.location ?? '--',
+                                        onTap: () {
+                                          if (snag?.id != null) {
+                                            context
+                                                .read<SnagDetailCubit>()
+                                                .onChangeCarouselIndex(0);
+                                            context
+                                                .read<SnagDetailCubit>()
+                                                .getSnagDetails(id: snag!.id!);
+                                          }
+                                          context
+                                              .read<SnagDetailCubit>()
+                                              .onChangeReference(
+                                                  snag?.reference);
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppRoutes.snagDetail,
+                                            arguments: {
+                                              'is_from_community': false,
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return UIHelper.verticalSpace(14.0);
+                                    },
+                                  ),
+                                )
+                              : const EmptyWidget(
+                                  text: 'No Snags found',
+                                ),
+                    ),
+                    if (state.loadMore) const CustomLoader(),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Snag',

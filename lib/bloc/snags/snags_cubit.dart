@@ -32,6 +32,9 @@ class SnagsCubit extends Cubit<SnagsState> {
   onChangeToDate(String? toDate) {
     emit(state.copyWith(toDate: toDate));
   }
+  onChangeSearchKeyWord(String? keyword){
+    emit(state.copyWith(searchKeyword: keyword));
+  }
 
   clearFilterData() {
     emit(
@@ -41,6 +44,7 @@ class SnagsCubit extends Cubit<SnagsState> {
         fromDate: '',
         toDate: '',
         selectedCompanies: [],
+        searchKeyword:'',
       ),
     );
   }
@@ -55,6 +59,7 @@ class SnagsCubit extends Cubit<SnagsState> {
       statuses: state.selectedStatuses,
       fromDate: state.fromDate,
       toDate: state.toDate,
+      keyword: state.searchKeyword,
     )
         .onError(
       (error, stackTrace) {

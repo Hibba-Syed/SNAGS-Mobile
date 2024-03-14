@@ -17,6 +17,7 @@ abstract class SnagRepo{
     List<String>? statuses,
     String? fromDate,
     String? toDate,
+    String? keyword,
   });
   Future<SnagDetailsResponseModel?> getSnagDetails({required int id});
 

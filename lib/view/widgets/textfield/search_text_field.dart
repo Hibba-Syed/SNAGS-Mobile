@@ -11,6 +11,7 @@ class SearchTextField extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final VoidCallback? onFilterPressed;
   final bool isFilterApplied;
+  final Color? fillColor;
   const SearchTextField({
     super.key,
     this.initialValue,
@@ -20,6 +21,7 @@ class SearchTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.onFilterPressed,
     this.isFilterApplied=false,
+    this.fillColor,
   });
 
   @override
@@ -51,7 +53,7 @@ class SearchTextField extends StatelessWidget {
                   color: AppColors.lightGrey,
                 ),
                 alignLabelWithHint: false,
-                fillColor: AppColors.white,
+                fillColor: fillColor??AppColors.white,
                 filled: true,
                 border: InputBorder.none,
               ),

@@ -66,9 +66,9 @@ class AddEditInspectionCubit extends Cubit<AddEditInspectionState> {
         throw error!;
       },
     );
-    emit(state.copyWith(isLoading: false));
     if (response != null) {
       emit(state.copyWith(
+        isLoading: false,
           inspectionTemplateRecord:
               response.record ?? InspectionTemplateRecord()));
     } else {

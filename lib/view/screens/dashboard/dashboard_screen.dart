@@ -435,16 +435,20 @@ class DashboardScreen extends StatelessWidget {
                   SnagModel? snag = state.recentSnags?[index];
                   return SnagWidget(
                     id: snag?.id,
-                    imageUrl: (snag?.status ==
+                    imagesUrls: (snag?.status ==
                         AppConstants.snagCompleted.title ||
                         snag?.status ==
                             AppConstants.snagCancelled.title)
-                        ? snag?.closingImages?.isNotEmpty ?? false
-                        ? snag?.closingImages?.first.path
-                        : ''
+                        ? (snag?.closingImages?.isNotEmpty ?? false)
+                        ? snag?.closingImages
+                        ?.map((e) => e.path)
+                        .toList()
+                        : []
                         : snag?.images?.isNotEmpty ?? false
-                        ? snag?.images?.first.path
-                        : '',
+                        ? snag?.images
+                        ?.map((e) => e.path)
+                        .toList()
+                        : [],
                     reference: snag?.reference ?? '--',
                     risk: snag?.risk ?? '--',
                     status: snag?.status ?? '--',

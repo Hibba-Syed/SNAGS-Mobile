@@ -33,6 +33,7 @@ import 'package:iskaan_inspections_mobile/view/screens/profile/edit_profile_scre
 import 'package:iskaan_inspections_mobile/view/screens/profile/permissions_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/edit_snag_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/MergeSnag/merge_snags_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
@@ -182,12 +183,19 @@ class AppPages {
       ),
     ),
     PageEntity(
+      route: AppRoutes.mergeSnag,
+      page: const MergeSnagScreen(),
+      bloc: BlocProvider(
+        create: (context) => SnagDetailCubit(),
+      ),
+    ),
+    PageEntity(
       route: AppRoutes.editProfile,
       page: EditProfileScreen(),
     ),
     PageEntity(
       route: AppRoutes.updatePassword,
-      page: UpdatePasswordScreen(),
+      page: const UpdatePasswordScreen(),
     ),
   ];
 

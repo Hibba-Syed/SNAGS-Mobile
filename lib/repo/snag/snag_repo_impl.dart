@@ -32,13 +32,14 @@ class SnagRepoImpl implements SnagRepo {
     List<String>? statuses,
     String? fromDate,
     String? toDate,
+    String? keyword,
   }) async {
     try {
       String? associationIdsString = associationIds?.join(',');
       String? companyIdsString = companyIds?.join(',');
       String? statusesString = statuses?.join(',');
       String url =
-          '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIdsString ?? ''}&company_ids=${companyIdsString ?? ''}&status=${statusesString ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=association_name&order_dir=desc';
+          '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIdsString ?? ''}&company_ids=${companyIdsString ?? ''}&status=${statusesString ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=created_at&order_dir=desc&key_word=$keyword';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsResponseModel.fromJson(response);
     } catch (e) {
