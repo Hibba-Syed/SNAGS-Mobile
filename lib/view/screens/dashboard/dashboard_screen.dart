@@ -25,12 +25,17 @@ import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widge
 import 'package:iskaan_inspections_mobile/view/widgets/row_title_and_view_more.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/snags_status_container.dart';
 
+import '../../../model/month_filter_model.dart';
 import '../../widgets/dropdown/dropdown_widget.dart';
 import '../../widgets/inspactions_status_container.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
-
+  DashboardScreen({super.key});
+  MonthFilterModel _selectInspectionMonth =
+      MonthFilterModel(title: "1Y", value: 12);
+  MonthFilterModel _selectSnagsMonth =
+      MonthFilterModel(title: "1Y", value: 12);
+ // bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,10 +135,12 @@ class DashboardScreen extends StatelessWidget {
                               .read<DashboardCubit>()
                               .onChangeIsFloatingButtonExpanded(false);
                           context.read<AddEditInspectionCubit>().clearData();
-                          Navigator.pushNamed(context, AppRoutes.addInspection).then((value){
-                            if(value==true){
+                          Navigator.pushNamed(context, AppRoutes.addInspection)
+                              .then((value) {
+                            if (value == true) {
                               context
-                                  .read<DashboardCubit>().getRecentInspections();
+                                  .read<DashboardCubit>()
+                                  .getRecentInspections();
                             }
                           });
                         },
@@ -216,8 +223,8 @@ class DashboardScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: DropdownWidget(
-                        hint: "1M",
+                      child: DropdownWidget<MonthFilterModel>(
+                        hint: "Select",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -225,9 +232,19 @@ class DashboardScreen extends StatelessWidget {
                         ),
                         fillColor: AppColors.darkGrey.withOpacity(0.1),
                         icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        selectedItem: null,
-                        items: ['1M','6M','1Y','ALL'],
-                        onChanged: (value) {},
+                        selectedItem: _selectInspectionMonth,
+                        itemAsString: (month) => month.title ?? '',
+                        compareFn: (p0, p1) => p0.title == p1.title,
+                        items: AppConstants.totalInspectionList,
+                        onChanged: (item) {
+                          if (item != null) {
+                            _selectInspectionMonth = item;
+                            context
+                                .read<DashboardCubit>()
+                                .getInspectionsStatistics(
+                                    months: item.value);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -318,8 +335,8 @@ class DashboardScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: DropdownWidget(
-                        hint: "1M",
+                      child: DropdownWidget<MonthFilterModel>(
+                        hint: "select",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: const BorderSide(
@@ -327,9 +344,19 @@ class DashboardScreen extends StatelessWidget {
                         ),
                         fillColor: AppColors.darkGrey.withOpacity(0.1),
                         icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                        selectedItem: null,
-                        items: ['1M','6M','1Y','ALL'],
-                        onChanged: (value) {},
+                        items: AppConstants.totalInspectionList,
+                        itemAsString: (month) => month.title ?? '',
+                        compareFn: (p0, p1) => p0.title == p1.title,
+                        selectedItem: _selectSnagsMonth,
+                        onChanged: (item) {
+                          if (item != null) {
+                            _selectSnagsMonth = item;
+                            context
+                                .read<DashboardCubit>()
+                                .getSnagsStatistics(
+                                    months: item.value);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -401,7 +428,6 @@ class DashboardScreen extends StatelessWidget {
                     communityName: item.association?.name ?? '--',
                     userName: item.inspector?.fullName ?? '--',
                     date: item.updatedAt ?? item.createdAt,
-
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -436,38 +462,39 @@ class DashboardScreen extends StatelessWidget {
                   return SnagWidget(
                     id: snag?.id,
                     imagesUrls: (snag?.status ==
-                        AppConstants.snagCompleted.title ||
-                        snag?.status ==
-                            AppConstants.snagCancelled.title)
+                                AppConstants.snagCompleted.title ||
+                            snag?.status == AppConstants.snagCancelled.title)
                         ? (snag?.closingImages?.isNotEmpty ?? false)
-                        ? snag?.closingImages
-                        ?.map((e) => e.path)
-                        .toList()
-                        : []
+                            ? snag?.closingImages?.map((e) => e.path).toList()
+                            : []
                         : snag?.images?.isNotEmpty ?? false
-                        ? snag?.images
-                        ?.map((e) => e.path)
-                        .toList()
-                        : [],
+                            ? snag?.images?.map((e) => e.path).toList()
+                            : [],
                     reference: snag?.reference ?? '--',
                     risk: snag?.risk ?? '--',
                     status: snag?.status ?? '--',
                     title: snag?.description ?? '--',
                     location: snag?.location ?? '--',
-                      onTap: (){
-                        if (snag?.id != null) {
-                          context.read<SnagDetailCubit>().onChangeCarouselIndex(0);
-                          context.read<SnagDetailCubit>().getSnagDetails(id: snag!.id!);
-                        }
-                        context.read<SnagDetailCubit>().onChangeReference(snag?.reference);
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.snagDetail,
-                          arguments: {
-                            'is_from_community': false,
-                          },
-                        );
-                      },
+                    onTap: () {
+                      if (snag?.id != null) {
+                        context
+                            .read<SnagDetailCubit>()
+                            .onChangeCarouselIndex(0);
+                        context
+                            .read<SnagDetailCubit>()
+                            .getSnagDetails(id: snag!.id!);
+                      }
+                      context
+                          .read<SnagDetailCubit>()
+                          .onChangeReference(snag?.reference);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.snagDetail,
+                        arguments: {
+                          'is_from_community': false,
+                        },
+                      );
+                    },
                   );
                 },
                 separatorBuilder: (context, index) {

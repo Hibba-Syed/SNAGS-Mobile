@@ -5,6 +5,7 @@ import 'package:iskaan_inspections_mobile/model/association/associations_respons
 import 'package:iskaan_inspections_mobile/repo/association/association_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/association/association_repo_impl.dart';
 
+
 part 'communities_state.dart';
 
 class CommunitiesCubit extends Cubit<CommunitiesState> {
@@ -63,5 +64,23 @@ class CommunitiesCubit extends Cubit<CommunitiesState> {
       Fluttertoast.showToast(msg: 'Something went wrong while fetching communites');
     }
   }
+  // Future<void> getInspectionsStatistics({int? months}) async {
+  //   InspectionsStatisticsResponseModel? statisticsResponse =
+  //   await _inspectionRepo
+  //       .getInspectionsStatistics(months: months ?? 12)
+  //       .onError(
+  //         (error, stackTrace) {
+  //       Fluttertoast.showToast(
+  //         msg: error.toString(),
+  //       );
+  //       throw error!;
+  //     },
+  //   );
+  //   if (statisticsResponse != null) {
+  //     emit(state.copyWith(inspectionsStatistics: statisticsResponse.record));
+  //   } else {
+  //     Fluttertoast.showToast(msg: 'Something went wrong');
+  //   }
+  // }
 
 }

@@ -13,7 +13,7 @@ class CommunityDetailStatisticsCubit
       : super(const CommunityDetailStatisticsState());
   final AssociationRepo _associationRepo = AssociationRepoImpl();
 
-  Future<void> getCommunitySnagsStatistics() async {
+  Future<void> getCommunitySnagsStatistics({required String? month}) async {
     emit(state.copyWith(isLoading: true));
     SnagsStatisticsResponseModel? response =
         await _associationRepo.getCommunitySnagsStatistics().onError(

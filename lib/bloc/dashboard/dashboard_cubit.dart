@@ -17,6 +17,8 @@ import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/preference_utils.dart';
 
+import '../../model/month_filter_model.dart';
+
 part 'dashboard_state.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
@@ -49,9 +51,11 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getInspectionsStatistics() async {
+  Future<void> getInspectionsStatistics({int? months}) async {
     InspectionsStatisticsResponseModel? statisticsResponse =
-        await _inspectionRepo.getInspectionsStatistics().onError(
+        await _inspectionRepo
+            .getInspectionsStatistics(months: months ?? 12)
+            .onError(
       (error, stackTrace) {
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -84,9 +88,9 @@ class DashboardCubit extends Cubit<DashboardState> {
     }
   }
 
-  Future<void> getSnagsStatistics() async {
+  Future<void> getSnagsStatistics({int? months}) async {
     SnagsStatisticsResponseModel? statisticsResponse =
-        await _snagRepo.getSnagsStatistics().onError(
+        await _snagRepo.getSnagsStatistics(months: months ?? 12).onError(
       (error, stackTrace) {
         Fluttertoast.showToast(
           msg: error.toString(),
@@ -172,7 +176,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   List<int> getActiveInspectionsStatistics() {
     List<int> values = [];
     state.inspectionsStatisticsByMonth?.forEach((element) {
-      if (element.name == AppConstants.inspectionInProgress.title||
+      if (element.name == AppConstants.inspectionInProgress.title ||
           element.name == AppConstants.inspectionReadyForSubmission.title) {
         values.addAll(element.data as Iterable<int>);
       }
