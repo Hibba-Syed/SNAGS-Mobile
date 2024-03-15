@@ -12,7 +12,7 @@ import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/communities/communities_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/components/drawer_item_model.dart';
 import 'package:iskaan_inspections_mobile/view/screens/dashboard/dashboard_screen.dart';
-import 'package:iskaan_inspections_mobile/view/screens/inspection/inspection_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/inspection/inspections_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/profile/profile_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/snags_screen.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
@@ -46,7 +46,7 @@ class MainDashboardScreen extends StatelessWidget {
     ),
     DrawerItemModel(
       index: AppConstants.inspectionIndex,
-      title: 'Inspection',
+      title: 'Inspections',
       iconPath: AppImages.icInspection,
       onTap: () {},
     ),
@@ -211,11 +211,11 @@ class MainDashboardScreen extends StatelessWidget {
 
   Widget _getScreen(MainDashboardState state) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  DashboardScreen();
+      return  const DashboardScreen();
     } else if (state.selectedIndex == AppConstants.communitiesIndex) {
       return const CommunitiesScreen();
     } else if (state.selectedIndex == AppConstants.inspectionIndex) {
-      return const InspectionScreen();
+      return const InspectionsScreen();
     } else if (state.selectedIndex == AppConstants.snagsIndex) {
       return const SnagsScreen();
     } else if (state.selectedIndex == AppConstants.profileIndex) {

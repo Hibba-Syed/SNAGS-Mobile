@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 
 class NIButton extends StatefulWidget {
+  final bool? value;
   final void Function(bool) onValueChanged;
   const NIButton({
     super.key,
+    this.value,
     required this.onValueChanged,
   });
 
@@ -14,6 +16,16 @@ class NIButton extends StatefulWidget {
 
 class _NIButtonState extends State<NIButton> {
   bool _isClicked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.value == true) {
+      _isClicked = true;
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

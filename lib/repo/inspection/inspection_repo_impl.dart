@@ -1,9 +1,13 @@
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/add_edit_inspection_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspection_details_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspectors_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/submit_inspection_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/inspection/inspection_repo.dart';
 import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
 
@@ -63,6 +67,81 @@ class InspectionRepoImpl implements InspectionRepo {
       String url = '${ApiUrl.inspectionsStatisticsByMonth}?months=12';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return InspectionsStatisticsByMonthResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<InspectionTemplateResponseModel?> getInspectionTemplate(
+      {required int id}) async {
+    try {
+      String url = '${ApiUrl.inspectionTemplate}/$id/template';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return InspectionTemplateResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<InspectorsResponseModel?> getInspectors({required int id}) async {
+    try {
+      String url = '${ApiUrl.inspectors}/$id/inspectors';
+      dynamic response = await _apiService.getAuthGetApiResponse(url);
+      return InspectorsResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AddEditInspectionResponseModel?> addInspection({dynamic data}) async {
+    try {
+      String url = ApiUrl.inspections;
+      dynamic response = await _apiService.getAuthPostApiResponse(url, data);
+      return AddEditInspectionResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AddEditInspectionResponseModel?> updateInspection({
+    required int id,
+    required dynamic data,
+  }) async {
+    try {
+      String url = '${ApiUrl.inspections}/$id';
+      dynamic response = await _apiService.getAuthPutApiResponse(url, data:data);
+      return AddEditInspectionResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SubmitInspectionResponseModel?> submitInspection({
+    required int id,
+  }) async {
+    try {
+      String url = '${ApiUrl.inspections}/$id/submit';
+      dynamic response = await _apiService.getAuthPutApiResponse(url,);
+      return SubmitInspectionResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<bool?> archiveInspection({
+    required int id,
+  }) async {
+    try {
+      String url = '${ApiUrl.inspections}/$id';
+      dynamic response = await _apiService.getAuthDeleteApiResponse(url);
+      if(response==true){
+        return true;
+      }
     } catch (e) {
       rethrow;
     }

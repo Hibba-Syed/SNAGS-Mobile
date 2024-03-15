@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snags_cubit.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
+import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_widget.dart';
@@ -35,64 +37,117 @@ class _SnagsScreenState extends State<SnagsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<SnagsCubit, SnagsState>(
-        builder: (context, state) {
-          if (state.isLoading == true) {
-            return const CustomLoader();
-          }
-          return Column(
-            children: [
-              Padding(
+      body: Column(
+        children: [
+          BlocBuilder<SnagsCubit, SnagsState>(
+            builder: (context, state) {
+              return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: SearchTextField(
-                  isFilterApplied: (state.selectedStatuses?.isEmpty??true) && (state.selectedCommunities?.isEmpty??true) ? false : true,
+                  initialValue: state.searchKeyword,
+                  onFieldSubmitted: (value) async {
+                    context.read<SnagsCubit>().onChangeSearchKeyWord(value);
+                    await context.read<SnagsCubit>().getSnags();
+                  },
+                  isFilterApplied: (state.selectedStatuses?.isEmpty ?? true) &&
+                          (state.selectedCommunities?.isEmpty ?? true)
+                      ? false
+                      : true,
                   onFilterPressed: () {
                     _snagsFilterBottomSheet(context);
                   },
                 ),
-              ),
-              UIHelper.verticalSpace(16.0),
-              Expanded(
-                child: state.snags?.isNotEmpty ?? false
-                    ? RefreshIndicator(
-                        onRefresh: () async {
-                          await context.read<SnagsCubit>().getSnags();
-                        },
-                        child: ListView.separated(
-                          itemCount: state.snags?.length ?? 0,
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 10.0),
-                          itemBuilder: (context, index) {
-                            SnagModel item = state.snags![index];
-                            return SnagWidget(
-                              id: item.id,
-                              imageUrl: item.images?.isNotEmpty ?? false
-                                  ? item.images?.first.path
-                                  : '',
-                              reference: item.reference ?? '--',
-                              risk: item.risk ?? '--',
-                              status: item.status ?? '--',
-                              title: item.title ?? '--',
-                              description: item.description ?? '--',
-
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return UIHelper.verticalSpace(14.0);
-                          },
-                        ),
-                      )
-                    : const EmptyWidget(
-                        text: 'No Snags found',
-                      ),
-              ),
-              if (state.loadMore) const CustomLoader(),
-            ],
-          );
-        },
+              );
+            },
+          ),
+          UIHelper.verticalSpace(16.0),
+          BlocBuilder<SnagsCubit, SnagsState>(
+            builder: (context, state) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: state.isLoading
+                          ? const CustomLoader()
+                          : state.snags?.isNotEmpty ?? false
+                              ? RefreshIndicator(
+                                  onRefresh: () async {
+                                    await context.read<SnagsCubit>().getSnags();
+                                  },
+                                  child: ListView.separated(
+                                    itemCount: state.snags?.length ?? 0,
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 10.0),
+                                    itemBuilder: (context, index) {
+                                      SnagModel? snag = state.snags?[index];
+                                      return SnagWidget(
+                                        id: snag?.id,
+                                        imagesUrls: (snag?.status ==
+                                                    AppConstants
+                                                        .snagCompleted.title ||
+                                                snag?.status ==
+                                                    AppConstants
+                                                        .snagCancelled.title)
+                                            ? (snag?.closingImages
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? snag?.closingImages
+                                                    ?.map((e) => e.path)
+                                                    .toList()
+                                                : []
+                                            : snag?.images?.isNotEmpty ?? false
+                                                ? snag?.images
+                                                    ?.map((e) => e.path)
+                                                    .toList()
+                                                : [],
+                                        reference: snag?.reference ?? '--',
+                                        risk: snag?.risk ?? '--',
+                                        status: snag?.status ?? '--',
+                                        title: snag?.description ?? '--',
+                                        location: snag?.location ?? '--',
+                                        onTap: () {
+                                          if (snag?.id != null) {
+                                            context
+                                                .read<SnagDetailCubit>()
+                                                .onChangeCarouselIndex(0);
+                                            context
+                                                .read<SnagDetailCubit>()
+                                                .getSnagDetails(id: snag!.id!);
+                                          }
+                                          context
+                                              .read<SnagDetailCubit>()
+                                              .onChangeReference(
+                                                  snag?.reference);
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppRoutes.snagDetail,
+                                            arguments: {
+                                              'is_from_community': false,
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return UIHelper.verticalSpace(14.0);
+                                    },
+                                  ),
+                                )
+                              : const EmptyWidget(
+                                  text: 'No Snags found',
+                                ),
+                    ),
+                    if (state.loadMore) const CustomLoader(),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Snag',
@@ -102,7 +157,8 @@ class _SnagsScreenState extends State<SnagsScreen> {
       ),
     );
   }
-  _snagsFilterBottomSheet(context)  {
+
+  _snagsFilterBottomSheet(context) {
     showModalBottomSheet(
       //isScrollControlled: true,
       context: context,
@@ -112,5 +168,4 @@ class _SnagsScreenState extends State<SnagsScreen> {
       },
     );
   }
-
 }

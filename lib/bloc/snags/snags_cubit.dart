@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
@@ -24,6 +25,16 @@ class SnagsCubit extends Cubit<SnagsState> {
   onChangeSelectedCompanies(List<Company>? companies) {
     emit(state.copyWith(selectedCompanies: companies));
   }
+  onChangeFromDate(String? fromDate) {
+    emit(state.copyWith(fromDate: fromDate));
+  }
+
+  onChangeToDate(String? toDate) {
+    emit(state.copyWith(toDate: toDate));
+  }
+  onChangeSearchKeyWord(String? keyword){
+    emit(state.copyWith(searchKeyword: keyword));
+  }
 
   clearFilterData() {
     emit(
@@ -33,6 +44,7 @@ class SnagsCubit extends Cubit<SnagsState> {
         fromDate: '',
         toDate: '',
         selectedCompanies: [],
+        searchKeyword:'',
       ),
     );
   }
@@ -45,8 +57,9 @@ class SnagsCubit extends Cubit<SnagsState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
+      keyword: state.searchKeyword,
     )
         .onError(
       (error, stackTrace) {
@@ -74,8 +87,8 @@ class SnagsCubit extends Cubit<SnagsState> {
       associationIds: state.selectedCommunities?.map((e) => e.id!).toList(),
       companyIds: state.selectedCompanies?.map((e) => e.id!).toList(),
       statuses: state.selectedStatuses,
-      // fromDate: state.fromDate,
-      // toDate: state.toDate,
+      fromDate: state.fromDate,
+      toDate: state.toDate,
     )
         .onError(
       (error, stackTrace) {

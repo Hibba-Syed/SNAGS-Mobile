@@ -5,29 +5,27 @@ class CommunityDetailSnagsState {
   final bool loadMore;
   final List<SnagModel>? snags;
   final int page;
-  final int? communityId;
+  final Association? community;
   const CommunityDetailSnagsState({
     this.isLoading = false,
-    this.loadMore=false,
+    this.loadMore = false,
     this.snags,
-    this.page=1,
-    this.communityId,
+    this.page = 1,
+    this.community,
   });
   CommunityDetailSnagsState copyWith({
     bool? isLoading,
     bool? loadMore,
     List<SnagModel>? snags,
     int? page,
-    int? communityId,
+    Association? community,
   }) {
     return CommunityDetailSnagsState(
       isLoading: isLoading ?? this.isLoading,
-      loadMore: loadMore??this.loadMore,
+      loadMore: loadMore ?? this.loadMore,
       snags: snags ?? this.snags,
-      page: page??this.page,
-        communityId: communityId??this.communityId
+      page: page ?? this.page,
+      community: community ?? this.community,
     );
   }
-
-
 }

@@ -29,22 +29,13 @@ class InspectionWidget extends StatelessWidget {
     required this.companyName,
     required this.userName,
     required this.date,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap ??
-          () {
-            context.read<InspectionDetailsCubit>().onChangeReference(reference);
-            if (id != null) {
-              context
-                  .read<InspectionDetailsCubit>()
-                  .getInspectionDetails(id: id!);
-            }
-            Navigator.pushNamed(context, AppRoutes.inspectionDetail);
-          },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(

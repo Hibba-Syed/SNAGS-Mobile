@@ -9,14 +9,18 @@ import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widg
 
 class InspectionCategoryItemWidget extends StatefulWidget {
   final String title;
-  final void Function(double?) onRatingUpdate;
+  final int? rating;
+  final String? note;
+  final void Function(int?) onRatingUpdate;
   final void Function(String)? onNoteChanged;
   final void Function() onScoreUpdate;
   const InspectionCategoryItemWidget({
     super.key,
     required this.title,
+    this.rating,
+    this.note,
     required this.onRatingUpdate,
-    this.onNoteChanged,
+    required this.onNoteChanged,
     required this.onScoreUpdate,
   });
 
@@ -27,10 +31,22 @@ class InspectionCategoryItemWidget extends StatefulWidget {
 
 class _InspectionCategoryItemWidgetState
     extends State<InspectionCategoryItemWidget> {
+  final TextEditingController _noteController = TextEditingController();
   bool _isRatingIgnored = false;
   bool _isRatingChanged = false;
   bool _isNotInspectable = false;
-  double _rating = 0.0;
+  int? _rating;
+
+  @override
+  void initState() {
+    super.initState();
+    _rating = widget.rating;
+    _noteController.text = widget.note ?? '';
+    if (_rating == -1) {
+      _isNotInspectable = true;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +74,7 @@ class _InspectionCategoryItemWidgetState
                         widget.onScoreUpdate();
                       }
                       setState(() {
-                        _rating = 0.0;
+                        _rating = 0;
                         _isRatingChanged = true;
                       });
                       widget.onRatingUpdate(_rating);
@@ -66,10 +82,10 @@ class _InspectionCategoryItemWidgetState
                   ),
                   RatingBar(
                     unratedColor: AppColors.yellow,
-                    allowHalfRating: true,
+                    allowHalfRating: false,
                     glow: false,
                     itemSize: 24,
-                    initialRating: _rating,
+                    initialRating: _rating?.toDouble() ?? 0.0,
                     ignoreGestures: _isRatingIgnored,
                     ratingWidget: RatingWidget(
                       full: const Icon(
@@ -91,13 +107,14 @@ class _InspectionCategoryItemWidgetState
                         widget.onScoreUpdate();
                       }
                       setState(() {
-                        _rating = value;
+                        _rating = value.toInt();
                         _isRatingChanged = true;
                       });
-                      widget.onRatingUpdate(value);
+                      widget.onRatingUpdate(value.toInt());
                     },
                   ),
                   NIButton(
+                    value: _isNotInspectable,
                     onValueChanged: (value) {
                       if (!_isRatingChanged) {
                         widget.onScoreUpdate();
@@ -106,15 +123,13 @@ class _InspectionCategoryItemWidgetState
                         () {
                           _isNotInspectable = value;
                           _isRatingIgnored = value;
-                          _rating = 0.0;
-
-                          // if (value) {
+                          _rating = 0;
                           _isRatingChanged = true;
-                          widget.onRatingUpdate(_rating);
-                          // } else {
-                          //   _isRatingChanged = false;
-                          //   widget.onRatingUpdate(null);
-                          // }
+                          if (value) {
+                            widget.onRatingUpdate(-1);
+                          } else {
+                            widget.onRatingUpdate(_rating);
+                          }
                         },
                       );
                     },
@@ -123,6 +138,7 @@ class _InspectionCategoryItemWidgetState
               ),
               UIHelper.verticalSpace(16.0),
               TextFieldWidget(
+                controller: _noteController,
                 hint: 'Write your note here...',
                 validator: _isNotInspectable
                     ? (value) {

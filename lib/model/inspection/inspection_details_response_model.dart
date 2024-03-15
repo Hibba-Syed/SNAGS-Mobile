@@ -2,7 +2,8 @@ import 'package:iskaan_inspections_mobile/model/association/association_model.da
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
-import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/profile/profile_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 
 class InspectionDetailsResponseModel {
   InspectionDetailsResponseModel({
@@ -54,6 +55,7 @@ class InspectionDetails {
     this.reference,
     this.score,
     this.status,
+    this.submittedAt,
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
@@ -73,6 +75,7 @@ class InspectionDetails {
     reference = json['reference'];
     score = json['score'];
     status = json['status'];
+    submittedAt = json['submitted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
@@ -83,6 +86,9 @@ class InspectionDetails {
         : null;
     inspector = json['inspector'] != null
         ? Inspector.fromJson(json['inspector'])
+        : null;
+    approver = json['approver'] != null
+        ? ProfileRecord.fromJson(json['approver'])
         : null;
     if (json['categories'] != null) {
       categories = [];
@@ -110,12 +116,14 @@ class InspectionDetails {
   String? reference;
   dynamic score;
   String? status;
+  String? submittedAt;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
   Company? company;
   Association? association;
   Inspector? inspector;
+  ProfileRecord? approver;
   List<InspectionCategory>? categories;
   List<SnagModel>? snags;
   List<LogModel>? logs;
@@ -129,6 +137,7 @@ class InspectionDetails {
     map['reference'] = reference;
     map['score'] = score;
     map['status'] = status;
+    map['submitted_at'] = submittedAt;
     map['created_at'] = createdAt;
     map['updated_at'] = updatedAt;
     map['deleted_at'] = deletedAt;
@@ -140,6 +149,9 @@ class InspectionDetails {
     }
     if (inspector != null) {
       map['inspector'] = inspector?.toJson();
+    }
+    if (approver != null) {
+      map['approver'] = approver?.toJson();
     }
     if (categories != null) {
       map['categories'] = categories?.map((v) => v.toJson()).toList();
@@ -153,8 +165,6 @@ class InspectionDetails {
     return map;
   }
 }
-
-
 
 class InspectionCategory {
   InspectionCategory({

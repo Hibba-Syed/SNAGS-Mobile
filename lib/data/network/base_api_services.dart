@@ -8,6 +8,8 @@ abstract class BaseApiServices {
   Future<dynamic> getPostApiResponse(String url, dynamic data);
 
   Future<dynamic> getAuthPostApiResponse(String url, dynamic data);
+  Future<dynamic> getAuthPutApiResponse(String url, {dynamic data});
+  Future<dynamic> getAuthDeleteApiResponse(String url);
 
   Future<dynamic> getPostApiMultipartResponse(
     String url,
@@ -19,4 +21,9 @@ abstract class BaseApiServices {
     Map<String, dynamic>? data,
     List<http.MultipartFile> files,
   );
+  Future getAuthPutApiMultipartResponse(
+      String url,
+      Map<String, dynamic>? data,
+      List<http.MultipartFile> files,
+      );
 }

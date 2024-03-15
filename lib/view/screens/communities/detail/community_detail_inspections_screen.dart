@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iskaan_inspections_mobile/bloc/communities/detail/community_detail_inspections/community_detail_inspections_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/add_edit/add_edit_inspection_cubit.dart';
+import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_model.dart';
 import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
@@ -51,6 +53,23 @@ class CommunityDetailInspectionsScreen extends StatelessWidget {
                                 companyName: item.company?.name ?? '',
                                 userName: item.inspector?.fullName ?? '--',
                                 date: item.updatedAt ?? item.createdAt,
+                                onTap: (){
+                                  context.read<InspectionDetailsCubit>().onChangeReference(item.reference);
+                                  if (item.id != null) {
+                                    context
+                                        .read<InspectionDetailsCubit>()
+                                        .getInspectionDetails(id: item.id!);
+                                  }
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.inspectionDetail,
+                                    arguments: {
+                                      'is_from_community': true,
+                                    },
+                                  ).then((value){
+                                    context.read<CommunityDetailInspectionsCubit>().getCommunityInspections();
+                                  });
+                                },
                               );
                             },
                             separatorBuilder: (context, index) {
@@ -65,7 +84,13 @@ class CommunityDetailInspectionsScreen extends StatelessWidget {
       floatingActionButton: AddButtonWithTitle(
         title: 'Add Inspection',
         onTap: () {
-          Navigator.pushNamed(context, AppRoutes.addInspection);
+          context.read<AddEditInspectionCubit>().clearData();
+          Navigator.pushNamed(
+            context,
+            AppRoutes.addInspection,
+            arguments:
+                context.read<CommunityDetailInspectionsCubit>().state.community,
+          );
         },
       ),
     );

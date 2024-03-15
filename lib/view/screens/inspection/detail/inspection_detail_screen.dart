@@ -19,6 +19,16 @@ class InspectionDetailScreen extends StatefulWidget {
 
 class _InspectionDetailScreenState extends State<InspectionDetailScreen> {
   int _selectedIndex = 0;
+  Map<String,dynamic>? args;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      // Access arguments here
+      args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InspectionDetailsCubit, InspectionDetailsState>(
@@ -76,12 +86,15 @@ class _InspectionDetailScreenState extends State<InspectionDetailScreen> {
                           ),
                           Expanded(
                             child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
                               children: [
                                 InspectionDetailDetailsScreen(
                                   inspectionDetails: state.inspectionDetails,
+                                    isFromCommunity:args?['is_from_community'],
                                 ),
                                 InspectionDetailLogsScreen(
-                                  logs: state.inspectionDetails?.logs,
+                                  inspectionDetails: state.inspectionDetails,
+                                  isFromCommunity:args?['is_from_community'],
                                 ),
                                 InspectionDetailSnagsScreen(
                                   snags: state.inspectionDetails?.snags,

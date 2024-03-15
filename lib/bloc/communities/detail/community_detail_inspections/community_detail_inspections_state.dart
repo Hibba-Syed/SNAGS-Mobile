@@ -5,27 +5,27 @@ class CommunityDetailInspectionsState {
   final bool loadMore;
   final List<InspectionModel>? inspections;
   final int page;
-  final int? communityId;
+  final Association? community;
   const CommunityDetailInspectionsState({
     this.isLoading = false,
     this.loadMore = false,
     this.inspections,
     this.page = 1,
-    this.communityId,
+    this.community,
   });
   CommunityDetailInspectionsState copyWith({
     bool? isLoading,
     bool? loadMore,
     List<InspectionModel>? inspections,
     int? page,
-    int? communityId,
+    Association? community,
   }) {
     return CommunityDetailInspectionsState(
       isLoading: isLoading ?? this.isLoading,
       loadMore: loadMore ?? this.loadMore,
       inspections: inspections ?? this.inspections,
       page: page ?? this.page,
-      communityId: communityId ?? this.communityId,
+      community: community ?? this.community,
     );
   }
 }

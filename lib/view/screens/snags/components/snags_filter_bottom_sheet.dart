@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iskaan_inspections_mobile/model/company_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
+import 'package:iskaan_inspections_mobile/utils/date_time.dart';
 import '../../../../bloc/snags/snags_cubit.dart';
 import '../../../../model/association/association_model.dart';
 import '../../../../res/constants/app_colors.dart';
@@ -20,7 +21,6 @@ class SnagsFilterBottomSheet extends StatefulWidget {
 }
 
 class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
-  DateTimeRange? dateRange;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,30 +122,33 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
             UIHelper.verticalSpace(16),
             InkWell(
               onTap: () {
-                pickDateRang();
+                pickDateRange();
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      dateRange != null
-                          ? "${dateRange?.start.year} / ${dateRange?.start.month} / ${dateRange?.start.day}   ${dateRange?.end.year} / ${dateRange?.end.month} / ${dateRange?.end.day} "
-                          : 'Select date range',
-                      style: AppTextStyles.style16darkGrey600,
+              child: BlocBuilder<SnagsCubit,SnagsState>(builder: (context,state){
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: AppColors.grey.withOpacity(0.3)),
                     ),
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Icon(Icons.keyboard_arrow_down_outlined),
-                    )
-                  ],
-                ),
-              ),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        ((state.fromDate?.isNotEmpty ?? false) &&
+                            (state.toDate?.isNotEmpty ?? false))
+                            ? "${DateTimeUtil.getFormattedDate(state.fromDate)}  -  ${DateTimeUtil.getFormattedDate(state.toDate)}"
+                            : 'Select date range',
+                        style: AppTextStyles.style16darkGrey600,
+                      ),
+                      const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Icon(Icons.keyboard_arrow_down_outlined),
+                      )
+                    ],
+                  ),
+                );
+              },),
             ),
             UIHelper.verticalSpace(15),
             Row(
@@ -191,19 +194,23 @@ class _SnagsFilterBottomSheetState extends State<SnagsFilterBottomSheet> {
       ),
     );
   }
-
-  Future pickDateRang() async {
+  Future pickDateRange() async {
     DateTimeRange? newDateRange = await showDateRangePicker(
-      initialDateRange: dateRange,
       context: context,
       firstDate: DateTime(2019),
       lastDate: DateTime(2025, 01, 01),
     );
-    if (newDateRange == null) {
-      dateRange = null;
+    if (newDateRange != null) {
+      context
+          .read<SnagsCubit>()
+          .onChangeFromDate(newDateRange.start.toUtc().toIso8601String());
+      context
+          .read<SnagsCubit>()
+          .onChangeToDate(newDateRange.end.toUtc().toIso8601String());
     } else {
-      dateRange = newDateRange;
+      context.read<SnagsCubit>().onChangeFromDate('');
+      context.read<SnagsCubit>().onChangeToDate('');
     }
-    setState(() {});
   }
+
 }

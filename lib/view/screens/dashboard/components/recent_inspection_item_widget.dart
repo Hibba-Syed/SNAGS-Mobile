@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iskaan_inspections_mobile/bloc/dashboard/dashboard_cubit.dart';
 import 'package:iskaan_inspections_mobile/bloc/inspection/detail/inspection_details_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/images.dart';
@@ -38,7 +39,9 @@ class RecentInspectionItemWidget extends StatelessWidget {
               .read<InspectionDetailsCubit>()
               .getInspectionDetails(id: id!);
         }
-        Navigator.pushNamed(context, AppRoutes.inspectionDetail);
+        Navigator.pushNamed(context, AppRoutes.inspectionDetail).then((value) {
+          context.read<DashboardCubit>().getRecentInspections();
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),

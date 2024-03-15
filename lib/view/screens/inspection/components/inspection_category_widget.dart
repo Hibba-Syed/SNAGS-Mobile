@@ -1,29 +1,26 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:iskaan_inspections_mobile/model/inspection/inspection_template_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/inspector_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/components/inspection_category_item_widget.dart';
-import 'package:iskaan_inspections_mobile/view/screens/inspection/components/model/inspection_category_item_model.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/dropdown/dropdown_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
 class InspectionCategoryWidget extends StatefulWidget {
-  final String categoryTitle;
-  final List<InspectionCategoryItemModel> inspectionCategoryItems;
-  final VoidCallback onSavePressed;
-  final void Function(int index, double? value)? onCategoryItemRatingUpdate;
-  final void Function(int index, String value)? onCategoryItemNoteChanged;
-  final void Function(String)? onCategoryNoteChanged;
+  final int communityId;
+  final List<Inspector>? inspectors;
+  final InspectionTemplateCategory inspectionTemplateCategory;
+  final ValueChanged onSavePressed;
 
   const InspectionCategoryWidget({
     super.key,
-    required this.categoryTitle,
-    required this.inspectionCategoryItems,
-    this.onCategoryItemRatingUpdate,
-    this.onCategoryItemNoteChanged,
-    this.onCategoryNoteChanged,
+    required this.communityId,
+    required this.inspectors,
+    required this.inspectionTemplateCategory,
     required this.onSavePressed,
   });
 
@@ -33,14 +30,29 @@ class InspectionCategoryWidget extends StatefulWidget {
 }
 
 class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
+  final TextEditingController _categoryNoteController = TextEditingController();
   bool _isExpanded = false;
   double _totalScore = 0.0;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ExpandableController _expandableController = ExpandableController();
+  Map<String, dynamic> _categoryFormData = {};
 
   @override
   void initState() {
     super.initState();
+    _categoryFormData = {
+      "association_id": widget.communityId,
+      "category_id": widget.inspectionTemplateCategory.id,
+      "note": null,
+    };
+    widget.inspectionTemplateCategory.items?.forEach((element) {
+      _categoryFormData["item_${element.id}"] = <String, dynamic>{
+        "note": null,
+        "rating": null,
+      };
+    });
+    setState(() {});
+    print(_categoryFormData);
     _expandableController.addListener(() {
       setState(() {
         _isExpanded = _expandableController.expanded;
@@ -68,7 +80,7 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
               children: [
                 Flexible(
                   child: Text(
-                    widget.categoryTitle,
+                    widget.inspectionTemplateCategory.title ?? '--',
                     style: AppTextStyles.style16Grey600,
                   ),
                 ),
@@ -112,40 +124,52 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
             child: Column(
               children: [
                 UIHelper.verticalSpace(10.0),
-                DropdownWidget<String>(
-                  hint: 'Select inspector',
-                  selectedItem: null,
-                  items: const ['A', 'B', 'C'],
-                  onChanged: (value) {},
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
+                if (widget.inspectors?.isNotEmpty ?? false)
+                  DropdownWidget<Inspector>(
+                    hint: 'Select inspector',
+                    selectedItem: null,
+                    items: widget.inspectors ?? [],
+                    onChanged: (inspector) {
+                      _categoryFormData['inspector'] = inspector?.id;
+                    },
+                    itemAsString: (inspector) => inspector.fullName ?? '',
+                    compareFn: (inspector, item) => inspector.id == item.id,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: AppColors.lightGrey,
+                    ),
                   ),
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColors.lightGrey,
-                  ),
-                ),
                 UIHelper.verticalSpace(10.0),
                 Form(
                   key: _formKey,
                   child: ListView.separated(
-                    itemCount: widget.inspectionCategoryItems.length,
+                    itemCount:
+                        widget.inspectionTemplateCategory.items?.length ?? 0,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      InspectionCategoryItemModel item =
-                          widget.inspectionCategoryItems[index];
+                      InspectionTemplateCategoryItem? item =
+                          widget.inspectionTemplateCategory.items?[index];
                       return InspectionCategoryItemWidget(
-                        title: item.title ?? '--',
+                        title: item?.title ?? '--',
+                        note: _categoryFormData["item_${item?.id}"]['note'],
+                        rating: _categoryFormData["item_${item?.id}"]['rating'],
                         onRatingUpdate: (value) {
-                          if (widget.onCategoryItemRatingUpdate != null) {
-                            widget.onCategoryItemRatingUpdate!(index, value);
-                          }
+                          _categoryFormData["item_${item?.id}"]['rating'] =
+                              value;
+                        },
+                        onNoteChanged: (value) {
+                          _categoryFormData["item_${item?.id}"]['note'] = value;
                         },
                         onScoreUpdate: () {
                           _totalScore = _totalScore +
-                              (100 / widget.inspectionCategoryItems.length);
+                              (100 /
+                                  widget.inspectionTemplateCategory.items!
+                                      .length);
                           setState(() {});
                         },
                       );
@@ -157,9 +181,12 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
                 ),
                 UIHelper.verticalSpace(20.0),
                 TextFieldWidget(
+                  controller: _categoryNoteController,
                   hint: 'Write your category note here...',
                   maxLines: 3,
-                  onChanged: widget.onCategoryNoteChanged,
+                  onChanged: (value) {
+                    _categoryFormData['note'] = value;
+                  }, //widget.onCategoryNoteChanged,
                   contentPadding: const EdgeInsets.symmetric(
                       horizontal: 15.0, vertical: 6.0),
                   focusedBorder: OutlineInputBorder(
@@ -192,8 +219,9 @@ class _InspectionCategoryWidgetState extends State<InspectionCategoryWidget> {
                   buttonColor: AppColors.cGreen,
                   text: 'Save',
                   onPressed: () {
+                    print(_categoryFormData);
                     if (_formKey.currentState!.validate()) {
-                      widget.onSavePressed();
+                      widget.onSavePressed(_categoryFormData);
                     }
                   },
                 ),

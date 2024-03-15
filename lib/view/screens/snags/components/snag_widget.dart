@@ -1,43 +1,38 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
-import 'package:iskaan_inspections_mobile/utils/routes/app_routes.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 
 class SnagWidget extends StatelessWidget {
   final int? id;
-  final String? imageUrl;
+  final List<String?>? imagesUrls;
   final String risk;
   final String status;
   final String reference;
   final String title;
-  final String description;
+  final String location;
+  final VoidCallback onTap;
   const SnagWidget({
     super.key,
     required this.id,
-    required this.imageUrl,
+    required this.imagesUrls,
     required this.risk,
     required this.status,
     required this.reference,
     required this.title,
-    required this.description,
+    required this.location,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        if (id != null) {
-          context.read<SnagDetailCubit>().getSnagDetails(id: id!);
-        }
-        context.read<SnagDetailCubit>().onChangeReference(reference);
-        Navigator.pushNamed(context, AppRoutes.snagDetail);
-      },
+      onTap: onTap,
       child: Container(
         width: deviceWidth,
         height: 120,
@@ -48,23 +43,33 @@ class SnagWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.network(
-              imageUrl ?? '',
-              width: deviceWidth / 3,
-              height: 120,
-              fit: BoxFit.fill,
-              errorBuilder: (context, obj, trace) {
-                return Container(
-                  width: deviceWidth / 3,
-                  height: 120,
-                  color: Colors.grey.shade300,
-                  child: const Icon(
-                    Icons.image_outlined,
-                    color: AppColors.grey,
+            if (imagesUrls?.isEmpty ?? true)
+              NetworkImageWidget(
+                url: '',
+                width: deviceWidth / 3,
+                height: 120,
+              ),
+            if (imagesUrls?.isNotEmpty ?? false)
+              SizedBox(
+                width: deviceWidth / 3,
+                height: 120,
+                child: CarouselSlider(
+                  items: imagesUrls
+                      ?.map(
+                        (e) => NetworkImageWidget(
+                          url: e,
+                          width: deviceWidth / 3,
+                          height: 120,
+                        ),
+                      )
+                      .toList(),
+                  options: CarouselOptions(
+                    autoPlay: imagesUrls!.length > 1 ? true : false,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1,
                   ),
-                );
-              },
-            ),
+                ),
+              ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -99,7 +104,7 @@ class SnagWidget extends StatelessWidget {
                             ),
                             UIHelper.verticalSpace(3.0),
                             Text(
-                              description,
+                              location,
                               style: AppTextStyles.style12LightGrey400,
                             ),
                           ],

@@ -4,6 +4,7 @@ import 'package:iskaan_inspections_mobile/model/inspection/inspections_response_
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/inspection/inspections_statistics_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/profile/profile_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
@@ -111,8 +112,6 @@ class DashboardCubit extends Cubit<DashboardState> {
       },
     );
     if (statisticsResponse != null) {
-      print('not null');
-      print(statisticsResponse.record?.first);
       emit(state.copyWith(snagsStatisticsByMonth: statisticsResponse.record));
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong');
@@ -172,7 +171,6 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   List<int> getActiveInspectionsStatistics() {
     List<int> values = [];
-    print('inspecttt:: ${state.inspectionsStatisticsByMonth}');
     state.inspectionsStatisticsByMonth?.forEach((element) {
       if (element.name == AppConstants.inspectionInProgress.title||
           element.name == AppConstants.inspectionReadyForSubmission.title) {

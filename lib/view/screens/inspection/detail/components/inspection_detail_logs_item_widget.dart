@@ -4,7 +4,6 @@ import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
 import 'package:iskaan_inspections_mobile/view/helper/ui_helper.dart';
 import 'package:iskaan_inspections_mobile/view/screens/inspection/detail/components/inspection_log_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/date_text_widget.dart';
-import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 
 class InspectionDetailLogsItemWidget extends StatelessWidget {
   final String text;
