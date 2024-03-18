@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
 import 'package:iskaan_inspections_mobile/model/snag/add_edit_snag_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/complete_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/merge_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/start_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/res/constants/api_url.dart';
 import 'package:http/http.dart' as http;
@@ -118,18 +120,75 @@ class SnagRepoImpl implements SnagRepo {
   }) async {
     try {
       String url = '${ApiUrl.snags}/$snagId/merge?_method=PUT';
-      // String? idsString = snagsToMergeIds.join(',');
       Map<String, dynamic> data = {
         'note': note,
         'other_snags_ids': snagsToMergeIds,
       };
-      print('url:: $url');
-      print('data:: $data');
       dynamic response = await _apiService.getAuthPostApiResponse(
         url,
         data,
       );
       return MergeSnagResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StartSnagResponseModel?> startSnag({required int id}) async {
+    try {
+      String url = '${ApiUrl.snags}/$id/start?_method=PUT';
+      dynamic response = await _apiService.getAuthPostApiResponse(
+        url,
+        {},
+      );
+      return StartSnagResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CompleteSnagResponseModel?> completeSnag({
+    required int id,
+    required String note,
+    required List<http.MultipartFile> files,
+  }) async {
+    try {
+      String url = '${ApiUrl.snags}/$id/complete?_method=PUT';
+      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
+        url,
+        {
+          'close_note': note,
+        },
+        files,
+      );
+      print('complete snag response');
+      log(response.toString());
+      return CompleteSnagResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CompleteSnagResponseModel?> cancelSnag({
+    required int id,
+    required String note,
+    required List<http.MultipartFile> files,
+  }) async {
+    try {
+      String url = '${ApiUrl.snags}/$id/cancel?_method=PUT';
+      dynamic response = await _apiService.getAuthPostApiMultipartResponse(
+        url,
+        {
+          'close_note': note,
+        },
+        files,
+      );
+      print('cancel snag response');
+      log(response.toString());
+      return CompleteSnagResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

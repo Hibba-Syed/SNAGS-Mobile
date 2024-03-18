@@ -210,6 +210,12 @@ class NetworkApiServices implements BaseApiServices {
   ) async {
     dynamic responseJson;
     try {
+      print('data:::');
+      print(data);
+      files.forEach((element) {
+        print(element.filename);
+        print(element.field);
+      });
       var request = http.MultipartRequest("POST", Uri.parse(url));
       if (data != null) {
         data.forEach((key, value) {
@@ -230,7 +236,9 @@ class NetworkApiServices implements BaseApiServices {
             "Connection timeout, please check your internet");
       });
       var response = await http.Response.fromStream(streamedResponse);
+      print('post multipart:: ${response.statusCode} ${response.body}');
       responseJson = returnResponse(response);
+
       return responseJson;
     } on SocketException catch (e) {
       throw FetchDataException(e.toString());

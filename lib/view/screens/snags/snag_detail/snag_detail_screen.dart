@@ -1,8 +1,14 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_editor_plus/image_editor_plus.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/comment_model.dart';
+import 'package:iskaan_inspections_mobile/model/custom_snag_image_model.dart';
 import 'package:iskaan_inspections_mobile/model/image_model.dart';
 import 'package:iskaan_inspections_mobile/model/log_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
@@ -17,6 +23,8 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_det
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_detail_item_widget.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_image_index_bar.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_image_status_widget.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail/components/cancel_snag_dialog.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail/components/complete_snag_dialog.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
@@ -27,6 +35,8 @@ import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/inspection_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
+
+import '../add_snag_screen.dart';
 
 class SnagDetailScreen extends StatelessWidget {
   const SnagDetailScreen({super.key});
@@ -622,8 +632,15 @@ class SnagDetailScreen extends StatelessWidget {
                           onStartPressed: () {
                             _showStartDialog(context);
                           },
-                          onCancelPressed: () {},
-                          onCompletePressed: () {},
+                          isStartLoading: state.isStartLoading,
+                          onCancelPressed: () {
+                            _showCancelDialog(context);
+                          },
+                          isCancelLoading: state.isCancelLoading,
+                          onCompletePressed: () {
+                            _showCompleteDialog(context);
+                          },
+                          isCompleteLoading: state.isCompleteLoading,
                         ),
                         UIHelper.verticalSpace(10.0),
                       ],
@@ -636,7 +653,7 @@ class SnagDetailScreen extends StatelessWidget {
   _showStartDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return AlertDialog(
           backgroundColor: AppColors.white,
           content: Column(
@@ -660,6 +677,9 @@ class SnagDetailScreen extends StatelessWidget {
                       text: 'Start',
                       onPressed: () {
                         Navigator.pop(context);
+                        context.read<SnagDetailCubit>().startSnag(
+                              context,
+                            );
                       },
                     ),
                   ),
@@ -681,4 +701,25 @@ class SnagDetailScreen extends StatelessWidget {
       },
     );
   }
+
+  _showCompleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return const AlertDialog(
+            backgroundColor: AppColors.white, content: CompleteSnagDialog());
+      },
+    );
+  }
+  _showCancelDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return const AlertDialog(
+            backgroundColor: AppColors.white, content: CancelSnagDialog());
+      },
+    );
+  }
+
+
 }

@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iskaan_inspections_mobile/model/snag/complete_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/merge_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/start_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/snag/snag_repo_impl.dart';
+import 'package:http/http.dart' as http;
 
 part 'snag_detail_state.dart';
 
@@ -74,19 +77,16 @@ class SnagDetailCubit extends Cubit<SnagDetailState> {
 
   Future<void> getSnags({
     required String keyword,
-    required int
-    communityId,
+    required int communityId,
   }) async {
     emit(state.copyWith(
       isSnagsToMergeLoading: true,
     ));
-    SnagsResponseModel? response = await _snagRepo
-        .getSnags(
+    SnagsResponseModel? response = await _snagRepo.getSnags(
       page: 1,
       keyword: keyword,
       associationIds: [communityId],
-    )
-        .onError(
+    ).onError(
       (error, stackTrace) {
         emit(state.copyWith(isSnagsToMergeLoading: false));
         Fluttertoast.showToast(
@@ -132,6 +132,132 @@ class SnagDetailCubit extends Cubit<SnagDetailState> {
       Navigator.pop(context, true);
     } else {
       Fluttertoast.showToast(msg: 'Something went wrong while merging snags');
+    }
+  }
+
+  Future<void> startSnag(
+    BuildContext context,
+  ) async {
+    if (state.snagDetails?.id != null) {
+      emit(state.copyWith(
+        isStartLoading: true,
+      ));
+      StartSnagResponseModel? response = await _snagRepo
+          .startSnag(
+        id: state.snagDetails!.id!,
+      )
+          .onError(
+        (error, stackTrace) {
+          emit(state.copyWith(isStartLoading: false));
+          Fluttertoast.showToast(
+            msg: error.toString(),
+          );
+          throw error!;
+        },
+      );
+      emit(state.copyWith(isStartLoading: false));
+      if (response?.status == 'success') {
+        Fluttertoast.showToast(msg: 'Snag started successfully');
+        if (state.snagDetails?.id != null) {
+          getSnagDetails(id: state.snagDetails!.id!);
+        }
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while starting this snag');
+      }
+    }
+  }
+
+  Future<void> completeSnag(
+    BuildContext context, {
+    required String note,
+    required List<String> filesPaths,
+  }) async {
+    emit(state.copyWith(
+      isCompleteLoading: true,
+    ));
+    try {
+      List<http.MultipartFile> multipartFiles = [];
+      for (int i = 0; i < filesPaths.length; i++) {
+        if (filesPaths[i].isNotEmpty) {
+          multipartFiles.add(await http.MultipartFile.fromPath(
+              'close_images[$i]', filesPaths[i]));
+        }
+      }
+      CompleteSnagResponseModel? response = await _snagRepo
+          .completeSnag(
+        id: state.snagDetails!.id!,
+        note: note,
+        files: multipartFiles,
+      )
+          .onError(
+        (error, stackTrace) {
+          emit(state.copyWith(isCompleteLoading: false));
+          Fluttertoast.showToast(
+            msg: error.toString(),
+          );
+          throw error!;
+        },
+      );
+      emit(state.copyWith(isCompleteLoading: false));
+      if (response != null) {
+        Fluttertoast.showToast(msg: 'Snag completed successfully');
+
+        getSnagDetails(id: state.snagDetails!.id!);
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while completing snag');
+      }
+    } catch (e) {
+      emit(state.copyWith(isLoading: false));
+      Fluttertoast.showToast(msg: e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> cancelSnag(
+    BuildContext context, {
+    required String note,
+    required List<String> filesPaths,
+  }) async {
+    emit(state.copyWith(
+      isCancelLoading: true,
+    ));
+    try {
+      List<http.MultipartFile> multipartFiles = [];
+      for (int i = 0; i < filesPaths.length; i++) {
+        if (filesPaths[i].isNotEmpty) {
+          multipartFiles.add(await http.MultipartFile.fromPath(
+              'close_images[$i]', filesPaths[i]));
+        }
+      }
+      CompleteSnagResponseModel? response = await _snagRepo
+          .cancelSnag(
+        id: state.snagDetails!.id!,
+        note: note,
+        files: multipartFiles,
+      )
+          .onError(
+        (error, stackTrace) {
+          emit(state.copyWith(isCancelLoading: false));
+          Fluttertoast.showToast(
+            msg: error.toString(),
+          );
+          throw error!;
+        },
+      );
+      emit(state.copyWith(isCancelLoading: false));
+      if (response != null) {
+        Fluttertoast.showToast(msg: 'Snag cancelled successfully');
+        getSnagDetails(id: state.snagDetails!.id!);
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Something went wrong while completing snag');
+      }
+    } catch (e) {
+      emit(state.copyWith(isLoading: false));
+      Fluttertoast.showToast(msg: e.toString());
+      rethrow;
     }
   }
 }

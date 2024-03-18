@@ -1,10 +1,12 @@
 import 'package:iskaan_inspections_mobile/model/snag/add_edit_snag_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/complete_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/merge_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_response_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:iskaan_inspections_mobile/model/snag/start_snag_response_model.dart';
 
 abstract class SnagRepo {
   Future<SnagsStatisticsResponseModel?> getSnagsStatistics({int? months});
@@ -34,5 +36,16 @@ abstract class SnagRepo {
     required int? snagId,
     required List<int> snagsToMergeIds,
     required String note,
+  });
+  Future<StartSnagResponseModel?> startSnag({required int id});
+  Future<CompleteSnagResponseModel?> completeSnag({
+    required int id,
+    required String note,
+    required List<http.MultipartFile> files,
+  });
+  Future<CompleteSnagResponseModel?> cancelSnag({
+    required int id,
+    required String note,
+    required List<http.MultipartFile> files,
   });
 }

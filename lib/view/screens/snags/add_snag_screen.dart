@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/add_edit_snag/add_edit_snag_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/association/association_model.dart';
+import 'package:iskaan_inspections_mobile/model/custom_snag_image_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/globals.dart';
@@ -31,7 +32,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final ImagePicker _imagePicker = ImagePicker();
-  final List<AddSnagImageModel> _selectedFiles = [];
+  final List<CustomSnagImageModel> _selectedFiles = [];
   Association? _selectedCommunity;
   String? _selectedRisk;
   final TextEditingController _descriptionController = TextEditingController();
@@ -177,7 +178,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                                         pickedImage);
                                                 if (editedFile != null) {
                                                   _selectedFiles.add(
-                                                    AddSnagImageModel(
+                                                    CustomSnagImageModel(
                                                         filePath:
                                                             editedFile.path),
                                                   );
@@ -201,7 +202,7 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
                                                         pickedImage);
                                                 if (editedFile != null) {
                                                   _selectedFiles.add(
-                                                    AddSnagImageModel(
+                                                    CustomSnagImageModel(
                                                         filePath:
                                                             editedFile.path),
                                                   );
@@ -421,11 +422,4 @@ class _AddSnagScreenState extends State<AddSnagScreen> {
   }
 }
 
-class AddSnagImageModel {
-  String? filePath;
-  String? url;
-  AddSnagImageModel({
-    this.filePath,
-    this.url,
-  });
-}
+

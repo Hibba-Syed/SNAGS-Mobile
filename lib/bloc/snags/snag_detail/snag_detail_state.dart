@@ -9,6 +9,9 @@ class SnagDetailState {
   final List<SnagModel>? selectedSnagsToMerge;
   final bool isSnagsToMergeLoading;
   final bool isMergeLoading;
+  final bool isStartLoading;
+  final bool isCompleteLoading;
+  final bool isCancelLoading;
   const SnagDetailState({
     this.carouselIndex = 0,
     this.isLoading = false,
@@ -18,6 +21,9 @@ class SnagDetailState {
     this.selectedSnagsToMerge,
     this.isSnagsToMergeLoading = false,
     this.isMergeLoading = false,
+    this.isStartLoading = false,
+    this.isCompleteLoading = false,
+    this.isCancelLoading = false,
   });
   SnagDetailState copyWith({
     bool? isLoading,
@@ -28,6 +34,9 @@ class SnagDetailState {
     List<SnagModel>? selectedSnagsToMerge,
     bool? isSnagsToMergeLoading,
     bool? isMergeLoading,
+    bool? isStartLoading,
+    bool? isCompleteLoading,
+    bool? isCancelLoading,
   }) {
     return SnagDetailState(
       isLoading: isLoading ?? this.isLoading,
@@ -38,8 +47,10 @@ class SnagDetailState {
       selectedSnagsToMerge: selectedSnagsToMerge ?? this.selectedSnagsToMerge,
       isSnagsToMergeLoading:
           isSnagsToMergeLoading ?? this.isSnagsToMergeLoading,
-      isMergeLoading:
-      isMergeLoading ?? this.isMergeLoading,
+      isMergeLoading: isMergeLoading ?? this.isMergeLoading,
+      isStartLoading: isStartLoading ?? this.isStartLoading,
+      isCompleteLoading: isCompleteLoading ?? this.isCompleteLoading,
+      isCancelLoading: isCancelLoading ?? this.isCancelLoading,
     );
   }
 }

@@ -34,7 +34,7 @@ import 'package:iskaan_inspections_mobile/view/screens/profile/permissions_scree
 import 'package:iskaan_inspections_mobile/view/screens/snags/add_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/edit_snag_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/MergeSnag/merge_snags_screen.dart';
-import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail_screen.dart';
+import 'package:iskaan_inspections_mobile/view/screens/snags/snag_detail/snag_detail_screen.dart';
 import 'package:iskaan_inspections_mobile/view/screens/splash_screen.dart';
 
 class AppPages {
@@ -163,7 +163,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.snagDetail,
-      page: const SnagDetailScreen(),
+      page: SnagDetailScreen(),
       bloc: BlocProvider(
         create: (context) => SnagDetailCubit(),
       ),
@@ -184,7 +184,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.mergeSnag,
-      page:  MergeSnagScreen(),
+      page: MergeSnagScreen(),
       bloc: BlocProvider(
         create: (context) => SnagDetailCubit(),
       ),
