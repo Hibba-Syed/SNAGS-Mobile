@@ -50,7 +50,7 @@ class DashboardCubit extends Cubit<DashboardState> {
           msg: 'Something went wrong while fetching profile');
     }
   }
-
+//
   Future<void> getInspectionsStatistics({int? months}) async {
     InspectionsStatisticsResponseModel? statisticsResponse =
         await _inspectionRepo

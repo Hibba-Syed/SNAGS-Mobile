@@ -13,10 +13,10 @@ class CommunityDetailStatisticsCubit
       : super(const CommunityDetailStatisticsState());
   final AssociationRepo _associationRepo = AssociationRepoImpl();
 
-  Future<void> getCommunitySnagsStatistics({required String? month}) async {
+  Future<void> getCommunitySnagsStatistics({int? months}) async {
     emit(state.copyWith(isLoading: true));
     SnagsStatisticsResponseModel? response =
-        await _associationRepo.getCommunitySnagsStatistics().onError(
+        await _associationRepo.getCommunitySnagsStatistics(months: months??12).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(
@@ -34,10 +34,10 @@ class CommunityDetailStatisticsCubit
     }
   }
 
-  Future<void> getCommunityInspectionsStatistics() async {
+  Future<void> getCommunityInspectionsStatistics({int? months}) async {
     emit(state.copyWith(isLoading: true));
     InspectionsStatisticsResponseModel? response =
-        await _associationRepo.getCommunityInspectionsStatistics().onError(
+        await _associationRepo.getCommunityInspectionsStatistics(months: months??12).onError(
       (error, stackTrace) {
         emit(state.copyWith(isLoading: false));
         Fluttertoast.showToast(

@@ -64,13 +64,13 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                 ],
               ),
             ),
-            const Expanded(
+             Expanded(
               child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   CommunityDetailStatisticsScreen(),
-                  CommunityDetailInspectionsScreen(),
-                  CommunityDetailSnagsScreen(),
+                  const CommunityDetailInspectionsScreen(),
+                  const CommunityDetailSnagsScreen(),
                 ],
               ),
             ),
