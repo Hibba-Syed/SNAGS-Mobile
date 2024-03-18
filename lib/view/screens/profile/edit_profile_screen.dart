@@ -11,6 +11,8 @@ class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class EditProfileScreen extends StatelessWidget {
                 UIHelper.verticalSpace(10.0),
                 TextFieldWidget(
                   initialValue: Globals().profileRecord?.firstName,
+                  controller: _firstNameController,
                   label: 'First Name *',
                   hint: 'Enter first name',
                   validator: (value) {
@@ -48,6 +51,7 @@ class EditProfileScreen extends StatelessWidget {
                 UIHelper.verticalSpace(10.0),
                 TextFieldWidget(
                   initialValue: Globals().profileRecord?.lastName,
+                  controller: _lastNameController,
                   label: 'Last Name *',
                   hint: 'Enter last name',
                   validator: (value) {

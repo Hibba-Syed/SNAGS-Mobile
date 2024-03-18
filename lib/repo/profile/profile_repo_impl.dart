@@ -30,5 +30,18 @@ class ProfileRepoImpl implements ProfileRepo {
       rethrow;
     }
   }
-  // https://api.oamservices.com/snags/profile/activities?xyz=DXIxj%252BS7OkS2L83fA%252FOJyQ%253D%253D
+
+  @override
+  Future<ProfileResponseModel?> updateProfile(
+      {required Map<String, dynamic> data}) async {
+    try {
+      dynamic response = await _apiService.getAuthPutApiResponse(
+        ApiUrl.profile,
+        data: data,
+      );
+      return ProfileResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

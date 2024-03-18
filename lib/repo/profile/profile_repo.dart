@@ -4,4 +4,5 @@ import 'package:iskaan_inspections_mobile/model/user_activity/user_activity_resp
 abstract class ProfileRepo{
   Future<ProfileResponseModel?> getProfile();
   Future<UserActivityResponseModel?> getUserActivities({int? page});
+  Future<ProfileResponseModel?> updateProfile({required Map<String,dynamic> data});
 }
