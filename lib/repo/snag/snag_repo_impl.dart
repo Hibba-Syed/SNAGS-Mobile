@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:iskaan_inspections_mobile/data/network/base_api_services.dart';
 import 'package:iskaan_inspections_mobile/data/network/network_api_services.dart';
 import 'package:iskaan_inspections_mobile/model/snag/add_edit_snag_response_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/merge_snag_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snag_details_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_response_model.dart';
 import 'package:iskaan_inspections_mobile/model/snag/snags_statistics_by_month_response_model.dart';
@@ -39,7 +42,7 @@ class SnagRepoImpl implements SnagRepo {
       String? companyIdsString = companyIds?.join(',');
       String? statusesString = statuses?.join(',');
       String url =
-          '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIdsString ?? ''}&company_ids=${companyIdsString ?? ''}&status=${statusesString ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=created_at&order_dir=desc&key_word=$keyword';
+          '${ApiUrl.snags}?page=${page ?? 1}&limit=${limit ?? 10}&association_ids=${associationIdsString ?? ''}&company_ids=${companyIdsString ?? ''}&status=${statusesString ?? ''}&from_date=${fromDate ?? ''}&to_date=${toDate ?? ''}&order_by=created_at&order_dir=desc&key_word=${keyword ?? ''}';
       dynamic response = await _apiService.getAuthGetApiResponse(url);
       return SnagsResponseModel.fromJson(response);
     } catch (e) {
@@ -87,6 +90,7 @@ class SnagRepoImpl implements SnagRepo {
       rethrow;
     }
   }
+
   @override
   Future<AddEditSnagResponseModel?> updateSnag({
     required int id,
@@ -101,6 +105,31 @@ class SnagRepoImpl implements SnagRepo {
         files,
       );
       return AddEditSnagResponseModel.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MergeSnagResponseModel?> mergeSnags({
+    required int? snagId,
+    required List<int> snagsToMergeIds,
+    required String note,
+  }) async {
+    try {
+      String url = '${ApiUrl.snags}/$snagId/merge?_method=PUT';
+      // String? idsString = snagsToMergeIds.join(',');
+      Map<String, dynamic> data = {
+        'note': note,
+        'other_snags_ids': snagsToMergeIds,
+      };
+      print('url:: $url');
+      print('data:: $data');
+      dynamic response = await _apiService.getAuthPostApiResponse(
+        url,
+        data,
+      );
+      return MergeSnagResponseModel.fromJson(response);
     } catch (e) {
       rethrow;
     }

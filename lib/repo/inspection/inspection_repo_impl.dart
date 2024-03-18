@@ -145,5 +145,6 @@ class InspectionRepoImpl implements InspectionRepo {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 }

@@ -601,7 +601,23 @@ class SnagDetailScreen extends StatelessWidget {
                             });
                           },
                           onMergePressed: () {
-                            Navigator.pushNamed(context, AppRoutes.mergeSnag);
+                            context
+                                .read<SnagDetailCubit>()
+                                .onChangeSnagsToMerge([]);
+                            context
+                                .read<SnagDetailCubit>()
+                                .onChangeSelectedSnagsToMerge([]);
+                            Navigator.pushNamed(context, AppRoutes.mergeSnag)
+                                .then((value) {
+                              if (value == true) {
+                                if (state.snagDetails?.id != null) {
+                                  context
+                                      .read<SnagDetailCubit>()
+                                      .getSnagDetails(
+                                          id: state.snagDetails!.id!);
+                                }
+                              }
+                            });
                           },
                           onStartPressed: () {
                             _showStartDialog(context);

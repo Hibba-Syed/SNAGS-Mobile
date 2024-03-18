@@ -184,7 +184,7 @@ class AppPages {
     ),
     PageEntity(
       route: AppRoutes.mergeSnag,
-      page: const MergeSnagScreen(),
+      page:  MergeSnagScreen(),
       bloc: BlocProvider(
         create: (context) => SnagDetailCubit(),
       ),

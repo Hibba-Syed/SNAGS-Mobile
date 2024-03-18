@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iskaan_inspections_mobile/bloc/snags/snag_detail/snag_detail_cubit.dart';
 import 'package:iskaan_inspections_mobile/model/image_model.dart';
+import 'package:iskaan_inspections_mobile/model/snag/snag_model.dart';
 import 'package:iskaan_inspections_mobile/res/constants/app_colors.dart';
 import 'package:iskaan_inspections_mobile/res/constants/constants.dart';
 import 'package:iskaan_inspections_mobile/res/styles/styles.dart';
@@ -13,21 +15,23 @@ import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_det
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_image_index_bar.dart';
 import 'package:iskaan_inspections_mobile/view/screens/snags/components/snag_image_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/app_bar/appbar_widget.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/button/custom_button.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/empty_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/image/network_image_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/risk_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/status/snag_status_widget.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/textfield/search_text_field.dart';
+import 'package:iskaan_inspections_mobile/view/widgets/textfield/text_field_widget.dart';
 
 class MergeSnagScreen extends StatelessWidget {
-  const MergeSnagScreen({super.key});
+   MergeSnagScreen({super.key});
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<SnagDetailCubit, SnagDetailState>(
-      builder: (context, state) {
+      builder: (ctx, state) {
         return Scaffold(
           appBar: AppBarWidget(
             title: 'Merge (${state.reference})',
@@ -276,46 +280,88 @@ class MergeSnagScreen extends StatelessWidget {
                                         style: AppTextStyles.style20Grey600,
                                       ),
                                       UIHelper.verticalSpace(16.0),
-                                      ListView.separated(
-                                        itemCount: 5,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Builder(
-                                            builder: (context) {
-                                              List<ImageModel> images = [];
-                                              if ((state.snagDetails?.status ==
-                                                      AppConstants.snagCompleted
-                                                          .title ||
-                                                  state.snagDetails?.status ==
-                                                      AppConstants.snagCancelled
-                                                          .title)) {
-                                                images = state.snagDetails
-                                                        ?.closingImages ??
-                                                    [];
-                                              } else {
-                                                images =
-                                                    state.snagDetails?.images ??
+                                      (state.selectedSnagsToMerge?.isNotEmpty ??
+                                              false)
+                                          ? ListView.separated(
+                                              itemCount: state
+                                                      .selectedSnagsToMerge
+                                                      ?.length ??
+                                                  0,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                SnagModel? item =
+                                                    state.selectedSnagsToMerge?[
+                                                        index];
+                                                return Builder(
+                                                  builder: (context) {
+                                                    List<ImageModel> images =
                                                         [];
-                                              }
-                                              return SelectedSnagForMergeItemWidget(
-                                                reference: '',
-                                                title: '',
-                                                description: '',
-                                                imagesUrls: images
-                                                    .map((e) => e.path ?? '')
-                                                    .toList(),
-                                                createdAt: '',
-                                                onRemovePressed: () {},
-                                              );
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return UIHelper.verticalSpace(6.0);
-                                        },
-                                      ),
+                                                    if ((state.snagDetails
+                                                                ?.status ==
+                                                            AppConstants
+                                                                .snagCompleted
+                                                                .title ||
+                                                        state.snagDetails
+                                                                ?.status ==
+                                                            AppConstants
+                                                                .snagCancelled
+                                                                .title)) {
+                                                      images =
+                                                          item?.closingImages ??
+                                                              [];
+                                                    } else {
+                                                      images =
+                                                          item?.images ?? [];
+                                                    }
+                                                    return SelectedSnagForMergeItemWidget(
+                                                      reference:
+                                                          item?.reference ??
+                                                              '--',
+                                                      title:
+                                                          item?.title ?? '--',
+                                                      description:
+                                                          item?.description ??
+                                                              '--',
+                                                      imagesUrls: images
+                                                          .map((e) =>
+                                                              e.path ?? '')
+                                                          .toList(),
+                                                      createdAt:
+                                                          item?.createdAt,
+                                                      onRemovePressed: () {
+                                                        if (item != null) {
+                                                          context
+                                                              .read<
+                                                                  SnagDetailCubit>()
+                                                              .removeItemFromSelectedSnags(
+                                                                  item);
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) {
+                                                return UIHelper.verticalSpace(
+                                                    6.0);
+                                              },
+                                            )
+                                          : const Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.save_alt,
+                                                  color: AppColors.grey,
+                                                ),
+                                                EmptyWidget(
+                                                  text:
+                                                      'Please select the snag to merge',
+                                                ),
+                                              ],
+                                            ),
                                     ],
                                   ),
                                 ),
@@ -337,51 +383,136 @@ class MergeSnagScreen extends StatelessWidget {
                                       ),
                                       UIHelper.verticalSpace(16.0),
                                       SearchTextField(
+                                        controller: _searchController,
                                         fillColor: Colors.grey.shade100,
-                                        onFieldSubmitted: (value) {},
+                                        onFieldSubmitted: (value) {
+                                          print(state.snagDetails?.association
+                                              ?.id);
+                                          if (value.trim().isNotEmpty &&
+                                              state.snagDetails?.association
+                                                      ?.id !=
+                                                  null) {
+                                            context
+                                                .read<SnagDetailCubit>()
+                                                .getSnags(
+                                                    keyword: value,
+                                                    communityId: state
+                                                        .snagDetails!
+                                                        .association!
+                                                        .id!);
+                                          }
+                                        },
                                       ),
                                       UIHelper.verticalSpace(10.0),
-                                      ListView.separated(
-                                        itemCount: 5,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Builder(
-                                            builder: (context) {
-                                              List<ImageModel> images = [];
-                                              if ((state.snagDetails?.status ==
-                                                      AppConstants.snagCompleted
-                                                          .title ||
-                                                  state.snagDetails?.status ==
-                                                      AppConstants.snagCancelled
-                                                          .title)) {
-                                                images = state.snagDetails
-                                                        ?.closingImages ??
-                                                    [];
-                                              } else {
-                                                images =
-                                                    state.snagDetails?.images ??
-                                                        [];
-                                              }
-                                              return SnagToMergeItemWidget(
-                                                reference: '',
-                                                createdAt: '',
-                                                title: '',
-                                                imagesUrls: images
-                                                    .map((e) => e.path ?? '')
-                                                    .toList(),
-                                                onAddPressed: () {},
-                                              );
-                                            },
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return UIHelper.verticalSpace(6.0);
-                                        },
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          (state.snagsToMerge?.isNotEmpty ??
+                                                  false)
+                                              ? ListView.separated(
+                                                  itemCount: state.snagsToMerge
+                                                          ?.length ??
+                                                      0,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    SnagModel? item = state
+                                                        .snagsToMerge?[index];
+                                                    return Builder(
+                                                      builder: (context) {
+                                                        List<ImageModel>
+                                                            images = [];
+                                                        if ((state.snagDetails
+                                                                    ?.status ==
+                                                                AppConstants
+                                                                    .snagCompleted
+                                                                    .title ||
+                                                            state.snagDetails
+                                                                    ?.status ==
+                                                                AppConstants
+                                                                    .snagCancelled
+                                                                    .title)) {
+                                                          images =
+                                                              item?.closingImages ??
+                                                                  [];
+                                                        } else {
+                                                          images =
+                                                              item?.images ??
+                                                                  [];
+                                                        }
+                                                        return SnagToMergeItemWidget(
+                                                          reference:
+                                                              item?.reference ??
+                                                                  '--',
+                                                          createdAt:
+                                                              item?.createdAt,
+                                                          title: item?.title ??
+                                                              '--',
+                                                          imagesUrls: images
+                                                              .map((e) =>
+                                                                  e.path ?? '')
+                                                              .toList(),
+                                                          onAddPressed: () {
+                                                            if (item != null) {
+                                                              context
+                                                                  .read<
+                                                                      SnagDetailCubit>()
+                                                                  .addItemIntoSelectedSnag(
+                                                                      item);
+                                                            }
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  separatorBuilder:
+                                                      (context, index) {
+                                                    return UIHelper
+                                                        .verticalSpace(6.0);
+                                                  },
+                                                )
+                                              : const EmptyWidget(
+                                                  text:
+                                                      'No Snags found, search snag',
+                                                ),
+                                          Visibility(
+                                            visible:
+                                                state.isSnagsToMergeLoading,
+                                            child: const CustomLoader(),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 20.0),
+                                  child: state.isMergeLoading
+                                      ? const CustomLoader()
+                                      : CustomButton(
+                                          icon: const Icon(
+                                            Icons.merge,
+                                            color: AppColors.white,
+                                          ),
+                                          text: 'Merge',
+                                          textColor: AppColors.white,
+                                          buttonColor: AppColors.primary,
+                                          onPressed: () {
+                                            if (state.selectedSnagsToMerge
+                                                    ?.isEmpty ??
+                                                true) {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      'Please select snags to merge');
+                                              return;
+                                            }
+                                            _showMergeSnagDialog(
+                                                context, state);
+                                          },
+                                        ),
                                 ),
                               ],
                             ),
@@ -389,6 +520,62 @@ class MergeSnagScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+        );
+      },
+    );
+  }
+
+  _showMergeSnagDialog(BuildContext context, SnagDetailState state) {
+    final GlobalKey<FormState> noteFormKey = GlobalKey();
+    final TextEditingController noteController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: AppColors.white,
+          content: Form(
+            key: noteFormKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFieldWidget(
+                  controller: noteController,
+                  label: 'Add Note',
+                  hint: 'Write note',
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'required';
+                    }
+                    return null;
+                  },
+                ),
+                UIHelper.verticalSpace(20.0),
+                CustomButton(
+                  icon: const Icon(
+                    Icons.merge,
+                    color: AppColors.white,
+                  ),
+                  text: 'Merge',
+                  textColor: AppColors.white,
+                  buttonColor: AppColors.primary,
+                  onPressed: () {
+                    if (noteFormKey.currentState?.validate() ?? false) {
+                      Navigator.pop(context);
+                      context.read<SnagDetailCubit>().mergeSnags(
+                            context,
+                            snagId: state.snagDetails?.id,
+                            snagsToMergeIds: state.selectedSnagsToMerge
+                                    ?.map((e) => e.id!)
+                                    .toList() ??
+                                [],
+                            note: noteController.text,
+                          );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
