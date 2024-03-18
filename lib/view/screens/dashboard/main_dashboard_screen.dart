@@ -211,7 +211,7 @@ class MainDashboardScreen extends StatelessWidget {
 
   Widget _getScreen(MainDashboardState state) {
     if (state.selectedIndex == AppConstants.dashboardIndex) {
-      return  const DashboardScreen();
+      return  DashboardScreen();
     } else if (state.selectedIndex == AppConstants.communitiesIndex) {
       return const CommunitiesScreen();
     } else if (state.selectedIndex == AppConstants.inspectionIndex) {

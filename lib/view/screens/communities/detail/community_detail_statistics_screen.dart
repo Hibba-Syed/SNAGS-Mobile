@@ -8,11 +8,15 @@ import 'package:iskaan_inspections_mobile/view/widgets/custom_loader.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/inspactions_status_container.dart';
 import 'package:iskaan_inspections_mobile/view/widgets/snags_status_container.dart';
 
+import '../../../../model/month_filter_model.dart';
 import '../../../../res/styles/styles.dart';
 import '../../../widgets/dropdown/dropdown_widget.dart';
 
 class CommunityDetailStatisticsScreen extends StatelessWidget {
-  const CommunityDetailStatisticsScreen({super.key});
+  CommunityDetailStatisticsScreen({super.key});
+  MonthFilterModel _selectInspectionMonth =
+      MonthFilterModel(title: "1Y", value: 12);
+  MonthFilterModel _selectSnagsMonth = MonthFilterModel(title: "1Y", value: 12);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +26,12 @@ class CommunityDetailStatisticsScreen extends StatelessWidget {
       child: BlocBuilder<CommunityDetailStatisticsCubit,
           CommunityDetailStatisticsState>(
         builder: (context, state) {
-          if(state.isLoading==true){
+          if (state.isLoading == true) {
             return const CustomLoader();
           }
           return Column(
             children: [
-              _snagsAndInspectionsView(
-                  context,state),
+              _snagsAndInspectionsView(context, state),
             ],
           );
         },
@@ -36,7 +39,8 @@ class CommunityDetailStatisticsScreen extends StatelessWidget {
     );
   }
 
-  _snagsAndInspectionsView(BuildContext context, CommunityDetailStatisticsState state) {
+  _snagsAndInspectionsView(
+      BuildContext context, CommunityDetailStatisticsState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -78,18 +82,33 @@ class CommunityDetailStatisticsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropdownWidget(
-                      hint: "6 Months",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            width: 0.0, color: Colors.transparent),
-                      ),
-                      fillColor: AppColors.darkGrey.withOpacity(0.1),
-                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                      selectedItem: null,
-                      items: [],
-                      onChanged: (value) {},
+                    child: StatefulBuilder(
+                      builder: (context, changeState) {
+                        return DropdownWidget<MonthFilterModel>(
+                            hint: "select",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                  width: 0.0, color: Colors.transparent),
+                            ),
+                            fillColor: AppColors.darkGrey.withOpacity(0.1),
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
+                            selectedItem: _selectInspectionMonth,
+                            itemAsString: (month) => month.title ?? '',
+                            compareFn: (p0, p1) => p0.title == p1.title,
+                            items: AppConstants.totalInspectionList,
+                            onChanged: (item) {
+                              if (item != null) {
+                                _selectInspectionMonth = item;
+                                context
+                                    .read<CommunityDetailStatisticsCubit>()
+                                    .getCommunityInspectionsStatistics(
+                                        months: item.value);
+                                changeState(() {});
+                              }
+                            });
+                      },
                     ),
                   ),
                 ],
@@ -185,19 +204,33 @@ class CommunityDetailStatisticsScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropdownWidget(
-                      hint: "6 Months",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            width: 0.0, color: Colors.transparent),
-                      ),
-                      fillColor: AppColors.darkGrey.withOpacity(0.1),
-                      icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                      selectedItem: null,
-                      items: ['1', '2', '3', '4'],
-                      onChanged: (value) {},
-                    ),
+                    child: StatefulBuilder(builder: (context,changeState){
+                      return DropdownWidget<MonthFilterModel>(
+                          hint: "select",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                width: 0.0, color: Colors.transparent),
+                          ),
+                          fillColor: AppColors.darkGrey.withOpacity(0.1),
+                          icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                          selectedItem: _selectSnagsMonth,
+                          itemAsString: (month) => month.title ?? '',
+                          compareFn: (p0, p1) => p0.title == p1.title,
+                          items: AppConstants.totalInspectionList,
+                          onChanged: (item) {
+                            print(item);
+                            if (item != null) {
+                              _selectSnagsMonth = item;
+                              print(item.value);
+                              context
+                                  .read<CommunityDetailStatisticsCubit>()
+                                  .getCommunitySnagsStatistics(
+                                  months: item.value);
+                              changeState((){});
+                            }
+                          });
+                    },),
                   ),
                 ],
               ),

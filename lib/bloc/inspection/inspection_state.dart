@@ -7,6 +7,7 @@ class InspectionState {
   final List<Company>? selectedCompanies;
   final List<Association>? selectedCommunities;
   final List<String>? selectedStatuses;
+
   final String? fromDate;
   final String? toDate;
   final int page;

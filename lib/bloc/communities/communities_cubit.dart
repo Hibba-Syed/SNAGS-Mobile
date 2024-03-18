@@ -5,6 +5,10 @@ import 'package:iskaan_inspections_mobile/model/association/associations_respons
 import 'package:iskaan_inspections_mobile/repo/association/association_repo.dart';
 import 'package:iskaan_inspections_mobile/repo/association/association_repo_impl.dart';
 
+import '../../model/inspection/inspections_statistics_response_model.dart';
+import '../../model/snag/snags_statistics_response_model.dart';
+
+
 part 'communities_state.dart';
 
 class CommunitiesCubit extends Cubit<CommunitiesState> {

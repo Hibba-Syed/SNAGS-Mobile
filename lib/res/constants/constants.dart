@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iskaan_inspections_mobile/model/risk_model.dart';
 import 'package:iskaan_inspections_mobile/model/status_model.dart';
 
+import '../../model/month_filter_model.dart';
+
 class AppConstants {
   /// drawer indexes
   static const int menuIndex = 0;
@@ -75,6 +77,14 @@ class AppConstants {
     "Completed",
     "Cancelled",
   ];
+  ///total inspections
+ static  List<MonthFilterModel> totalInspectionList = [
+   MonthFilterModel(title: "1M", value: 1),
+   MonthFilterModel(title: "6M", value: 6),
+   MonthFilterModel(title: "1Y", value: 12),
+   MonthFilterModel(title: "All", value: 0),
+  ];
+
   static StatusModel snagNew = StatusModel(
     title: "New",
     color: const Color(0xFF179faa),
